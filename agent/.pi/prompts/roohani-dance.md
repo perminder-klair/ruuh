@@ -1,4 +1,4 @@
-# Droid Dance — Motion-Reactive Freestyle
+# Roohani Dance — Motion-Reactive Freestyle
 
 Write and run a bash script that turns the phone into a motion-reactive toy. The script reads accelerometer and gyroscope sensors in a loop and maps the user's physical movements to hardware effects — vibrations, torch flashes, brightness changes, TTS quips, and camera snapshots.
 
@@ -13,12 +13,12 @@ Write and run a bash script that turns the phone into a motion-reactive toy. The
 
 3. Announce startup via TTS:
    ```
-   termux-tts-speak "Droid Dance activated. Start moving."
+   termux-tts-speak "Roohani Dance activated. Start moving."
    ```
 
 4. Post an ongoing notification so the user knows it's running:
    ```
-   termux-notification --id droid-dance -t "Droid Dance" -c "Move your phone!" --ongoing
+   termux-notification --id roohani-dance -t "Roohani Dance" -c "Move your phone!" --ongoing
    ```
 
 5. Set initial brightness to mid-range:
@@ -80,7 +80,7 @@ When total acceleration is close to gravity (~9.8, within ±1) and gyroscope mag
 1. Speak: `termux-tts-speak "Dance complete!"`
 2. Turn off torch: `termux-torch off`
 3. Reset brightness: `termux-brightness auto`
-4. Remove notification: `termux-notification-remove droid-dance`
+4. Remove notification: `termux-notification-remove roohani-dance`
 5. Release wake lock: `termux-wake-unlock`
 6. Show a summary toast with stats: `termux-toast -g middle "Shakes: N | Snaps: N | Quips: N"`
 

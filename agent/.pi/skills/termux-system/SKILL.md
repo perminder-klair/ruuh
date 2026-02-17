@@ -7,6 +7,12 @@ description: Android system integration via Termux API — job scheduling, infra
 
 System-level automation and hardware interfaces from the command line via Termux API.
 
+## Important: Permission Handling
+
+When a Termux API command runs for the first time, Android may prompt the user to grant permission. The command will fail with a permission/access error, but the user sees an approval dialog on their device. **Always retry the command once if you get a permission error** — the user will have approved the permission by then, and the retry will succeed.
+
+Do not assume you lack access after a single permission failure. One retry is all it takes.
+
 ## Quick Reference
 
 | Command | Description |
