@@ -39,6 +39,19 @@ proot-distro login ubuntu
 cd ~/pi-agent && pi
 ```
 
+### Termux API Skills (Optional)
+
+To teach Pi how to use Android device features (camera, SMS, sensors, notifications, etc.), install the Termux API skills:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/termux-skills-setup.sh | bash
+```
+
+This adds two skill files that Pi auto-discovers on next launch:
+
+- **termux-device** — battery, brightness, torch, vibrate, volume, sensors, fingerprint, location, WiFi, clipboard, notifications, dialogs, toasts, wake lock, wallpaper, downloads
+- **termux-comms** — SMS, contacts, call log, camera, microphone, text-to-speech, media playback, sharing, storage picker, calendar
+
 ### Ollama Setup (Optional)
 
 To run AI models locally on your device using Ollama, run this **after** the main setup:
@@ -63,6 +76,8 @@ After setup, the following agent files are created in shared storage (`/sdcard/p
 | `AGENTS.md` | Overview of Pi and how it works |
 | `SOUL.md` | Pi's system persona — personality, rules, and tone |
 | `MEMORY.md` | Persistent memory updated across sessions |
+| `.pi/skills/termux-device/SKILL.md` | Skill: device hardware, sensors, UI |
+| `.pi/skills/termux-comms/SKILL.md` | Skill: SMS, camera, audio, sharing |
 
 These files are accessible from:
 

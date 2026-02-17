@@ -9,6 +9,8 @@ import {
   Cloud,
   WifiOff,
   Shield,
+  Smartphone,
+  MessageSquare,
 } from "lucide-react";
 import { CopyButton } from "@/components/copy-button";
 import {
@@ -21,6 +23,9 @@ import {
 
 const INSTALL_CMD =
   "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/termux-setup.sh | bash";
+
+const SKILLS_CMD =
+  "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/termux-skills-setup.sh | bash";
 
 const features = [
   {
@@ -61,9 +66,9 @@ const features = [
   },
   {
     icon: Plug,
-    title: "Termux API Integration",
+    title: "Termux API Skills",
     description:
-      "Access battery status, sensors, clipboard, and more through symlinked Termux API commands inside the proot environment.",
+      "Pi knows how to use your Android hardware — camera, SMS, sensors, location, notifications, and more via auto-discovered Termux API skills.",
   },
 ];
 
@@ -408,6 +413,70 @@ export default function Home() {
               </div>
             </StaggerItem>
           </StaggerContainer>
+        </div>
+      </section>
+
+      {/* Termux API Skills */}
+      <section className="border-t border-border py-24">
+        <div className="mx-auto max-w-[1100px] px-6">
+          <AnimatedDiv>
+            <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
+              Android Device <span className="text-primary">Skills</span>
+            </h2>
+          </AnimatedDiv>
+          <AnimatedSection className="grid items-center gap-12 md:grid-cols-2">
+            <div className="space-y-4">
+              <p className="text-[1.05rem] text-muted-foreground">
+                Pi can interact with your Android hardware through{" "}
+                <strong className="text-foreground">Termux API skills</strong>.
+                Send SMS, take photos, check battery, read sensors, show
+                notifications, record audio, and more — all through natural
+                conversation with your agent.
+              </p>
+              <p className="text-[1.05rem] text-muted-foreground">
+                Skills are auto-discovered when Pi starts. Install them with a
+                single command and Pi immediately knows how to use every Termux
+                API command on your device.
+              </p>
+              <div className="flex flex-col items-start gap-3 rounded-lg border border-border bg-pi-code p-4 shadow-premium-sm md:flex-row md:items-center">
+                <span className="hidden shrink-0 select-none font-mono text-sm text-primary md:block">
+                  $
+                </span>
+                <code className="flex-1 overflow-x-auto whitespace-nowrap font-mono text-[0.82rem] text-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  {SKILLS_CMD}
+                </code>
+                <CopyButton text={SKILLS_CMD} />
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div className="rounded-lg border border-border bg-card p-7">
+                <span className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                  <Smartphone className="size-5" />
+                </span>
+                <h3 className="mb-2 text-base font-semibold">
+                  Device &amp; Sensors
+                </h3>
+                <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
+                  Battery status, brightness, torch, vibrate, volume, sensors,
+                  fingerprint, GPS location, WiFi, clipboard, notifications,
+                  dialogs, toasts, wake lock, wallpaper, and downloads.
+                </p>
+              </div>
+              <div className="rounded-lg border border-border bg-card p-7">
+                <span className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                  <MessageSquare className="size-5" />
+                </span>
+                <h3 className="mb-2 text-base font-semibold">
+                  Comms &amp; Media
+                </h3>
+                <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
+                  SMS send &amp; receive, contacts, call log, camera photos,
+                  microphone recording, text-to-speech, media playback, file
+                  sharing, storage picker, and calendar access.
+                </p>
+              </div>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 

@@ -12,6 +12,8 @@ import {
   FolderOpen,
   Pencil,
   RefreshCw,
+  Plug,
+  MessageSquare,
 } from "lucide-react";
 import { CopyButton } from "@/components/copy-button";
 import {
@@ -29,6 +31,9 @@ export const metadata: Metadata = {
 
 const INSTALL_CMD =
   "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/termux-setup.sh | bash";
+
+const SKILLS_CMD =
+  "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/termux-skills-setup.sh | bash";
 
 const prerequisites = [
   {
@@ -339,6 +344,91 @@ export default function DocsPage() {
         </div>
       </section>
 
+      {/* Termux API Skills */}
+      <section className="border-b border-border py-24 px-6">
+        <div className="mx-auto max-w-[860px]">
+          <AnimatedDiv>
+            <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
+              Termux API <span className="text-primary">Skills</span>
+            </h2>
+            <p className="mb-6 text-[1.05rem] text-muted-foreground">
+              Teach Pi how to use your Android device features. Skills are
+              auto-discovered on startup — install once, use everywhere.
+            </p>
+          </AnimatedDiv>
+          <AnimatedDiv delay={0.1}>
+            <div className="mb-10 flex flex-col items-start gap-3 rounded-lg border border-border bg-pi-code p-4 shadow-premium-sm md:flex-row md:items-center">
+              <span className="hidden shrink-0 select-none font-mono text-sm text-primary md:block">
+                $
+              </span>
+              <code className="flex-1 overflow-x-auto whitespace-nowrap font-mono text-[0.82rem] text-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                {SKILLS_CMD}
+              </code>
+              <CopyButton text={SKILLS_CMD} />
+            </div>
+          </AnimatedDiv>
+          <StaggerContainer className="space-y-4">
+            <StaggerItem>
+              <div className="flex items-start gap-4 rounded-lg border border-border bg-card px-6 py-5">
+                <span className="mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                  <Plug className="size-5" />
+                </span>
+                <div>
+                  <h3 className="mb-1 font-mono text-[0.95rem] font-semibold text-primary">
+                    termux-device
+                  </h3>
+                  <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
+                    Device hardware, sensors, and UI — battery status, brightness,
+                    torch, vibrate, volume, sensors, fingerprint, GPS location, WiFi,
+                    clipboard, notifications, dialogs, toasts, wake lock, wallpaper,
+                    and downloads.
+                  </p>
+                </div>
+              </div>
+            </StaggerItem>
+            <StaggerItem>
+              <div className="flex items-start gap-4 rounded-lg border border-border bg-card px-6 py-5">
+                <span className="mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                  <MessageSquare className="size-5" />
+                </span>
+                <div>
+                  <h3 className="mb-1 font-mono text-[0.95rem] font-semibold text-primary">
+                    termux-comms
+                  </h3>
+                  <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
+                    Communication and media — SMS send &amp; receive, contacts, call log,
+                    camera photos, microphone recording, text-to-speech, media playback,
+                    file sharing, storage picker, and calendar access.
+                  </p>
+                </div>
+              </div>
+            </StaggerItem>
+          </StaggerContainer>
+          <AnimatedDiv className="mt-8">
+            <div className="overflow-hidden rounded-lg border border-border bg-pi-code">
+              <div className="flex gap-2 border-b border-border px-4 py-2.5">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+              </div>
+              <div className="p-5 font-mono text-[0.8rem] leading-[1.8] text-muted-foreground">
+                <div>
+                  <span className="text-primary">~ $</span>{" "}
+                  <span className="text-foreground break-all">
+                    {SKILLS_CMD}
+                  </span>
+                </div>
+                <div>[1/3] Checking shared storage...</div>
+                <div>[2/3] Creating skill directories...</div>
+                <div>[3/3] Downloading skill files...</div>
+                <div>&nbsp;</div>
+                <div>Skills installed!</div>
+              </div>
+            </div>
+          </AnimatedDiv>
+        </div>
+      </section>
+
       {/* Using Ollama */}
       <section className="border-b border-border py-24 px-6">
         <div className="mx-auto max-w-[860px]">
@@ -469,6 +559,10 @@ export default function DocsPage() {
               {
                 label: "Run Pi manually inside Ubuntu",
                 cmd: "cd ~/pi-agent && pi",
+              },
+              {
+                label: "Install Termux API skills",
+                cmd: SKILLS_CMD,
               },
               {
                 label: "Check battery (Termux API)",
