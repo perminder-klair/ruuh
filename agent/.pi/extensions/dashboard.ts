@@ -1,7 +1,8 @@
 import http from "node:http";
 import os from "node:os";
 import { execSync } from "node:child_process";
-import type { PiExtension } from "@anthropic-ai/pi-coding-agent";
+import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import { Type } from "@sinclair/typebox";
 
 // ---------------------------------------------------------------------------
 // State
@@ -392,143 +393,131 @@ function dashboardHTML(): string {
 // Extension
 // ---------------------------------------------------------------------------
 
-const extension: PiExtension = {
-  name: "dashboard",
-  version: "1.0.0",
+export default function dashboardExtension(pi: ExtensionAPI) {
+  // ---- session_start ----
+  pi.on("session_start", async (_ev, ctx) => {
+    state.sessionStartTime = new Date().toISOString();
+    state.agentStatus = "idle";
+    state.turnCount = 0;
+    state.activityLog = [];
+    state.customStatus = null;
+    state.currentToolName = null;
 
-  setup({ events, registerTool, registerCommand, setStatusBar }) {
-    // ---- session_start ----
-    events.on("session_start", async (ev) => {
-      state.sessionStartTime = new Date().toISOString();
-      state.sessionName = ev.sessionName ?? null;
-      state.agentStatus = "idle";
-      state.turnCount = 0;
-      state.activityLog = [];
-      state.customStatus = null;
-      state.currentToolName = null;
+    try {
+      const port = await startServer();
+      boundPort = port;
+      const ip = getLocalIP();
+      const url = `http://${ip}:${port}`;
+      ctx.ui.setStatus(`Dashboard: ${url}`);
+      pushLog("session", `Session started — dashboard at ${url}`);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      pushLog("session", `Failed to start dashboard server: ${msg}`);
+    }
+  });
 
-      try {
-        const port = await startServer();
-        boundPort = port;
-        const ip = getLocalIP();
-        const url = `http://${ip}:${port}`;
-        setStatusBar(`Dashboard: ${url}`);
-        pushLog("session", `Session started — dashboard at ${url}`);
-      } catch (err) {
-        const msg = err instanceof Error ? err.message : String(err);
-        pushLog("session", `Failed to start dashboard server: ${msg}`);
+  // ---- session_shutdown ----
+  pi.on("session_shutdown", async () => {
+    pushLog("session", "Session shutting down");
+    for (const client of sseClients) {
+      try { client.end(); } catch { /* ignore */ }
+    }
+    sseClients.clear();
+    if (server) {
+      server.close();
+      server = null;
+      boundPort = null;
+    }
+  });
+
+  // ---- agent_start ----
+  pi.on("agent_start", async () => {
+    state.agentStatus = "thinking";
+    pushLog("agent", "Agent started processing");
+  });
+
+  // ---- agent_end ----
+  pi.on("agent_end", async () => {
+    state.agentStatus = "idle";
+    state.currentToolName = null;
+    pushLog("agent", "Agent finished processing");
+  });
+
+  // ---- turn_start ----
+  pi.on("turn_start", async () => {
+    state.turnCount++;
+    pushLog("turn", `Turn ${state.turnCount} started`);
+  });
+
+  // ---- turn_end ----
+  pi.on("turn_end", async (ev) => {
+    const summary = ev.summary ?? `Turn ${state.turnCount} completed`;
+    pushLog("turn", summary);
+  });
+
+  // ---- tool_call ----
+  pi.on("tool_call", async (ev) => {
+    state.agentStatus = "executing_tool";
+    state.currentToolName = ev.toolName ?? "unknown";
+    pushLog("tool", `Calling tool: ${state.currentToolName}`);
+  });
+
+  // ---- tool_result ----
+  pi.on("tool_result", async (ev) => {
+    state.agentStatus = "thinking";
+    const preview = ev.resultSummary ?? `${state.currentToolName} completed`;
+    state.currentToolName = null;
+    pushLog("tool", preview);
+  });
+
+  // ---- message_end ----
+  pi.on("message_end", async (ev) => {
+    const text = ev.text ?? "";
+    const preview = text.length > 100 ? text.slice(0, 100) + "..." : text;
+    if (preview) {
+      pushLog("message", preview);
+    }
+  });
+
+  // ---- /status command ----
+  pi.registerCommand("status", {
+    description: "Show dashboard URL and current agent status",
+    async handler(_ctx) {
+      const ip = getLocalIP();
+      const url = boundPort ? `http://${ip}:${boundPort}` : "not running";
+      const lines = [
+        `Dashboard: ${url}`,
+        `Status:    ${state.agentStatus}`,
+        `Turns:     ${state.turnCount}`,
+      ];
+      if (state.currentToolName) {
+        lines.push(`Tool:      ${state.currentToolName}`);
       }
-    });
-
-    // ---- session_shutdown ----
-    events.on("session_shutdown", () => {
-      pushLog("session", "Session shutting down");
-      for (const client of sseClients) {
-        try { client.end(); } catch { /* ignore */ }
+      if (state.customStatus) {
+        lines.push(`Doing:     ${state.customStatus}`);
       }
-      sseClients.clear();
-      if (server) {
-        server.close();
-        server = null;
-        boundPort = null;
-      }
-    });
+      return lines.join("\n");
+    },
+  });
 
-    // ---- agent_start ----
-    events.on("agent_start", () => {
-      state.agentStatus = "thinking";
-      pushLog("agent", "Agent started processing");
-    });
-
-    // ---- agent_end ----
-    events.on("agent_end", () => {
-      state.agentStatus = "idle";
-      state.currentToolName = null;
-      pushLog("agent", "Agent finished processing");
-    });
-
-    // ---- turn_start ----
-    events.on("turn_start", () => {
-      state.turnCount++;
-      pushLog("turn", `Turn ${state.turnCount} started`);
-    });
-
-    // ---- turn_end ----
-    events.on("turn_end", (ev) => {
-      const summary = ev.summary ?? `Turn ${state.turnCount} completed`;
-      pushLog("turn", summary);
-    });
-
-    // ---- tool_call ----
-    events.on("tool_call", (ev) => {
-      state.agentStatus = "executing_tool";
-      state.currentToolName = ev.toolName ?? "unknown";
-      pushLog("tool", `Calling tool: ${state.currentToolName}`);
-    });
-
-    // ---- tool_result ----
-    events.on("tool_result", (ev) => {
-      state.agentStatus = "thinking";
-      const preview = ev.resultSummary ?? `${state.currentToolName} completed`;
-      state.currentToolName = null;
-      pushLog("tool", preview);
-    });
-
-    // ---- message_end ----
-    events.on("message_end", (ev) => {
-      const text = ev.text ?? "";
-      const preview = text.length > 100 ? text.slice(0, 100) + "..." : text;
-      if (preview) {
-        pushLog("message", preview);
-      }
-    });
-
-    // ---- /status command ----
-    registerCommand({
-      name: "status",
-      description: "Show dashboard URL and current agent status",
-      handler() {
-        const ip = getLocalIP();
-        const url = boundPort ? `http://${ip}:${boundPort}` : "not running";
-        const lines = [
-          `Dashboard: ${url}`,
-          `Status:    ${state.agentStatus}`,
-          `Turns:     ${state.turnCount}`,
-        ];
-        if (state.currentToolName) {
-          lines.push(`Tool:      ${state.currentToolName}`);
-        }
-        if (state.customStatus) {
-          lines.push(`Doing:     ${state.customStatus}`);
-        }
-        return lines.join("\n");
-      },
-    });
-
-    // ---- pi_status tool ----
-    registerTool({
-      name: "pi_status",
-      description:
-        "Set a human-readable status message on the Ruuh dashboard. " +
-        "Use this to tell the user what you are currently working on.",
-      parameters: {
-        type: "object",
-        properties: {
-          status: {
-            type: "string",
-            description:
-              "A short description of what you are doing, e.g. 'Reviewing auth module'",
-          },
-        },
-        required: ["status"],
-      },
-      handler({ status }: { status: string }) {
-        state.customStatus = status;
-        broadcastSSE({ type: "state", data: state });
-        return `Dashboard status updated: ${status}`;
-      },
-    });
-  },
-};
-
-export default extension;
+  // ---- pi_status tool ----
+  pi.registerTool({
+    name: "pi_status",
+    label: "Set Dashboard Status",
+    description:
+      "Set a human-readable status message on the Ruuh dashboard. " +
+      "Use this to tell the user what you are currently working on.",
+    parameters: Type.Object({
+      status: Type.String({
+        description:
+          "A short description of what you are doing, e.g. 'Reviewing auth module'",
+      }),
+    }),
+    async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {
+      const { status } = params;
+      state.customStatus = status;
+      broadcastSSE({ type: "state", data: state });
+      return `Dashboard status updated: ${status}`;
+    },
+  });
+}
