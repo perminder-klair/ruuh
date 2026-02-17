@@ -18,8 +18,12 @@ A one-command setup script that turns [Termux](https://termux.dev) into a fully 
 
 ## Usage
 
+### Install Pi Agent
+
+Run the one-line installer in Termux:
+
 ```bash
-bash termux-setup.sh
+curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/termux-setup.sh | bash
 ```
 
 Once setup completes, launch the agent anytime with:
@@ -34,6 +38,20 @@ Or manually:
 proot-distro login ubuntu
 cd ~/pi-agent && pi
 ```
+
+### Ollama Setup (Optional)
+
+To run AI models locally on your device using Ollama, run this **after** the main setup:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/ollama-setup.sh | bash
+```
+
+This installs Ollama, pulls the `glm-5:cloud` model, and configures pi-coding-agent to use it. To use Ollama with Pi:
+
+1. Start Ollama in a Termux session: `ollama serve`
+2. In a **second** Termux session, start Pi: `start-pi`
+3. Inside Pi, select the model: `/model glm-5:cloud`
 
 ## File Structure
 
