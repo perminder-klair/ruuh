@@ -22,7 +22,7 @@ import {
 } from "@/components/motion";
 
 const INSTALL_CMD =
-  "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/termux-setup.sh | bash";
+  "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/setup.sh | bash";
 
 const SKILLS_CMD =
   "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/termux-skills-setup.sh | bash";
@@ -32,7 +32,7 @@ const features = [
     icon: Terminal,
     title: "One-Command Setup",
     description:
-      "An 8-step automated install handles Termux packages, Ubuntu, Node.js 22, and the agent — all from a single curl command.",
+      "A single curl command sets up Termux, Ubuntu, Node.js 22, the agent, Ollama, and device skills — everything in one go.",
   },
   {
     icon: Cpu,
@@ -254,8 +254,8 @@ export default function Home() {
                 </h3>
                 <p className="text-[0.92rem] text-muted-foreground">
                   Paste the one-line install command into Termux. It handles
-                  everything automatically — packages, Ubuntu, Node.js, and the
-                  agent.
+                  everything automatically — packages, Ubuntu, Node.js, the
+                  agent, Ollama, and device skills.
                 </p>
               </div>
             </StaggerItem>

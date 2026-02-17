@@ -1,6 +1,6 @@
 ---
 name: termux-comms
-description: Android communication and media via Termux API — SMS send/receive, contacts, call log, camera photos, microphone recording, text-to-speech, media playback, file sharing, storage picker, calendar
+description: Android communication and media via Termux API — SMS send/receive, contacts, call log, phone calls, camera photos, microphone recording, text-to-speech, speech-to-text, media playback, file sharing, storage picker, calendar
 ---
 
 # Termux Comms — SMS, Contacts, Camera, Audio & Media
@@ -15,6 +15,7 @@ Access Android communication and media features from the command line via Termux
 | `termux-sms-send` | Send an SMS message |
 | `termux-contact-list` | List all contacts |
 | `termux-call-log` | Show recent call history |
+| `termux-telephony-call` | Initiate a phone call |
 | `termux-telephony-cellinfo` | Current cell tower info |
 | `termux-telephony-deviceinfo` | SIM and device telephony info |
 | `termux-camera-info` | List available cameras and capabilities |
@@ -22,6 +23,7 @@ Access Android communication and media features from the command line via Termux
 | `termux-microphone-record` | Record audio from the microphone |
 | `termux-tts-speak` | Speak text aloud (text-to-speech) |
 | `termux-tts-engines` | List available TTS engines |
+| `termux-speech-to-text` | Recognize speech from microphone |
 | `termux-media-player` | Play/pause/stop audio files |
 | `termux-media-scan` | Scan files so they appear in media apps |
 | `termux-share` | Share content via Android share sheet |
@@ -123,6 +125,17 @@ termux-call-log -o 10                   # skip first 10
   }
 ]
 ```
+
+### termux-telephony-call
+
+Initiate a phone call. Opens the dialer and starts the call.
+
+```bash
+termux-telephony-call "+441234567890"
+termux-telephony-call "999"                    # emergency number
+```
+
+The positional argument is the phone number to call. The call is placed immediately — no confirmation dialog is shown.
 
 ### termux-telephony-cellinfo
 
@@ -255,6 +268,20 @@ termux-tts-engines
 ]
 ```
 
+### termux-speech-to-text
+
+Recognize speech from the microphone and return it as text. Blocks until the user stops speaking.
+
+```bash
+termux-speech-to-text                          # listen and return final text
+termux-speech-to-text -p                       # stream partial results
+```
+
+**Flags:**
+- `-p` — output partial (interim) results as they are recognized, one per line
+
+Returns the recognized text as a plain string. With `-p`, partial results stream line by line, with the final result on the last line.
+
 ### termux-media-player
 
 Control audio playback.
@@ -376,6 +403,26 @@ if [ -n "$NUMBER" ]; then
 else
   termux-toast "Contact not found"
 fi
+```
+
+### Voice-commanded SMS
+
+```bash
+# Speak to send a text message
+termux-tts-speak "Who should I text?"
+NAME=$(termux-speech-to-text)
+CONTACT=$(termux-contact-list | jq -r --arg n "$NAME" '.[] | select(.name | test($n; "i"))')
+NUMBER=$(echo "$CONTACT" | jq -r '.number')
+
+if [ -z "$NUMBER" ]; then
+  termux-tts-speak "Contact not found"
+  exit 1
+fi
+
+termux-tts-speak "What should I say?"
+MESSAGE=$(termux-speech-to-text)
+termux-sms-send -n "$NUMBER" "$MESSAGE"
+termux-tts-speak "Message sent"
 ```
 
 ### Audio alert with fallback

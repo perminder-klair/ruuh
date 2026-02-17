@@ -18,9 +18,24 @@ A one-command setup script that turns [Termux](https://termux.dev) into a fully 
 
 ## Usage
 
-### Install Pi Agent
+### Full Setup (Recommended)
 
-Run the one-line installer in Termux:
+Run everything in one go — Termux environment, Ollama, and skills:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/setup.sh | bash
+```
+
+Once setup completes, launch the agent:
+
+1. Start Ollama in a Termux session: `ollama serve`
+2. In a **second** Termux session: `start-pi`
+
+### Individual Scripts
+
+If you prefer to run each step separately:
+
+#### 1. Install Pi Agent
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/termux-setup.sh | bash
@@ -39,20 +54,7 @@ proot-distro login ubuntu
 cd ~/pi-agent && pi
 ```
 
-### Termux API Skills (Optional)
-
-To teach Pi how to use Android device features (camera, SMS, sensors, notifications, etc.), install the Termux API skills:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/termux-skills-setup.sh | bash
-```
-
-This adds two skill files that Pi auto-discovers on next launch:
-
-- **termux-device** — battery, brightness, torch, vibrate, volume, sensors, fingerprint, location, WiFi, clipboard, notifications, dialogs, toasts, wake lock, wallpaper, downloads
-- **termux-comms** — SMS, contacts, call log, camera, microphone, text-to-speech, media playback, sharing, storage picker, calendar
-
-### Ollama Setup (Optional)
+#### 2. Ollama Setup (Optional)
 
 To run AI models locally on your device using Ollama, run this **after** the main setup:
 
@@ -67,6 +69,20 @@ This installs Ollama, pulls the `glm-5:cloud` model, and configures pi-coding-ag
 
 The `glm-5:cloud` model is configured as the default — no need to select it manually.
 
+#### 3. Termux API Skills (Optional)
+
+To teach Pi how to use Android device features (camera, SMS, sensors, notifications, etc.), install the Termux API skills:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/termux-skills-setup.sh | bash
+```
+
+This adds three skill files that Pi auto-discovers on next launch:
+
+- **termux-device** — battery, brightness, torch, vibrate, volume, audio info, sensors, fingerprint, location, WiFi, clipboard, notifications, dialogs, toasts, wake lock, wallpaper, downloads
+- **termux-comms** — SMS, contacts, call log, phone calls, camera, microphone, text-to-speech, speech-to-text, media playback, sharing, storage picker, calendar
+- **termux-system** — job scheduling, infrared transmit, USB device access, NFC tag read/write, hardware keystore crypto
+
 ## File Structure
 
 After setup, the following agent files are created in shared storage (`/sdcard/pi/`):
@@ -78,6 +94,7 @@ After setup, the following agent files are created in shared storage (`/sdcard/p
 | `MEMORY.md` | Persistent memory updated across sessions |
 | `.pi/skills/termux-device/SKILL.md` | Skill: device hardware, sensors, UI |
 | `.pi/skills/termux-comms/SKILL.md` | Skill: SMS, camera, audio, sharing |
+| `.pi/skills/termux-system/SKILL.md` | Skill: scheduling, IR, USB, NFC, keystore |
 
 These files are accessible from:
 

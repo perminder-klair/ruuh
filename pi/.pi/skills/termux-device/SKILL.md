@@ -1,6 +1,6 @@
 ---
 name: termux-device
-description: Android device control via Termux API — battery, brightness, torch, vibrate, volume, sensors, fingerprint, location, WiFi, clipboard, notifications, dialogs, toasts, wake lock, wallpaper, downloads
+description: Android device control via Termux API — battery, brightness, torch, vibrate, volume, audio info, sensors, fingerprint, location, WiFi, clipboard, notifications, dialogs, toasts, wake lock, wallpaper, downloads
 ---
 
 # Termux Device — Android Hardware, Sensors & UI
@@ -12,6 +12,7 @@ Control device hardware, sensors, and system UI from the command line via Termux
 | Command | Description |
 |---------|-------------|
 | `termux-battery-status` | Battery level, status, health, temperature |
+| `termux-audio-info` | Current audio output device and routing info |
 | `termux-brightness` | Set screen brightness (0–255) |
 | `termux-torch` | Toggle flashlight on/off |
 | `termux-vibrate` | Vibrate the device |
@@ -26,6 +27,7 @@ Control device hardware, sensors, and system UI from the command line via Termux
 | `termux-clipboard-set` | Set clipboard contents |
 | `termux-notification` | Show a persistent notification |
 | `termux-notification-remove` | Remove a notification by ID |
+| `termux-notification-list` | List active notifications |
 | `termux-dialog` | Show an interactive dialog (input, confirm, list, etc.) |
 | `termux-toast` | Show a short toast message |
 | `termux-wake-lock` | Acquire CPU wake lock (prevent sleep) |
@@ -51,6 +53,34 @@ termux-battery-status
   "status": "DISCHARGING",
   "temperature": 28.5,
   "current": -412000
+}
+```
+
+### termux-audio-info
+
+Returns JSON with current audio output device and routing information.
+
+```bash
+termux-audio-info
+```
+
+```json
+{
+  "STREAM_MUSIC": {
+    "volume": 8,
+    "max_volume": 15
+  },
+  "STREAM_RING": {
+    "volume": 5,
+    "max_volume": 7
+  },
+  "STREAM_NOTIFICATION": {
+    "volume": 5,
+    "max_volume": 7
+  },
+  "BLUETOOTH_A2DP_IS_ON": false,
+  "WIREDHEADSET_IS_ON": false,
+  "SPEAKERPHONE_IS_ON": false
 }
 ```
 
@@ -270,6 +300,31 @@ Remove a notification by its ID.
 termux-notification-remove mynotif
 ```
 
+### termux-notification-list
+
+List all active notifications on the device.
+
+```bash
+termux-notification-list
+```
+
+```json
+[
+  {
+    "id": 1,
+    "tag": "mynotif",
+    "key": "0|com.termux.api|1|mynotif|10108",
+    "group": "",
+    "packageName": "com.termux.api",
+    "title": "Build",
+    "content": "In progress...",
+    "when": "2025-01-15 14:30:00"
+  }
+]
+```
+
+Returns a JSON array of all active notifications with their ID, tag, package, title, content, and timestamp.
+
 ### termux-dialog
 
 Show an interactive UI dialog and return user input as JSON.
@@ -395,6 +450,23 @@ LOC=$(termux-location -p network)
 LAT=$(echo "$LOC" | jq -r '.latitude')
 LON=$(echo "$LOC" | jq -r '.longitude')
 echo "[$(date -Iseconds)] lat=$LAT lon=$LON" >> /sdcard/pi/location.log
+```
+
+### Full notification lifecycle
+
+```bash
+# Post a notification
+termux-notification --id build -t "Build" -c "Compiling..." --ongoing
+
+# Check it's active
+termux-notification-list | jq '.[] | select(.tag == "build")'
+
+# Update it
+termux-notification --id build -t "Build" -c "Running tests..." --alert-once
+
+# Remove when done
+termux-notification-remove build
+termux-toast "Build complete!"
 ```
 
 ### Keep device awake during a task

@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 };
 
 const INSTALL_CMD =
-  "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/termux-setup.sh | bash";
+  "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/setup.sh | bash";
 
 const SKILLS_CMD =
   "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/termux-skills-setup.sh | bash";
@@ -68,20 +68,15 @@ const setupSteps = [
     step: 2,
     title: "Run the Install Command",
     description:
-      "Paste the one-liner below into Termux. It runs an 8-step automated script that installs everything — Termux packages, Ubuntu via proot-distro, Node.js 22, and the pi-coding-agent.",
+      "Paste the one-liner below into Termux. It runs all three setup scripts in order — Termux environment with Ubuntu and Node.js, Ollama with a model, and Termux API skills.",
     terminal: {
       lines: [
-        { prompt: true, text: "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/termux-setup.sh | bash" },
-        { prompt: false, text: "[1/8] Updating Termux packages..." },
-        { prompt: false, text: "[2/8] Installing Termux essentials..." },
-        { prompt: false, text: "[3/8] Setting up shared storage access..." },
-        { prompt: false, text: "[4/8] Creating Pi agent files..." },
-        { prompt: false, text: "[5/8] Installing Ubuntu..." },
-        { prompt: false, text: "[6/8] Configuring Ubuntu environment..." },
-        { prompt: false, text: "[7/8] Creating start-pi launcher..." },
-        { prompt: false, text: "[8/8] Setting up Termux API access..." },
+        { prompt: true, text: "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/setup.sh | bash" },
+        { prompt: false, text: "[1/3] Running termux-setup.sh..." },
+        { prompt: false, text: "[2/3] Running ollama-setup.sh..." },
+        { prompt: false, text: "[3/3] Running termux-skills-setup.sh..." },
         { prompt: false, text: "" },
-        { prompt: false, text: "🎉 All done!" },
+        { prompt: false, text: "🎉 Full setup complete!" },
       ],
     },
   },
@@ -217,7 +212,8 @@ export default function DocsPage() {
               Installation
             </h2>
             <p className="mb-6 text-[1.05rem] text-muted-foreground">
-              Run a single command to set up everything automatically.
+              Run a single command to set up everything automatically — Termux
+              environment, Ollama, and device skills.
             </p>
           </AnimatedDiv>
           <AnimatedDiv delay={0.1}>
