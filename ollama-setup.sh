@@ -19,14 +19,14 @@ echo "============================================"
 # Step 1: Install Ollama
 # ------------------------------------------
 echo ""
-echo "[1/4] Installing Ollama..."
+echo "[1/5] Installing Ollama..."
 pkg install -y ollama
 
 # ------------------------------------------
 # Step 2: Start Ollama and pull model
 # ------------------------------------------
 echo ""
-echo "[2/4] Starting Ollama server..."
+echo "[2/5] Starting Ollama server..."
 ollama serve &
 OLLAMA_PID=$!
 
@@ -46,7 +46,14 @@ for i in $(seq 1 30); do
 done
 
 echo ""
-echo "[3/4] Pulling glm-5:cloud model (this may take a while)..."
+echo "[3/5] Authenticating with Ollama..."
+echo "   You need an Ollama account to use cloud models."
+echo "   A URL will appear below — open it in your browser to sign in."
+echo ""
+ollama signin
+
+echo ""
+echo "[4/5] Pulling glm-5:cloud model (this may take a while)..."
 ollama pull glm-5:cloud
 
 # Stop the background server now that the pull is done
@@ -57,7 +64,7 @@ wait "$OLLAMA_PID" 2>/dev/null || true
 # Step 3: Configure pi-coding-agent
 # ------------------------------------------
 echo ""
-echo "[4/4] Configuring pi-coding-agent to use Ollama..."
+echo "[5/5] Configuring pi-coding-agent to use Ollama..."
 
 proot-distro login ubuntu -- bash -c '
 set -e
@@ -77,6 +84,13 @@ cat > "$HOME/.pi/agent/models.json" << '"'"'MODELSEOF'"'"'
 }
 MODELSEOF
 echo "✅ models.json written to ~/.pi/agent/models.json"
+cat > "$HOME/.pi/agent/settings.json" << '"'"'SETTINGSEOF'"'"'
+{
+  "defaultProvider": "ollama",
+  "defaultModel": "glm-5:cloud"
+}
+SETTINGSEOF
+echo "✅ settings.json written to ~/.pi/agent/settings.json"
 '
 
 # ------------------------------------------
@@ -95,8 +109,8 @@ echo ""
 echo "  2. In a SECOND Termux session, start Pi:"
 echo "       start-pi"
 echo ""
-echo "  3. Inside Pi, select the Ollama model with:"
-echo "       /model glm-5:cloud"
+echo "  The glm-5:cloud model is now the default —"
+echo "  no need to select it manually."
 echo ""
 echo "  Note: Ollama must be running in a separate"
 echo "  Termux session before starting Pi."

@@ -47,11 +47,12 @@ To run AI models locally on your device using Ollama, run this **after** the mai
 curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/ollama-setup.sh | bash
 ```
 
-This installs Ollama, pulls the `glm-5:cloud` model, and configures pi-coding-agent to use it. To use Ollama with Pi:
+This installs Ollama, pulls the `glm-5:cloud` model, and configures pi-coding-agent to use it. During setup, `ollama signin` will prompt you to open a URL in your browser to authenticate with your Ollama account (required for cloud models). To use Ollama with Pi:
 
 1. Start Ollama in a Termux session: `ollama serve`
 2. In a **second** Termux session, start Pi: `start-pi`
-3. Inside Pi, select the model: `/model glm-5:cloud`
+
+The `glm-5:cloud` model is configured as the default — no need to select it manually.
 
 ## File Structure
 
