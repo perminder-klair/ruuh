@@ -1,6 +1,6 @@
 # 🧠 Memory
 
-This file is Pi's persistent memory. It is used to remember important context across sessions.
+This file is persistent memory. It is used to remember important context across sessions.
 
 ## User Profile
 

@@ -31,3 +31,14 @@ Two skills are provided:
 - **termux-comms** (`pi/.pi/skills/termux-comms/SKILL.md`) — communication and media: SMS, contacts, call log, camera, microphone, TTS, media playback, sharing, storage picker, calendar
 
 Each SKILL.md has YAML frontmatter (`name`, `description`), a quick reference table, detailed per-command usage with flags and JSON output examples, and common patterns showing real-world combinations.
+
+## Landing Page (`web/`)
+
+A Next.js landing page and docs site for the project. Stack: Next.js 16, React 19, Tailwind CSS v4, Motion (animations), Lucide icons, shadcn/ui.
+
+- **`app/page.tsx`** — Main landing page: hero with install command, "What is Pi?" explainer, how-it-works steps, features grid, Ollama/local model section, Android device skills section, installation breakdown, footer
+- **`app/docs/page.tsx`** — Getting started / documentation: prerequisites, step-by-step install guide with terminal mockups, config file docs (AGENTS.md, SOUL.md, MEMORY.md), file locations, Termux API skills, Ollama setup, quick reference, troubleshooting
+- **`components/motion.tsx`** — Animation wrappers (AnimatedDiv, AnimatedSection, StaggerContainer, StaggerItem, HoverCard) using Motion library
+- **`components/copy-button.tsx`** — Copy-to-clipboard button with "Copied!" feedback
+
+Design: dark mode (`#0a0a0a` bg), warm orange/gold accent (`#FBAA19`), Plus Jakarta Sans headings, Geist Mono for code.
