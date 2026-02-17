@@ -79,7 +79,7 @@ echo "   📁 Accessible on Android at: Internal Storage > ruuh"
 # ------------------------------------------
 echo ""
 echo "[5/8] Installing Ubuntu..."
-if proot-distro list | grep -q "ubuntu.*Installed"; then
+if proot-distro login ubuntu -- true 2>/dev/null; then
     echo "✅ Ubuntu already installed, skipping..."
 else
     proot-distro install ubuntu

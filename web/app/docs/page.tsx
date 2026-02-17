@@ -361,8 +361,16 @@ export default function DocsPage() {
               >
                 Termux:API
               </a>{" "}
-              companion app installed from F-Droid for hardware access. Both
-              Termux and Termux:API must be installed from F-Droid — mixing
+              companion app installed from F-Droid for hardware access. Both{" "}
+              <a
+                href="https://f-droid.org/en/packages/com.termux/"
+                className="text-primary hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Termux
+              </a>{" "}
+              and Termux:API must be installed from F-Droid — mixing
               Play Store and F-Droid versions causes signature mismatch errors.
             </p>
           </AnimatedDiv>
@@ -684,7 +692,7 @@ export default function DocsPage() {
             <p>
               Built by{" "}
               <a
-                href="https://github.com/perminder-klair"
+                href="https://www.klair.co"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"

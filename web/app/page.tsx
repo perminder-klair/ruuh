@@ -449,8 +449,16 @@ export default function Home() {
                 >
                   Termux:API
                 </a>{" "}
-                companion app installed from F-Droid for hardware access. Both
-                Termux and Termux:API must be installed from F-Droid — mixing
+                companion app installed from F-Droid for hardware access. Both{" "}
+                <a
+                  href="https://f-droid.org/en/packages/com.termux/"
+                  className="text-primary hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Termux
+                </a>{" "}
+                and Termux:API must be installed from F-Droid — mixing
                 Play Store and F-Droid versions causes signature mismatch errors.
               </p>
               <div className="flex flex-col items-start gap-3 rounded-lg border border-border bg-code-block p-3 sm:p-4 shadow-premium-sm md:flex-row md:items-center">
@@ -557,7 +565,7 @@ export default function Home() {
             <p>
               Built by{" "}
               <a
-                href="https://github.com/perminder-klair"
+                href="https://www.klair.co"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"
