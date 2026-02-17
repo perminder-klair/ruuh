@@ -50,14 +50,22 @@ mkdir -p "$RUUH_DIR/.pi/extensions"
 echo "✅ Extensions directory created"
 
 # ------------------------------------------
-# Step 3: Download dashboard extension
+# Step 3: Install dashboard extension (skip if present)
 # ------------------------------------------
 echo ""
-echo "[3/3] Downloading dashboard extension..."
+echo "[3/3] Checking dashboard extension..."
 
-curl -fsSL "$REPO_RAW/agent/.pi/extensions/dashboard.ts" \
-    -o "$RUUH_DIR/.pi/extensions/dashboard.ts"
-echo "   ✅ dashboard.ts installed"
+if [ ! -f "$RUUH_DIR/.pi/extensions/dashboard.ts" ]; then
+    echo "   Downloading dashboard extension..."
+    TMP_DIR=$(mktemp -d)
+    curl -fsSL "$REPO_TARBALL" \
+        | tar xz -C "$TMP_DIR" --strip-components=2 "ruuh-main/agent"
+    cp -a "$TMP_DIR/.pi/extensions/." "$RUUH_DIR/.pi/extensions/"
+    rm -rf "$TMP_DIR"
+    echo "   ✅ dashboard.ts downloaded and installed"
+else
+    echo "   ✅ dashboard.ts already present (installed by ruuh-setup.sh)"
+fi
 
 # ------------------------------------------
 # Done

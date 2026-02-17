@@ -56,22 +56,21 @@ else
 fi
 
 # ------------------------------------------
-# Step 4: Create agent files in shared storage
+# Step 4: Download all agent files to shared storage
 # ------------------------------------------
 echo ""
-echo "[4/8] Creating Ruuh agent files in shared storage..."
+echo "[4/8] Downloading Ruuh agent files to shared storage..."
 
 mkdir -p "$RUUH_DIR"
 
-curl -fsSL "$REPO_RAW/agent/MEMORY.md" -o "$RUUH_DIR/MEMORY.md"
-curl -fsSL "$REPO_RAW/agent/SOUL.md" -o "$RUUH_DIR/SOUL.md"
-curl -fsSL "$REPO_RAW/agent/AGENTS.md" -o "$RUUH_DIR/AGENTS.md"
+TMP_DIR=$(mktemp -d)
+curl -fsSL "$REPO_TARBALL" \
+    | tar xz -C "$TMP_DIR" --strip-components=2 "ruuh-main/agent"
+cp -a "$TMP_DIR/." "$RUUH_DIR/"
+rm -rf "$TMP_DIR"
 
-echo "✅ Agent files created in ~/storage/shared/ruuh/"
-echo "   - AGENTS.md  (overview)"
-echo "   - SOUL.md    (persona)"
-echo "   - MEMORY.md  (persistent memory)"
-echo ""
+FILE_COUNT=$(find "$RUUH_DIR" -type f | wc -l | tr -d ' ')
+echo "✅ $FILE_COUNT agent files installed to ~/storage/shared/ruuh/"
 echo "   📁 Accessible on Android at: Internal Storage > ruuh"
 
 # ------------------------------------------
@@ -144,20 +143,35 @@ echo "============================================"
 echo ""
 echo "[7/8] Creating ruuh launcher..."
 
-cat > "$PREFIX/bin/ruuh" << STARTEOF
+cat > "$PREFIX/bin/ruuh" << 'STARTEOF'
 #!/data/data/com.termux/files/usr/bin/bash
 
-# ============================================
-# 🤖 Start Ruuh Agent
-# ============================================
-# Logs into proot Ubuntu and launches
-# pi-coding-agent from the shared pi directory.
-# ============================================
+OLLAMA_PID=""
+
+cleanup() {
+  if [ -n "$OLLAMA_PID" ]; then
+    kill "$OLLAMA_PID" 2>/dev/null
+    wait "$OLLAMA_PID" 2>/dev/null
+  fi
+}
+trap cleanup EXIT
+
+if [ "$1" = "--ollama" ]; then
+  echo "🦙 Starting Ollama server..."
+  ollama serve &
+  OLLAMA_PID=$!
+  for i in $(seq 1 30); do
+    curl -s http://localhost:11434/api/tags >/dev/null 2>&1 && break
+    [ "$i" -eq 30 ] && echo "❌ Ollama failed to start" && exit 1
+    sleep 1
+  done
+  echo "✅ Ollama ready"
+  echo ""
+fi
 
 echo "🤖 Starting Ruuh agent..."
 echo ""
-
-proot-distro login ubuntu -- bash -c 'cd $SDCARD_DIR && pi'
+proot-distro login ubuntu -- bash -c 'cd /sdcard/ruuh && pi'
 STARTEOF
 
 chmod +x "$PREFIX/bin/ruuh"

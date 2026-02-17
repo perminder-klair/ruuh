@@ -52,22 +52,30 @@ mkdir -p "$RUUH_DIR/.pi/skills/termux-system"
 echo "✅ Skill directories created"
 
 # ------------------------------------------
-# Step 3: Download skill files
+# Step 3: Install skill files (skip if present)
 # ------------------------------------------
 echo ""
-echo "[3/4] Downloading skill files..."
+echo "[3/4] Checking skill files..."
 
-curl -fsSL "$REPO_RAW/agent/.pi/skills/termux-device/SKILL.md" \
-    -o "$RUUH_DIR/.pi/skills/termux-device/SKILL.md"
-echo "   ✅ termux-device skill installed"
+SKILLS_MISSING=0
+for skill in termux-device termux-comms termux-system; do
+    if [ ! -f "$RUUH_DIR/.pi/skills/$skill/SKILL.md" ]; then
+        SKILLS_MISSING=1
+        break
+    fi
+done
 
-curl -fsSL "$REPO_RAW/agent/.pi/skills/termux-comms/SKILL.md" \
-    -o "$RUUH_DIR/.pi/skills/termux-comms/SKILL.md"
-echo "   ✅ termux-comms skill installed"
-
-curl -fsSL "$REPO_RAW/agent/.pi/skills/termux-system/SKILL.md" \
-    -o "$RUUH_DIR/.pi/skills/termux-system/SKILL.md"
-echo "   ✅ termux-system skill installed"
+if [ "$SKILLS_MISSING" -eq 1 ]; then
+    echo "   Downloading skill files..."
+    TMP_DIR=$(mktemp -d)
+    curl -fsSL "$REPO_TARBALL" \
+        | tar xz -C "$TMP_DIR" --strip-components=2 "ruuh-main/agent"
+    cp -a "$TMP_DIR/.pi/skills/." "$RUUH_DIR/.pi/skills/"
+    rm -rf "$TMP_DIR"
+    echo "   ✅ Skill files downloaded and installed"
+else
+    echo "   ✅ Skill files already present (installed by ruuh-setup.sh)"
+fi
 
 # ------------------------------------------
 # Step 4: Verify installation
