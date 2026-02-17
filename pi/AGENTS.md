@@ -6,7 +6,7 @@ Pi is your personal AI coding assistant running locally on your device via **pi-
 
 ## System Architecture
 
-Pi is powered by a persona called **Saul** (see [SAUL.md](./SAUL.md)) which defines its personality, behaviour rules, and interaction style.
+Pi is powered by a persona called **Soul** (see [SOUL.md](./SOUL.md)) which defines its personality, behaviour rules, and interaction style.
 
 Pi also has a **persistent memory** (see [MEMORY.md](./MEMORY.md)) that allows it to remember context across sessions — things like your preferences, project details, and past conversations.
 
@@ -15,7 +15,7 @@ Pi also has a **persistent memory** (see [MEMORY.md](./MEMORY.md)) that allows i
 | File | Purpose |
 |------|---------|
 | `AGENTS.md` | This file. Overview of Pi and how it works. |
-| `SAUL.md` | Pi's system persona — personality, rules, and tone. |
+| `SOUL.md` | Pi's system persona — personality, rules, and tone. |
 | `MEMORY.md` | Pi's persistent memory — updated across sessions. |
 
 ## Getting Started
@@ -39,8 +39,8 @@ pi
 - When you share something important (name, project context, preferences), ask Pi to remember it.
 - Pi will update `MEMORY.md` so it persists to the next session.
 
-## How Saul Works
+## How Soul Works
 
-- `SAUL.md` defines how Pi speaks, thinks, and behaves.
+- `SOUL.md` defines how Pi speaks, thinks, and behaves.
 - You can customise it to change Pi's personality or add new rules.
-- Pi won't mention Saul unless you ask about the system setup.
+- Pi won't mention Soul unless you ask about the system setup.

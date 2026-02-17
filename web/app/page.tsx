@@ -51,7 +51,7 @@ const features = [
     icon: Sparkles,
     title: "Custom AI Persona",
     description:
-      "Define Pi's personality and behavior in SAUL.md. Make it match your coding style and communication preferences.",
+      "Define Pi's personality and behavior in SOUL.md. Make it match your coding style and communication preferences.",
   },
   {
     icon: FolderOpen,
@@ -82,7 +82,7 @@ const installSteps = [
   },
   {
     title: "Create Agent Configs",
-    description: "Writes AGENTS.md, SAUL.md, and MEMORY.md",
+    description: "Writes AGENTS.md, SOUL.md, and MEMORY.md",
   },
   {
     title: "Install Ubuntu",
@@ -190,7 +190,7 @@ export default function Home() {
                 </div>
                 <div>Starting pi-coding-agent...</div>
                 <div>Loading MEMORY.md...</div>
-                <div>Loading SAUL.md persona...</div>
+                <div>Loading SOUL.md persona...</div>
                 <div>&nbsp;</div>
                 <div>Ready. What are we building?</div>
                 <div>&nbsp;</div>

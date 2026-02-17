@@ -61,7 +61,7 @@ After setup, the following agent files are created in shared storage (`/sdcard/p
 | File | Purpose |
 |------|---------|
 | `AGENTS.md` | Overview of Pi and how it works |
-| `SAUL.md` | Pi's system persona — personality, rules, and tone |
+| `SOUL.md` | Pi's system persona — personality, rules, and tone |
 | `MEMORY.md` | Persistent memory updated across sessions |
 
 These files are accessible from:

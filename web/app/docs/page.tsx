@@ -99,7 +99,7 @@ const setupSteps = [
         { prompt: false, text: "" },
         { prompt: false, text: "Starting pi-coding-agent..." },
         { prompt: false, text: "Loading MEMORY.md..." },
-        { prompt: false, text: "Loading SAUL.md persona..." },
+        { prompt: false, text: "Loading SOUL.md persona..." },
         { prompt: false, text: "" },
         { prompt: false, text: "Ready. What are we building?" },
       ],
@@ -116,7 +116,7 @@ const configFiles = [
   },
   {
     icon: Pencil,
-    name: "SAUL.md",
+    name: "SOUL.md",
     description:
       "Pi's personality and persona file. Customize its tone, communication style, and coding preferences.",
   },
