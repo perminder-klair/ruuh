@@ -33,7 +33,7 @@ const INSTALL_CMD =
   "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/setup.sh | bash";
 
 const SKILLS_CMD =
-  "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/termux-skills-setup.sh | bash";
+  "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/skills-setup.sh | bash";
 
 const prerequisites = [
   {
@@ -72,9 +72,9 @@ const setupSteps = [
     terminal: {
       lines: [
         { prompt: true, text: "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/setup.sh | bash" },
-        { prompt: false, text: "[1/3] Running termux-setup.sh..." },
+        { prompt: false, text: "[1/3] Running pi-setup.sh..." },
         { prompt: false, text: "[2/3] Running ollama-setup.sh..." },
-        { prompt: false, text: "[3/3] Running termux-skills-setup.sh..." },
+        { prompt: false, text: "[3/3] Running skills-setup.sh..." },
         { prompt: false, text: "" },
         { prompt: false, text: "🎉 Full setup complete!" },
       ],

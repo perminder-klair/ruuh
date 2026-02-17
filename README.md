@@ -38,7 +38,7 @@ If you prefer to run each step separately:
 #### 1. Install Pi Agent
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/termux-setup.sh | bash
+curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/pi-setup.sh | bash
 ```
 
 Once setup completes, launch the agent anytime with:
@@ -74,7 +74,7 @@ The `glm-5:cloud` model is configured as the default — no need to select it ma
 To teach Pi how to use Android device features (camera, SMS, sensors, notifications, etc.), install the Termux API skills:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/termux-skills-setup.sh | bash
+curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/skills-setup.sh | bash
 ```
 
 This adds three skill files that Pi auto-discovers on next launch:

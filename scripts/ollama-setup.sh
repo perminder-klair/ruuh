@@ -3,7 +3,7 @@
 # ============================================
 # Ollama Setup Script for Termux
 # ============================================
-# Run this in Termux AFTER termux-setup.sh
+# Run this in Termux AFTER pi-setup.sh
 # Usage: bash ollama-setup.sh
 # ============================================
 

@@ -25,7 +25,7 @@ const INSTALL_CMD =
   "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/setup.sh | bash";
 
 const SKILLS_CMD =
-  "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/termux-skills-setup.sh | bash";
+  "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/skills-setup.sh | bash";
 
 const features = [
   {

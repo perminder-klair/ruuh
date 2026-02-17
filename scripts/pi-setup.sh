@@ -4,7 +4,7 @@
 # Termux + Ubuntu (proot) Setup Script
 # ============================================
 # Run this in Termux (not inside proot)
-# Usage: bash termux-setup.sh
+# Usage: bash pi-setup.sh
 # ============================================
 
 set -e

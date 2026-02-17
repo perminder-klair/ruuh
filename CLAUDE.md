@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This repo contains `scripts/termux-setup.sh`, a Bash setup script that configures a Termux + Ubuntu (proot) environment on Android for running the `pi-coding-agent` npm package. The script:
+This repo contains `scripts/pi-setup.sh`, a Bash setup script that configures a Termux + Ubuntu (proot) environment on Android for running the `pi-coding-agent` npm package. The script:
 
 1. Updates Termux and installs `proot-distro` and `termux-api`
 2. Sets up shared storage access (`~/storage/shared/pi/`)
@@ -23,7 +23,7 @@ This repo contains `scripts/termux-setup.sh`, a Bash setup script that configure
 
 ## Termux API Skills
 
-`scripts/termux-skills-setup.sh` installs pi-coding-agent skill files into `~/storage/shared/pi/.pi/skills/`. These teach the agent how to use the Termux API commands that are symlinked into proot by step 8 of `termux-setup.sh`.
+`scripts/skills-setup.sh` installs pi-coding-agent skill files into `~/storage/shared/pi/.pi/skills/`. These teach the agent how to use the Termux API commands that are symlinked into proot by step 8 of `pi-setup.sh`.
 
 Two skills are provided:
 

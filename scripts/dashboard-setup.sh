@@ -28,7 +28,7 @@ echo "[1/3] Checking shared storage..."
 
 if [ ! -d "$PI_DIR" ]; then
     echo "❌ $PI_DIR not found."
-    echo "   Run termux-setup.sh first to set up the environment."
+    echo "   Run pi-setup.sh first to set up the environment."
     exit 1
 fi
 

@@ -4,16 +4,33 @@
 # DroidClaw Full Setup Script
 # ============================================
 # Runs all setup scripts in order:
-#   1. termux-setup.sh      — Termux + Ubuntu environment
+#   1. pi-setup.sh           — Termux + Ubuntu environment
 #   2. ollama-setup.sh      — Ollama + model setup
-#   3. termux-skills-setup.sh — Termux API skills
+#   3. skills-setup.sh       — Termux API skills
 #
 # Usage: bash setup.sh
 # ============================================
 
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_RAW_URL="https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts"
+
+# Detect if running from a pipe (curl | bash) or locally
+if [ -f "$0" ]; then
+  SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+  USE_LOCAL=true
+else
+  USE_LOCAL=false
+fi
+
+run_script() {
+  local name="$1"
+  if [ "$USE_LOCAL" = true ] && [ -f "$SCRIPT_DIR/$name" ]; then
+    bash "$SCRIPT_DIR/$name"
+  else
+    curl -fsSL "$REPO_RAW_URL/$name" | bash
+  fi
+}
 
 echo "============================================"
 echo "  🚀 DroidClaw Full Setup"
@@ -29,9 +46,9 @@ echo ""
 # Step 1: Termux + Ubuntu environment
 # ------------------------------------------
 echo "============================================"
-echo "  [1/3] Running termux-setup.sh..."
+echo "  [1/3] Running pi-setup.sh..."
 echo "============================================"
-bash "$SCRIPT_DIR/termux-setup.sh"
+run_script "pi-setup.sh"
 
 # ------------------------------------------
 # Step 2: Ollama setup
@@ -40,16 +57,16 @@ echo ""
 echo "============================================"
 echo "  [2/3] Running ollama-setup.sh..."
 echo "============================================"
-bash "$SCRIPT_DIR/ollama-setup.sh"
+run_script "ollama-setup.sh"
 
 # ------------------------------------------
 # Step 3: Termux API skills
 # ------------------------------------------
 echo ""
 echo "============================================"
-echo "  [3/3] Running termux-skills-setup.sh..."
+echo "  [3/3] Running skills-setup.sh..."
 echo "============================================"
-bash "$SCRIPT_DIR/termux-skills-setup.sh"
+run_script "skills-setup.sh"
 
 # ------------------------------------------
 # Done

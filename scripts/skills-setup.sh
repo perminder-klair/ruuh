@@ -6,7 +6,7 @@
 # Run this in Termux (not inside proot)
 # Installs pi-coding-agent skill files that
 # teach the agent how to use Termux API commands.
-# Usage: bash termux-skills-setup.sh
+# Usage: bash skills-setup.sh
 # ============================================
 
 set -e
@@ -28,7 +28,7 @@ echo "[1/4] Checking shared storage..."
 
 if [ ! -d "$PI_DIR" ]; then
     echo "❌ $PI_DIR not found."
-    echo "   Run termux-setup.sh first to set up the environment."
+    echo "   Run pi-setup.sh first to set up the environment."
     exit 1
 fi
 
