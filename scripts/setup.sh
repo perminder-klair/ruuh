@@ -1,10 +1,10 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
 # ============================================
-# DroidClaw Full Setup Script
+# Ruuh Full Setup Script
 # ============================================
 # Runs all setup scripts in order:
-#   1. pi-setup.sh           — Termux + Ubuntu environment
+#   1. ruuh-setup.sh           — Termux + Ubuntu environment
 #   2. ollama-setup.sh      — Ollama + model setup
 #   3. skills-setup.sh       — Termux API skills
 #
@@ -13,7 +13,7 @@
 
 set -e
 
-REPO_RAW_URL="https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts"
+REPO_RAW_URL="https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts"
 
 # Detect if running from a pipe (curl | bash) or locally
 if [ -f "$0" ]; then
@@ -33,7 +33,7 @@ run_script() {
 }
 
 echo "============================================"
-echo "  🚀 DroidClaw Full Setup"
+echo "  🚀 Ruuh Full Setup"
 echo "============================================"
 echo ""
 echo "  This will run:"
@@ -46,9 +46,9 @@ echo ""
 # Step 1: Termux + Ubuntu environment
 # ------------------------------------------
 echo "============================================"
-echo "  [1/3] Running pi-setup.sh..."
+echo "  [1/3] Running ruuh-setup.sh..."
 echo "============================================"
-run_script "pi-setup.sh"
+run_script "ruuh-setup.sh"
 
 # ------------------------------------------
 # Step 2: Ollama setup (optional)
@@ -91,7 +91,7 @@ echo ""
 echo "  1. Start Ollama in a Termux session:"
 echo "       ollama serve"
 echo ""
-echo "  2. In a SECOND Termux session, start Pi:"
-echo "       start-pi"
+echo "  2. In a SECOND Termux session, start Ruuh:"
+echo "       ruuh"
 echo ""
 echo "============================================"

@@ -1,6 +1,6 @@
-# DroidClaw
+# Ruuh
 
-A one-command setup script that turns [Termux](https://termux.dev) into a fully configured AI coding environment on Android. It installs Ubuntu via proot, sets up Node.js, and deploys the [pi-coding-agent](https://www.npmjs.com/package/@mariozechner/pi-coding-agent) — giving you a personal AI assistant (Pi) right on your phone.
+A one-command setup script that turns [Termux](https://termux.dev) into a fully configured AI coding environment on Android. It installs Ubuntu via proot, sets up Node.js, and deploys the [pi-coding-agent](https://www.npmjs.com/package/@mariozechner/pi-coding-agent) — giving you a personal AI assistant right on your phone.
 
 ## What It Does
 
@@ -8,7 +8,7 @@ A one-command setup script that turns [Termux](https://termux.dev) into a fully 
 2. Sets up shared storage so agent files are accessible from any Android app
 3. Creates pre-configured agent files (persona, memory, overview)
 4. Installs Ubuntu with Node.js 22 and `pi-coding-agent`
-5. Creates a `start-pi` launcher command
+5. Creates a `ruuh` launcher command
 6. Symlinks Termux API commands into the proot environment
 
 ## Prerequisites
@@ -23,35 +23,35 @@ A one-command setup script that turns [Termux](https://termux.dev) into a fully 
 Run everything in one go — Termux environment, Ollama, and skills:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/setup.sh | bash
+curl -fsSL https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/setup.sh | bash
 ```
 
 Once setup completes, launch the agent:
 
 1. Start Ollama in a Termux session: `ollama serve`
-2. In a **second** Termux session: `start-pi`
+2. In a **second** Termux session: `ruuh`
 
 ### Individual Scripts
 
 If you prefer to run each step separately:
 
-#### 1. Install Pi Agent
+#### 1. Install Ruuh Agent
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/pi-setup.sh | bash
+curl -fsSL https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/ruuh-setup.sh | bash
 ```
 
 Once setup completes, launch the agent anytime with:
 
 ```bash
-start-pi
+ruuh
 ```
 
 Or manually:
 
 ```bash
 proot-distro login ubuntu
-cd ~/pi-agent && pi
+cd ~/agent && pi
 ```
 
 #### 2. Ollama Setup (Optional)
@@ -59,25 +59,25 @@ cd ~/pi-agent && pi
 To run AI models locally on your device using Ollama, run this **after** the main setup:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/ollama-setup.sh | bash
+curl -fsSL https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/ollama-setup.sh | bash
 ```
 
-This installs Ollama, pulls the `glm-5:cloud` model, and configures pi-coding-agent to use it. During setup, `ollama signin` will prompt you to open a URL in your browser to authenticate with your Ollama account (required for cloud models). To use Ollama with Pi:
+This installs Ollama, pulls the `glm-5:cloud` model, and configures pi-coding-agent to use it. During setup, `ollama signin` will prompt you to open a URL in your browser to authenticate with your Ollama account (required for cloud models). To use Ollama with Ruuh:
 
 1. Start Ollama in a Termux session: `ollama serve`
-2. In a **second** Termux session, start Pi: `start-pi`
+2. In a **second** Termux session, start Ruuh: `ruuh`
 
 The `glm-5:cloud` model is configured as the default — no need to select it manually.
 
 #### 3. Termux API Skills (Optional)
 
-To teach Pi how to use Android device features (camera, SMS, sensors, notifications, etc.), install the Termux API skills:
+To teach Ruuh how to use Android device features (camera, SMS, sensors, notifications, etc.), install the Termux API skills:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/skills-setup.sh | bash
+curl -fsSL https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/skills-setup.sh | bash
 ```
 
-This adds three skill files that Pi auto-discovers on next launch:
+This adds three skill files that Ruuh auto-discovers on next launch:
 
 - **termux-device** — battery, brightness, torch, vibrate, volume, audio info, sensors, fingerprint, location, WiFi, clipboard, notifications, dialogs, toasts, wake lock, wallpaper, downloads
 - **termux-comms** — SMS, contacts, call log, phone calls, camera, microphone, text-to-speech, speech-to-text, media playback, sharing, storage picker, calendar
@@ -85,12 +85,12 @@ This adds three skill files that Pi auto-discovers on next launch:
 
 ## File Structure
 
-After setup, the following agent files are created in shared storage (`/sdcard/pi/`):
+After setup, the following agent files are created in shared storage (`/sdcard/ruuh/`):
 
 | File | Purpose |
 |------|---------|
-| `AGENTS.md` | Overview of Pi and how it works |
-| `SOUL.md` | Pi's system persona — personality, rules, and tone |
+| `AGENTS.md` | Overview of the agent and how it works |
+| `SOUL.md` | Agent's system persona — personality, rules, and tone |
 | `MEMORY.md` | Persistent memory updated across sessions |
 | `.pi/skills/termux-device/SKILL.md` | Skill: device hardware, sensors, UI |
 | `.pi/skills/termux-comms/SKILL.md` | Skill: SMS, camera, audio, sharing |
@@ -100,11 +100,11 @@ These files are accessible from:
 
 | Context | Path |
 |---------|------|
-| Termux | `~/storage/shared/pi/` |
-| Ubuntu (proot) | `~/pi-agent/` |
-| Android file manager | Internal Storage > pi |
+| Termux | `~/storage/shared/ruuh/` |
+| Ubuntu (proot) | `~/agent/` |
+| Android file manager | Internal Storage > ruuh |
 
-You can edit these files from any Android text editor to customise Pi's behaviour.
+You can edit these files from any Android text editor to customise the agent's behaviour.
 
 ## Development Testing
 
@@ -126,7 +126,7 @@ The test container uses Ubuntu 22.04 with Termux's directory structure (`$PREFIX
 
 The entire script body is wrapped in a `main()` function. This ensures the full script is loaded into memory before execution, preventing breakage if `pkg upgrade` replaces bash mid-run.
 
-The proot Ubuntu environment shares access to `/sdcard/pi` via a symlink, and Termux API commands (e.g. `termux-battery-status`) are symlinked into the proot filesystem so they work inside Ubuntu too.
+The proot Ubuntu environment shares access to `/sdcard/ruuh` via a symlink, and Termux API commands (e.g. `termux-battery-status`) are symlinked into the proot filesystem so they work inside Ubuntu too.
 
 ## License
 

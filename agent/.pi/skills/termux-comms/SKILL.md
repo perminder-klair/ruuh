@@ -205,8 +205,8 @@ termux-camera-info
 Take a photo and save it to a file.
 
 ```bash
-termux-camera-photo /sdcard/pi/photo.jpg          # back camera (default)
-termux-camera-photo -c 1 /sdcard/pi/selfie.jpg    # front camera
+termux-camera-photo /sdcard/ruuh/photo.jpg          # back camera (default)
+termux-camera-photo -c 1 /sdcard/ruuh/selfie.jpg    # front camera
 ```
 
 **Flags:**
@@ -217,8 +217,8 @@ termux-camera-photo -c 1 /sdcard/pi/selfie.jpg    # front camera
 Record audio from the microphone.
 
 ```bash
-termux-microphone-record -f /sdcard/pi/recording.m4a
-termux-microphone-record -f /sdcard/pi/rec.m4a -l 30 -e aac -b 128000 -r 44100 -c 1
+termux-microphone-record -f /sdcard/ruuh/recording.m4a
+termux-microphone-record -f /sdcard/ruuh/rec.m4a -l 30 -e aac -b 128000 -r 44100 -c 1
 termux-microphone-record -q                        # stop recording
 ```
 
@@ -287,7 +287,7 @@ Returns the recognized text as a plain string. With `-p`, partial results stream
 Control audio playback.
 
 ```bash
-termux-media-player play /sdcard/pi/song.mp3    # play a file
+termux-media-player play /sdcard/ruuh/song.mp3    # play a file
 termux-media-player play "https://example.com/stream.mp3"  # play URL
 termux-media-player pause                         # pause playback
 termux-media-player stop                          # stop playback
@@ -301,9 +301,9 @@ termux-media-player info                          # current playback info
 Scan files so they appear in Android's media library (Gallery, Music, etc.).
 
 ```bash
-termux-media-scan /sdcard/pi/photo.jpg
-termux-media-scan -r /sdcard/pi/photos/           # recursive scan
-termux-media-scan -v /sdcard/pi/video.mp4          # verbose output
+termux-media-scan /sdcard/ruuh/photo.jpg
+termux-media-scan -r /sdcard/ruuh/photos/           # recursive scan
+termux-media-scan -v /sdcard/ruuh/video.mp4          # verbose output
 ```
 
 **Flags:**
@@ -315,11 +315,11 @@ termux-media-scan -v /sdcard/pi/video.mp4          # verbose output
 Share content via Android's share sheet (sends to other apps).
 
 ```bash
-termux-share /sdcard/pi/photo.jpg                     # share a file
+termux-share /sdcard/ruuh/photo.jpg                     # share a file
 echo "Check this out" | termux-share                   # share text
-termux-share -a send /sdcard/pi/document.pdf           # send action
+termux-share -a send /sdcard/ruuh/document.pdf           # send action
 termux-share -a view "https://example.com"             # open URL
-termux-share -c "image/jpeg" /sdcard/pi/photo.jpg      # explicit MIME type
+termux-share -c "image/jpeg" /sdcard/ruuh/photo.jpg      # explicit MIME type
 ```
 
 **Flags:**
@@ -333,7 +333,7 @@ termux-share -c "image/jpeg" /sdcard/pi/photo.jpg      # explicit MIME type
 Open Android's file picker and copy the chosen file to a destination.
 
 ```bash
-termux-storage-get /sdcard/pi/picked-file.pdf
+termux-storage-get /sdcard/ruuh/picked-file.pdf
 ```
 
 This opens Android's file picker UI. The selected file is copied to the given path.
@@ -366,9 +366,9 @@ termux-sms-send -n "$SENDER" "Got it, thanks!"
 ### Take a photo and share it
 
 ```bash
-termux-camera-photo /sdcard/pi/snap.jpg
-termux-media-scan /sdcard/pi/snap.jpg
-termux-share /sdcard/pi/snap.jpg
+termux-camera-photo /sdcard/ruuh/snap.jpg
+termux-media-scan /sdcard/ruuh/snap.jpg
+termux-share /sdcard/ruuh/snap.jpg
 ```
 
 ### Voice notification for task completion
@@ -383,7 +383,7 @@ termux-vibrate -d 300
 
 ```bash
 termux-toast "Recording... speak now"
-termux-microphone-record -f /sdcard/pi/memo.m4a -l 60
+termux-microphone-record -f /sdcard/ruuh/memo.m4a -l 60
 # Recording runs in background for up to 60 seconds
 # Stop early with:
 termux-microphone-record -q
@@ -429,8 +429,8 @@ termux-tts-speak "Message sent"
 
 ```bash
 # Try to play a sound file, fall back to TTS
-if [ -f /sdcard/pi/alert.mp3 ]; then
-  termux-media-player play /sdcard/pi/alert.mp3
+if [ -f /sdcard/ruuh/alert.mp3 ]; then
+  termux-media-player play /sdcard/ruuh/alert.mp3
 else
   termux-tts-speak "Alert: task requires your attention"
 fi

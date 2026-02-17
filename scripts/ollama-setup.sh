@@ -3,7 +3,7 @@
 # ============================================
 # Ollama Setup Script for Termux
 # ============================================
-# Run this in Termux AFTER pi-setup.sh
+# Run this in Termux AFTER ruuh-setup.sh
 # Usage: bash ollama-setup.sh
 # ============================================
 
@@ -12,7 +12,7 @@ set -e
 main() {
 
 echo "============================================"
-echo "  🦙 Ollama Setup for Pi Agent"
+echo "  🦙 Ollama Setup for Ruuh Agent"
 echo "============================================"
 
 # ------------------------------------------
@@ -101,19 +101,19 @@ echo "============================================"
 echo "  🎉 Ollama setup complete!"
 echo "============================================"
 echo ""
-echo "  To use Ollama with Pi:"
+echo "  To use Ollama with Ruuh:"
 echo ""
 echo "  1. Start Ollama in a Termux session:"
 echo "       ollama serve"
 echo ""
-echo "  2. In a SECOND Termux session, start Pi:"
-echo "       start-pi"
+echo "  2. In a SECOND Termux session, start Ruuh:"
+echo "       ruuh"
 echo ""
 echo "  The glm-5:cloud model is now the default —"
 echo "  no need to select it manually."
 echo ""
 echo "  Note: Ollama must be running in a separate"
-echo "  Termux session before starting Pi."
+echo "  Termux session before starting Ruuh."
 echo "============================================"
 
 }

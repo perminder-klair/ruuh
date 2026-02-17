@@ -449,7 +449,7 @@ fi
 LOC=$(termux-location -p network)
 LAT=$(echo "$LOC" | jq -r '.latitude')
 LON=$(echo "$LOC" | jq -r '.longitude')
-echo "[$(date -Iseconds)] lat=$LAT lon=$LON" >> /sdcard/pi/location.log
+echo "[$(date -Iseconds)] lat=$LAT lon=$LON" >> /sdcard/ruuh/location.log
 ```
 
 ### Full notification lifecycle

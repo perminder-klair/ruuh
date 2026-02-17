@@ -4,12 +4,20 @@
 # Termux + Ubuntu (proot) Setup Script
 # ============================================
 # Run this in Termux (not inside proot)
-# Usage: bash pi-setup.sh
+# Usage: bash ruuh-setup.sh
 # ============================================
 
 set -e
 
 main() {
+
+# Source shared config
+_conf="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd)/config.sh"
+if [ -f "$_conf" ]; then
+    source "$_conf"
+else
+    eval "$(curl -fsSL "https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/config.sh")"
+fi
 
 echo "============================================"
 echo "  📱 Termux Environment Setup"
@@ -51,23 +59,20 @@ fi
 # Step 4: Create agent files in shared storage
 # ------------------------------------------
 echo ""
-echo "[4/8] Creating Pi agent files in shared storage..."
+echo "[4/8] Creating Ruuh agent files in shared storage..."
 
-REPO_RAW="https://raw.githubusercontent.com/perminder-klair/droidclaw/main"
+mkdir -p "$RUUH_DIR"
 
-PI_DIR="$HOME/storage/shared/pi"
-mkdir -p "$PI_DIR"
+curl -fsSL "$REPO_RAW/agent/MEMORY.md" -o "$RUUH_DIR/MEMORY.md"
+curl -fsSL "$REPO_RAW/agent/SOUL.md" -o "$RUUH_DIR/SOUL.md"
+curl -fsSL "$REPO_RAW/agent/AGENTS.md" -o "$RUUH_DIR/AGENTS.md"
 
-curl -fsSL "$REPO_RAW/pi/MEMORY.md" -o "$PI_DIR/MEMORY.md"
-curl -fsSL "$REPO_RAW/pi/SOUL.md" -o "$PI_DIR/SOUL.md"
-curl -fsSL "$REPO_RAW/pi/AGENTS.md" -o "$PI_DIR/AGENTS.md"
-
-echo "✅ Agent files created in ~/storage/shared/pi/"
+echo "✅ Agent files created in ~/storage/shared/ruuh/"
 echo "   - AGENTS.md  (overview)"
 echo "   - SOUL.md    (persona)"
 echo "   - MEMORY.md  (persistent memory)"
 echo ""
-echo "   📁 Accessible on Android at: Internal Storage > pi"
+echo "   📁 Accessible on Android at: Internal Storage > ruuh"
 
 # ------------------------------------------
 # Step 5: Install Ubuntu via proot-distro
@@ -123,8 +128,9 @@ echo "[5/5] Installing pi-coding-agent..."
 npm install -g @mariozechner/pi-coding-agent
 
 # Symlink shared pi directory into Ubuntu home for convenience
-ln -sf /sdcard/pi "$HOME/pi-agent" 2>/dev/null || true
-echo "✅ ~/pi-agent symlinked to /sdcard/pi"
+# Note: /sdcard/ruuh and "agent" must match SDCARD_DIR and AGENT_SYMLINK_NAME in config.sh
+ln -sf /sdcard/ruuh "$HOME/agent" 2>/dev/null || true
+echo "✅ ~/agent symlinked to /sdcard/ruuh"
 
 echo ""
 echo "============================================"
@@ -133,37 +139,36 @@ echo "============================================"
 '
 
 # ------------------------------------------
-# Step 7: Create start-pi launcher script
+# Step 7: Create ruuh launcher script
 # ------------------------------------------
 echo ""
-echo "[7/8] Creating start-pi launcher..."
+echo "[7/8] Creating ruuh launcher..."
 
-cat > "$PREFIX/bin/start-pi" << 'STARTEOF'
+cat > "$PREFIX/bin/ruuh" << STARTEOF
 #!/data/data/com.termux/files/usr/bin/bash
 
 # ============================================
-# 🤖 Start Pi Agent
+# 🤖 Start Ruuh Agent
 # ============================================
 # Logs into proot Ubuntu and launches
 # pi-coding-agent from the shared pi directory.
 # ============================================
 
-echo "🤖 Starting Pi agent..."
+echo "🤖 Starting Ruuh agent..."
 echo ""
 
-proot-distro login ubuntu -- bash -c 'cd /sdcard/pi && pi'
+proot-distro login ubuntu -- bash -c 'cd $SDCARD_DIR && pi'
 STARTEOF
 
-chmod +x "$PREFIX/bin/start-pi"
-echo "✅ start-pi command created"
-echo "   Run 'start-pi' from Termux to launch Pi agent"
+chmod +x "$PREFIX/bin/ruuh"
+echo "✅ ruuh command created"
+echo "   Run 'ruuh' from Termux to launch Ruuh agent"
 
 # ------------------------------------------
 # Step 8: Symlink termux-api commands into proot
 # ------------------------------------------
 echo ""
 echo "[8/8] Setting up Termux API access inside proot..."
-UBUNTU_ROOT="$PREFIX/var/lib/proot-distro/installed-rootfs/ubuntu"
 mkdir -p "$UBUNTU_ROOT/usr/local/bin"
 
 for cmd in "$PREFIX"/bin/termux-*; do
@@ -182,16 +187,16 @@ echo "  🎉 All done!"
 echo "============================================"
 echo ""
 echo "  🚀 Quick start:"
-echo "    start-pi"
+echo "    ruuh"
 echo ""
 echo "  Or manually:"
 echo "    proot-distro login ubuntu"
-echo "    cd ~/pi-agent && pi"
+echo "    cd ~/agent && pi"
 echo ""
 echo "  Agent files live at:"
-echo "    Termux:   ~/storage/shared/pi/"
-echo "    Ubuntu:   ~/pi-agent/ (symlink to /sdcard/pi)"
-echo "    Android:  Internal Storage > pi"
+echo "    Termux:   ~/storage/shared/ruuh/"
+echo "    Ubuntu:   ~/agent/ (symlink to /sdcard/ruuh)"
+echo "    Android:  Internal Storage > ruuh"
 echo ""
 echo "  You can edit AGENTS.md, SOUL.md, and"
 echo "  MEMORY.md from any Android text editor!"

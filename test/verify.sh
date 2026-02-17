@@ -3,8 +3,15 @@
 
 PREFIX="${PREFIX:-/data/data/com.termux/files/usr}"
 HOME_DIR="${HOME:-/data/data/com.termux/files/home}"
-PI_DIR="$HOME_DIR/storage/shared/pi"
-UBUNTU_ROOT="$PREFIX/var/lib/proot-distro/installed-rootfs/ubuntu"
+
+# Source shared config for RUUH_DIR and UBUNTU_ROOT
+_conf="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd)/../scripts/config.sh"
+if [ -f "$_conf" ]; then
+    HOME="$HOME_DIR" source "$_conf"
+else
+    RUUH_DIR="$HOME_DIR/storage/shared/ruuh"
+    UBUNTU_ROOT="$PREFIX/var/lib/proot-distro/installed-rootfs/ubuntu"
+fi
 
 PASS=0
 FAIL=0
@@ -28,21 +35,21 @@ echo "  Verification"
 echo "============================================"
 echo ""
 
-# --- pi-setup.sh checks ---
-echo "--- pi-setup.sh ---"
+# --- ruuh-setup.sh checks ---
+echo "--- ruuh-setup.sh ---"
 
 # Agent files exist and have content
 for f in AGENTS.md SOUL.md MEMORY.md; do
-    [ -s "$PI_DIR/$f" ]
+    [ -s "$RUUH_DIR/$f" ]
     check "Agent file $f exists and has content" $?
 done
 
-# start-pi launcher
-[ -x "$PREFIX/bin/start-pi" ]
-check "start-pi is executable" $?
+# ruuh launcher
+[ -x "$PREFIX/bin/ruuh" ]
+check "ruuh is executable" $?
 
-grep -q "proot-distro login ubuntu" "$PREFIX/bin/start-pi" 2>/dev/null
-check "start-pi contains proot-distro login command" $?
+grep -q "proot-distro login ubuntu" "$PREFIX/bin/ruuh" 2>/dev/null
+check "ruuh contains proot-distro login command" $?
 
 # Ubuntu rootfs structure
 [ -d "$UBUNTU_ROOT" ]
@@ -59,9 +66,9 @@ done
 [ "$SYMLINK_COUNT" -gt 10 ]
 check "Termux API commands symlinked into rootfs ($SYMLINK_COUNT found)" $?
 
-# /sdcard/pi symlink (created by proot-distro mock)
-[ -e "/sdcard/pi" ]
-check "/sdcard/pi exists (bind mount simulation)" $?
+# /sdcard/ruuh symlink (created by proot-distro mock)
+[ -e "/sdcard/ruuh" ]
+check "/sdcard/ruuh exists (bind mount simulation)" $?
 
 # Node.js available
 node -v >/dev/null 2>&1
@@ -77,11 +84,11 @@ echo ""
 echo "--- skills-setup.sh ---"
 
 for skill in termux-device termux-comms termux-system; do
-    [ -s "$PI_DIR/.pi/skills/$skill/SKILL.md" ]
+    [ -s "$RUUH_DIR/.pi/skills/$skill/SKILL.md" ]
     check "Skill file $skill/SKILL.md exists and has content" $?
 done
 
-SKILL_COUNT=$(find "$PI_DIR/.pi/skills" -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
+SKILL_COUNT=$(find "$RUUH_DIR/.pi/skills" -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
 [ "$SKILL_COUNT" -eq 3 ]
 check "Exactly 3 skill files installed (found $SKILL_COUNT)" $?
 
@@ -90,10 +97,10 @@ echo ""
 # --- dashboard-setup.sh checks ---
 echo "--- dashboard-setup.sh ---"
 
-[ -s "$PI_DIR/.pi/extensions/dashboard.ts" ]
+[ -s "$RUUH_DIR/.pi/extensions/dashboard.ts" ]
 check "Dashboard extension dashboard.ts exists and has content" $?
 
-[ -d "$PI_DIR/.pi/extensions" ]
+[ -d "$RUUH_DIR/.pi/extensions" ]
 check "Extensions directory exists" $?
 
 echo ""

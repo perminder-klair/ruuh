@@ -13,12 +13,17 @@ set -e
 
 main() {
 
+# Source shared config
+_conf="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd)/config.sh"
+if [ -f "$_conf" ]; then
+    source "$_conf"
+else
+    eval "$(curl -fsSL "https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/config.sh")"
+fi
+
 echo "============================================"
 echo "  📱 Termux API Skills Setup"
 echo "============================================"
-
-REPO_RAW="https://raw.githubusercontent.com/perminder-klair/droidclaw/main"
-PI_DIR="$HOME/storage/shared/pi"
 
 # ------------------------------------------
 # Step 1: Check shared storage is accessible
@@ -26,13 +31,13 @@ PI_DIR="$HOME/storage/shared/pi"
 echo ""
 echo "[1/4] Checking shared storage..."
 
-if [ ! -d "$PI_DIR" ]; then
-    echo "❌ $PI_DIR not found."
-    echo "   Run pi-setup.sh first to set up the environment."
+if [ ! -d "$RUUH_DIR" ]; then
+    echo "❌ $RUUH_DIR not found."
+    echo "   Run ruuh-setup.sh first to set up the environment."
     exit 1
 fi
 
-echo "✅ Shared storage accessible at $PI_DIR"
+echo "✅ Shared storage accessible at $RUUH_DIR"
 
 # ------------------------------------------
 # Step 2: Create skill directories
@@ -40,9 +45,9 @@ echo "✅ Shared storage accessible at $PI_DIR"
 echo ""
 echo "[2/4] Creating skill directories..."
 
-mkdir -p "$PI_DIR/.pi/skills/termux-device"
-mkdir -p "$PI_DIR/.pi/skills/termux-comms"
-mkdir -p "$PI_DIR/.pi/skills/termux-system"
+mkdir -p "$RUUH_DIR/.pi/skills/termux-device"
+mkdir -p "$RUUH_DIR/.pi/skills/termux-comms"
+mkdir -p "$RUUH_DIR/.pi/skills/termux-system"
 
 echo "✅ Skill directories created"
 
@@ -52,16 +57,16 @@ echo "✅ Skill directories created"
 echo ""
 echo "[3/4] Downloading skill files..."
 
-curl -fsSL "$REPO_RAW/pi/.pi/skills/termux-device/SKILL.md" \
-    -o "$PI_DIR/.pi/skills/termux-device/SKILL.md"
+curl -fsSL "$REPO_RAW/agent/.pi/skills/termux-device/SKILL.md" \
+    -o "$RUUH_DIR/.pi/skills/termux-device/SKILL.md"
 echo "   ✅ termux-device skill installed"
 
-curl -fsSL "$REPO_RAW/pi/.pi/skills/termux-comms/SKILL.md" \
-    -o "$PI_DIR/.pi/skills/termux-comms/SKILL.md"
+curl -fsSL "$REPO_RAW/agent/.pi/skills/termux-comms/SKILL.md" \
+    -o "$RUUH_DIR/.pi/skills/termux-comms/SKILL.md"
 echo "   ✅ termux-comms skill installed"
 
-curl -fsSL "$REPO_RAW/pi/.pi/skills/termux-system/SKILL.md" \
-    -o "$PI_DIR/.pi/skills/termux-system/SKILL.md"
+curl -fsSL "$REPO_RAW/agent/.pi/skills/termux-system/SKILL.md" \
+    -o "$RUUH_DIR/.pi/skills/termux-system/SKILL.md"
 echo "   ✅ termux-system skill installed"
 
 # ------------------------------------------
@@ -70,7 +75,7 @@ echo "   ✅ termux-system skill installed"
 echo ""
 echo "[4/4] Verifying installation..."
 
-SKILL_COUNT=$(ls -d "$PI_DIR/.pi/skills"/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+SKILL_COUNT=$(ls -d "$RUUH_DIR/.pi/skills"/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
 echo "✅ $SKILL_COUNT skill files installed"
 
 # ------------------------------------------
@@ -87,12 +92,12 @@ echo "    termux-comms   — SMS, camera, audio, sharing"
 echo "    termux-system  — scheduling, IR, USB, NFC, keystore"
 echo ""
 echo "  Skill files live at:"
-echo "    Termux:   ~/storage/shared/pi/.pi/skills/"
-echo "    Android:  Internal Storage > pi > .pi > skills"
-echo "    Proot:    /sdcard/pi/.pi/skills/"
+echo "    Termux:   ~/storage/shared/ruuh/.pi/skills/"
+echo "    Android:  Internal Storage > ruuh > .pi > skills"
+echo "    Proot:    /sdcard/ruuh/.pi/skills/"
 echo ""
 echo "  The agent will auto-discover these skills"
-echo "  next time you run: start-pi"
+echo "  next time you run: ruuh"
 echo ""
 echo "  💡 Want a live web dashboard?"
 echo "     Run: bash dashboard-setup.sh"

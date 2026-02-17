@@ -1,6 +1,6 @@
 # Development Testing
 
-Testing DroidClaw scripts normally requires an Android phone with Termux — a slow cycle of push, pull, run, and debug. The Docker test environment eliminates this by simulating Termux locally, cutting iteration time from 5-10 minutes to ~30 seconds.
+Testing Ruuh scripts normally requires an Android phone with Termux — a slow cycle of push, pull, run, and debug. The Docker test environment eliminates this by simulating Termux locally, cutting iteration time from 5-10 minutes to ~30 seconds.
 
 ## Quick Start
 
@@ -12,7 +12,7 @@ bash test/run.sh
 bash test/run.sh --interactive
 
 # Test a single script
-docker run --rm droidclaw-test bash /scripts/pi-setup.sh
+docker run --rm ruuh-test bash /scripts/ruuh-setup.sh
 ```
 
 ## How It Works
@@ -26,8 +26,8 @@ The Docker container (Ubuntu 22.04) recreates the Termux environment:
 
 ### What `test/run.sh` Does
 
-1. Builds the Docker image (`droidclaw-test`)
-2. Runs `pi-setup.sh`, `skills-setup.sh`, and `dashboard-setup.sh` in sequence
+1. Builds the Docker image (`ruuh-test`)
+2. Runs `ruuh-setup.sh`, `skills-setup.sh`, and `dashboard-setup.sh` in sequence
 3. Runs `verify.sh` to check 17 assertions against the resulting filesystem
 
 ## Mock Scripts
@@ -52,10 +52,10 @@ Packages that have dedicated mocks (`proot-distro`, `termux-api`, `ollama`) are 
 The most important mock. Simulates proot-distro without actual proot:
 
 - **`proot-distro install ubuntu`** — Creates a fake rootfs directory at `$PREFIX/var/lib/proot-distro/installed-rootfs/ubuntu/` with the expected subdirectories (`usr/local/bin`, `root`, `etc`).
-- **`proot-distro list`** — Outputs text matching the format `pi-setup.sh` greps for (`ubuntu.*Installed`).
-- **`proot-distro login ubuntu -- bash -c '<script>'`** — Executes `<script>` directly in a subshell (we're already on Ubuntu). Also creates `/sdcard/pi` as a symlink to `$HOME/storage/shared/pi` to simulate the Android shared storage bind mount.
+- **`proot-distro list`** — Outputs text matching the format `ruuh-setup.sh` greps for (`ubuntu.*Installed`).
+- **`proot-distro login ubuntu -- bash -c '<script>'`** — Executes `<script>` directly in a subshell (we're already on Ubuntu). Also creates `/sdcard/ruuh` as a symlink to `$HOME/storage/shared/ruuh` to simulate the Android shared storage bind mount.
 
-This means the inline Ubuntu setup script from `pi-setup.sh` step 6 (which installs Node.js, npm packages, and creates symlinks) actually runs for real.
+This means the inline Ubuntu setup script from `ruuh-setup.sh` step 6 (which installs Node.js, npm packages, and creates symlinks) actually runs for real.
 
 ### `termux-setup-storage`
 
@@ -100,17 +100,17 @@ Stubs the three subcommands used by `ollama-setup.sh`:
 
 `test/verify.sh` runs 17 assertions grouped by script:
 
-### pi-setup.sh (11 checks)
+### ruuh-setup.sh (11 checks)
 
 | Check | What It Verifies |
 |---|---|
-| Agent files exist | `AGENTS.md`, `SOUL.md`, `MEMORY.md` in `~/storage/shared/pi/` with content |
-| `start-pi` executable | Launcher script exists at `$PREFIX/bin/start-pi` with execute permission |
-| `start-pi` content | Contains `proot-distro login ubuntu` command |
+| Agent files exist | `AGENTS.md`, `SOUL.md`, `MEMORY.md` in `~/storage/shared/ruuh/` with content |
+| `ruuh` executable | Launcher script exists at `$PREFIX/bin/ruuh` with execute permission |
+| `ruuh` content | Contains `proot-distro login ubuntu` command |
 | Ubuntu rootfs | Directory exists at expected proot-distro path |
 | Rootfs structure | `/usr/local/bin` exists inside rootfs |
 | API symlinks | 10+ `termux-*` commands symlinked into rootfs `/usr/local/bin/` |
-| `/sdcard/pi` | Bind mount simulation exists |
+| `/sdcard/ruuh` | Bind mount simulation exists |
 | Node.js | `node -v` succeeds |
 | pi-coding-agent | `npm list -g @mariozechner/pi-coding-agent` succeeds |
 
@@ -157,12 +157,12 @@ This drops you into a bash shell inside the container. From there you can run sc
 
 ```bash
 # Run the main setup
-bash /scripts/pi-setup.sh
+bash /scripts/ruuh-setup.sh
 
 # Check what was created
-ls -la ~/storage/shared/pi/
-ls -la $PREFIX/bin/start-pi
-cat $PREFIX/bin/start-pi
+ls -la ~/storage/shared/ruuh/
+ls -la $PREFIX/bin/ruuh
+cat $PREFIX/bin/ruuh
 
 # Check the proot rootfs
 ls -la $PREFIX/var/lib/proot-distro/installed-rootfs/ubuntu/usr/local/bin/
@@ -173,7 +173,7 @@ bash /test/verify.sh
 
 ### Network Issues
 
-The setup scripts use `curl` to download files from GitHub (`raw.githubusercontent.com`). If downloads fail, check that your Docker daemon has internet access. For fully offline testing, you could mount the local `pi/` directory into the container and modify the scripts to use local paths.
+The setup scripts use `curl` to download files from GitHub (`raw.githubusercontent.com`). If downloads fail, check that your Docker daemon has internet access. For fully offline testing, you could mount the local `agent/` directory into the container and modify the scripts to use local paths.
 
 ### Adding New Checks
 

@@ -33,11 +33,11 @@ case "$1" in
         # Set up environment to mimic proot
         export DEBIAN_FRONTEND=noninteractive
 
-        # Ensure /sdcard/pi exists (simulates Android shared storage bind)
+        # Ensure /sdcard/ruuh exists (simulates Android shared storage bind)
         TERMUX_HOME="${HOME}"
-        if [ -d "$TERMUX_HOME/storage/shared/pi" ]; then
+        if [ -d "$TERMUX_HOME/storage/shared/ruuh" ]; then
             mkdir -p /sdcard
-            ln -sf "$TERMUX_HOME/storage/shared/pi" /sdcard/pi 2>/dev/null || true
+            ln -sf "$TERMUX_HOME/storage/shared/ruuh" /sdcard/ruuh 2>/dev/null || true
         fi
 
         echo "[mock proot-distro] Running command in fake proot environment"

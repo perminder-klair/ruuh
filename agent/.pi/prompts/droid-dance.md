@@ -57,8 +57,8 @@ Use a cooldown (e.g. 5 seconds) so TTS doesn't fire every iteration.
 
 ### Spin / Twist (high gyroscope Z-axis)
 When the absolute gyroscope Z value exceeds ~5 rad/s:
-- Take a photo: `termux-camera-photo /sdcard/pi/dance-snap-<timestamp>.jpg`
-- Register it in the media library: `termux-media-scan /sdcard/pi/dance-snap-<timestamp>.jpg`
+- Take a photo: `termux-camera-photo /sdcard/ruuh/dance-snap-<timestamp>.jpg`
+- Register it in the media library: `termux-media-scan /sdcard/ruuh/dance-snap-<timestamp>.jpg`
 - Toast: `termux-toast "Snapshot!"`
 
 Use a cooldown (e.g. 8 seconds) so it doesn't spam photos.
@@ -90,7 +90,7 @@ When total acceleration is close to gravity (~9.8, within ±1) and gyroscope mag
 - Add a small sleep (0.2–0.3s) between loop iterations to avoid hammering the sensor API
 - Wrap the whole thing in a `trap` handler that cleans up (torch off, brightness auto, notification remove, wake unlock) on SIGINT/SIGTERM so Ctrl+C exits cleanly
 - Keep track of counters (shakes, snapshots, quips spoken) for the summary
-- Store photos in `/sdcard/pi/` so they're accessible from the file manager
+- Store photos in `/sdcard/ruuh/` so they're accessible from the file manager
 
 ## Skills Used
 

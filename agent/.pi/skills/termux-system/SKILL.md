@@ -25,10 +25,10 @@ System-level automation and hardware interfaces from the command line via Termux
 Schedule scripts to run at a later time or on a recurring basis, optionally requiring network or charging.
 
 ```bash
-termux-job-scheduler --script /sdcard/pi/backup.sh       # run once
-termux-job-scheduler --script /sdcard/pi/sync.sh \
+termux-job-scheduler --script /sdcard/ruuh/backup.sh       # run once
+termux-job-scheduler --script /sdcard/ruuh/sync.sh \
     --job-id 1 --period-ms 3600000                        # every hour
-termux-job-scheduler --script /sdcard/pi/sync.sh \
+termux-job-scheduler --script /sdcard/ruuh/sync.sh \
     --job-id 2 --period-ms 86400000 --network unmetered \
     --charging true --persisted true                       # daily on WiFi while charging
 termux-job-scheduler --pending                             # list pending jobs
@@ -164,14 +164,14 @@ termux-keystore delete "mykey"                 # delete a key
 
 ```bash
 # Create backup script
-cat > /sdcard/pi/backup.sh << 'SCRIPT'
+cat > /sdcard/ruuh/backup.sh << 'SCRIPT'
 #!/bin/bash
-tar czf "/sdcard/pi/backup-$(date +%Y%m%d).tar.gz" /sdcard/pi/MEMORY.md /sdcard/pi/AGENTS.md
+tar czf "/sdcard/ruuh/backup-$(date +%Y%m%d).tar.gz" /sdcard/ruuh/MEMORY.md /sdcard/ruuh/AGENTS.md
 SCRIPT
-chmod +x /sdcard/pi/backup.sh
+chmod +x /sdcard/ruuh/backup.sh
 
 # Schedule daily on WiFi
-termux-job-scheduler --script /sdcard/pi/backup.sh \
+termux-job-scheduler --script /sdcard/ruuh/backup.sh \
     --job-id 10 --period-ms 86400000 --network unmetered --persisted true
 ```
 
@@ -215,10 +215,10 @@ esac
 termux-keystore generate "file-signer" -a EC -s 256
 
 # Sign a file
-termux-keystore sign "file-signer" < /sdcard/pi/release.tar.gz > /sdcard/pi/release.sig
+termux-keystore sign "file-signer" < /sdcard/ruuh/release.tar.gz > /sdcard/ruuh/release.sig
 termux-toast "File signed"
 
 # Verify later
-termux-keystore verify "file-signer" -s /sdcard/pi/release.sig < /sdcard/pi/release.tar.gz
+termux-keystore verify "file-signer" -s /sdcard/ruuh/release.sig < /sdcard/ruuh/release.tar.gz
 echo "Signature valid: $?"
 ```

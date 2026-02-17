@@ -53,7 +53,7 @@ RUN for cmd in \
 
 # Copy project files
 COPY scripts/ /scripts/
-COPY pi/ /pi-source/
+COPY agent/ /agent-source/
 COPY test/verify.sh /test/verify.sh
 
 WORKDIR $HOME

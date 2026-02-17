@@ -1,7 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
 # ============================================
-# Pi Dashboard Extension Setup Script
+# Ruuh Dashboard Extension Setup Script
 # ============================================
 # Run this in Termux (not inside proot)
 # Installs the pi-coding-agent dashboard
@@ -13,12 +13,17 @@ set -e
 
 main() {
 
-echo "============================================"
-echo "  📊 Pi Dashboard Extension Setup"
-echo "============================================"
+# Source shared config
+_conf="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd)/config.sh"
+if [ -f "$_conf" ]; then
+    source "$_conf"
+else
+    eval "$(curl -fsSL "https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/config.sh")"
+fi
 
-REPO_RAW="https://raw.githubusercontent.com/perminder-klair/droidclaw/main"
-PI_DIR="$HOME/storage/shared/pi"
+echo "============================================"
+echo "  📊 Ruuh Dashboard Extension Setup"
+echo "============================================"
 
 # ------------------------------------------
 # Step 1: Check shared storage is accessible
@@ -26,13 +31,13 @@ PI_DIR="$HOME/storage/shared/pi"
 echo ""
 echo "[1/3] Checking shared storage..."
 
-if [ ! -d "$PI_DIR" ]; then
-    echo "❌ $PI_DIR not found."
-    echo "   Run pi-setup.sh first to set up the environment."
+if [ ! -d "$RUUH_DIR" ]; then
+    echo "❌ $RUUH_DIR not found."
+    echo "   Run ruuh-setup.sh first to set up the environment."
     exit 1
 fi
 
-echo "✅ Shared storage accessible at $PI_DIR"
+echo "✅ Shared storage accessible at $RUUH_DIR"
 
 # ------------------------------------------
 # Step 2: Create extensions directory
@@ -40,7 +45,7 @@ echo "✅ Shared storage accessible at $PI_DIR"
 echo ""
 echo "[2/3] Creating extensions directory..."
 
-mkdir -p "$PI_DIR/.pi/extensions"
+mkdir -p "$RUUH_DIR/.pi/extensions"
 
 echo "✅ Extensions directory created"
 
@@ -50,8 +55,8 @@ echo "✅ Extensions directory created"
 echo ""
 echo "[3/3] Downloading dashboard extension..."
 
-curl -fsSL "$REPO_RAW/pi/.pi/extensions/dashboard.ts" \
-    -o "$PI_DIR/.pi/extensions/dashboard.ts"
+curl -fsSL "$REPO_RAW/agent/.pi/extensions/dashboard.ts" \
+    -o "$RUUH_DIR/.pi/extensions/dashboard.ts"
 echo "   ✅ dashboard.ts installed"
 
 # ------------------------------------------
@@ -63,21 +68,21 @@ echo "  🎉 Dashboard extension installed!"
 echo "============================================"
 echo ""
 echo "  The dashboard starts automatically when"
-echo "  you run: start-pi"
+echo "  you run: ruuh"
 echo ""
 echo "  Once running, open Chrome on your phone:"
 echo "    http://localhost:3000"
 echo ""
 echo "  Or from another device on the same WiFi,"
-echo "  use the IP shown in Pi's status bar."
+echo "  use the IP shown in Ruuh's status bar."
 echo ""
 echo "  Extension file:"
-echo "    Termux:   ~/storage/shared/pi/.pi/extensions/"
-echo "    Android:  Internal Storage > pi > .pi > extensions"
-echo "    Proot:    /sdcard/pi/.pi/extensions/"
+echo "    Termux:   ~/storage/shared/ruuh/.pi/extensions/"
+echo "    Android:  Internal Storage > ruuh > .pi > extensions"
+echo "    Proot:    /sdcard/ruuh/.pi/extensions/"
 echo ""
 echo "  The agent will auto-discover this extension"
-echo "  next time you run: start-pi"
+echo "  next time you run: ruuh"
 echo "============================================"
 
 }

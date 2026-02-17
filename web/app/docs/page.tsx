@@ -24,16 +24,16 @@ import {
 } from "@/components/motion";
 
 export const metadata: Metadata = {
-  title: "Docs — DroidClaw / Pi Setup Guide",
+  title: "Docs — Ruuh Setup Guide",
   description:
-    "Step-by-step guide to install and use Pi, your AI coding agent on Android via Termux.",
+    "Step-by-step guide to install and use Ruuh, your AI coding agent on Android via Termux.",
 };
 
 const INSTALL_CMD =
-  "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/setup.sh | bash";
+  "curl -fsSL https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/setup.sh | bash";
 
 const SKILLS_CMD =
-  "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/skills-setup.sh | bash";
+  "curl -fsSL https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/skills-setup.sh | bash";
 
 const prerequisites = [
   {
@@ -71,8 +71,8 @@ const setupSteps = [
       "Paste the one-liner below into Termux. It runs all three setup scripts in order — Termux environment with Ubuntu and Node.js, Ollama with a model, and Termux API skills.",
     terminal: {
       lines: [
-        { prompt: true, text: "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/setup.sh | bash" },
-        { prompt: false, text: "[1/3] Running pi-setup.sh..." },
+        { prompt: true, text: "curl -fsSL https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/setup.sh | bash" },
+        { prompt: false, text: "[1/3] Running ruuh-setup.sh..." },
         { prompt: false, text: "[2/3] Running ollama-setup.sh..." },
         { prompt: false, text: "[3/3] Running skills-setup.sh..." },
         { prompt: false, text: "" },
@@ -84,18 +84,18 @@ const setupSteps = [
     step: 3,
     title: "Grant Storage Permission",
     description:
-      "During setup, Android will ask for storage permission. Grant it so Pi can store config files in Internal Storage > pi, accessible from any file manager or text editor.",
+      "During setup, Android will ask for storage permission. Grant it so Ruuh can store config files in Internal Storage > ruuh, accessible from any file manager or text editor.",
     terminal: null,
   },
   {
     step: 4,
-    title: "Start Pi",
+    title: "Start Ruuh",
     description:
-      "Once the install finishes, type start-pi to launch the agent. It logs into the Ubuntu proot environment and starts pi-coding-agent from the shared config directory.",
+      "Once the install finishes, type ruuh to launch the agent. It logs into the Ubuntu proot environment and starts pi-coding-agent from the shared config directory.",
     terminal: {
       lines: [
-        { prompt: true, text: "start-pi" },
-        { prompt: false, text: "🤖 Starting Pi agent..." },
+        { prompt: true, text: "ruuh" },
+        { prompt: false, text: "🤖 Starting Ruuh agent..." },
         { prompt: false, text: "" },
         { prompt: false, text: "Starting pi-coding-agent..." },
         { prompt: false, text: "Loading MEMORY.md..." },
@@ -112,26 +112,26 @@ const configFiles = [
     icon: FileText,
     name: "AGENTS.md",
     description:
-      "Overview and instructions for the agent — defines what Pi can do and how it should behave when coding.",
+      "Overview and instructions for the agent — defines what Ruuh can do and how it should behave when coding.",
   },
   {
     icon: Pencil,
     name: "SOUL.md",
     description:
-      "Pi's personality and persona file. Customize its tone, communication style, and coding preferences.",
+      "Ruuh's personality and persona file. Customize its tone, communication style, and coding preferences.",
   },
   {
     icon: RefreshCw,
     name: "MEMORY.md",
     description:
-      "Persistent memory that survives across sessions. Pi writes here to remember context about your projects.",
+      "Persistent memory that survives across sessions. Ruuh writes here to remember context about your projects.",
   },
 ];
 
 const filePaths = [
-  { context: "Termux", path: "~/storage/shared/pi/" },
-  { context: "Ubuntu (proot)", path: "~/pi-agent/" },
-  { context: "Android File Manager", path: "Internal Storage > pi" },
+  { context: "Termux", path: "~/storage/shared/ruuh/" },
+  { context: "Ubuntu (proot)", path: "~/agent/" },
+  { context: "Android File Manager", path: "Internal Storage > ruuh" },
 ];
 
 export default function DocsPage() {
@@ -156,7 +156,7 @@ export default function DocsPage() {
           </AnimatedDiv>
           <AnimatedDiv delay={0.2}>
             <p className="max-w-[560px] text-lg leading-relaxed text-muted-foreground">
-              Everything you need to install and run Pi on your Android device.
+              Everything you need to install and run Ruuh on your Android device.
               The entire process takes about five minutes.
             </p>
           </AnimatedDiv>
@@ -217,7 +217,7 @@ export default function DocsPage() {
             </p>
           </AnimatedDiv>
           <AnimatedDiv delay={0.1}>
-            <div className="mb-12 flex flex-col items-start gap-3 rounded-lg border border-border bg-pi-code p-4 shadow-premium-sm md:flex-row md:items-center">
+            <div className="mb-12 flex flex-col items-start gap-3 rounded-lg border border-border bg-code-block p-4 shadow-premium-sm md:flex-row md:items-center">
               <span className="hidden shrink-0 select-none font-mono text-sm text-primary md:block">
                 $
               </span>
@@ -248,7 +248,7 @@ export default function DocsPage() {
                       {step.description}
                     </p>
                     {step.terminal && (
-                      <div className="overflow-hidden rounded-lg border border-border bg-pi-code">
+                      <div className="overflow-hidden rounded-lg border border-border bg-code-block">
                         <div className="flex gap-2 border-b border-border px-4 py-2.5">
                           <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
                           <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
@@ -290,7 +290,7 @@ export default function DocsPage() {
               Configuration <span className="text-primary">Files</span>
             </h2>
             <p className="mb-10 text-[1.05rem] text-muted-foreground">
-              Pi creates three Markdown files you can edit from any text editor
+              Ruuh creates three Markdown files you can edit from any text editor
               on your phone. No terminal required.
             </p>
           </AnimatedDiv>
@@ -329,7 +329,7 @@ export default function DocsPage() {
                     <span className="text-[0.85rem] font-medium text-muted-foreground w-44 flex-shrink-0">
                       {item.context}
                     </span>
-                    <code className="rounded bg-pi-code px-2.5 py-1 font-mono text-[0.82rem] text-foreground">
+                    <code className="rounded bg-code-block px-2.5 py-1 font-mono text-[0.82rem] text-foreground">
                       {item.path}
                     </code>
                   </div>
@@ -348,12 +348,12 @@ export default function DocsPage() {
               Termux API <span className="text-primary">Skills</span>
             </h2>
             <p className="mb-6 text-[1.05rem] text-muted-foreground">
-              Teach Pi how to use your Android device features. Skills are
+              Teach Ruuh how to use your Android device features. Skills are
               auto-discovered on startup — install once, use everywhere.
             </p>
           </AnimatedDiv>
           <AnimatedDiv delay={0.1}>
-            <div className="mb-10 flex flex-col items-start gap-3 rounded-lg border border-border bg-pi-code p-4 shadow-premium-sm md:flex-row md:items-center">
+            <div className="mb-10 flex flex-col items-start gap-3 rounded-lg border border-border bg-code-block p-4 shadow-premium-sm md:flex-row md:items-center">
               <span className="hidden shrink-0 select-none font-mono text-sm text-primary md:block">
                 $
               </span>
@@ -401,7 +401,7 @@ export default function DocsPage() {
             </StaggerItem>
           </StaggerContainer>
           <AnimatedDiv className="mt-8">
-            <div className="overflow-hidden rounded-lg border border-border bg-pi-code">
+            <div className="overflow-hidden rounded-lg border border-border bg-code-block">
               <div className="flex gap-2 border-b border-border px-4 py-2.5">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
                 <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
@@ -474,7 +474,7 @@ export default function DocsPage() {
                     Download a coding-optimized model like CodeLlama, DeepSeek
                     Coder, or Llama 3.
                   </p>
-                  <div className="overflow-hidden rounded-lg border border-border bg-pi-code">
+                  <div className="overflow-hidden rounded-lg border border-border bg-code-block">
                     <div className="flex gap-2 border-b border-border px-4 py-2.5">
                       <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
                       <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
@@ -498,13 +498,13 @@ export default function DocsPage() {
                 </span>
                 <div className="flex-1">
                   <h3 className="mb-2 text-[1.05rem] font-semibold">
-                    Start Pi with a Local Model
+                    Start Ruuh with a Local Model
                   </h3>
                   <p className="mb-3 text-[0.92rem] leading-relaxed text-muted-foreground">
-                    Pass the model name when launching Pi. It auto-detects
+                    Pass the model name when launching Ruuh. It auto-detects
                     available Ollama models.
                   </p>
-                  <div className="overflow-hidden rounded-lg border border-border bg-pi-code">
+                  <div className="overflow-hidden rounded-lg border border-border bg-code-block">
                     <div className="flex gap-2 border-b border-border px-4 py-2.5">
                       <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
                       <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
@@ -513,7 +513,7 @@ export default function DocsPage() {
                     <div className="p-5 font-mono text-[0.8rem] leading-[1.8] text-muted-foreground">
                       <div>
                         <span className="text-primary">~ $</span>{" "}
-                        <span className="text-foreground">start-pi --model codellama</span>
+                        <span className="text-foreground">ruuh --model codellama</span>
                       </div>
                       <div>Connecting to Ollama...</div>
                       <div>Model: codellama (3.8B)</div>
@@ -542,11 +542,11 @@ export default function DocsPage() {
             {[
               {
                 label: "Start the agent",
-                cmd: "start-pi",
+                cmd: "ruuh",
               },
               {
                 label: "Start with a specific model",
-                cmd: "start-pi --model codellama",
+                cmd: "ruuh --model codellama",
               },
               {
                 label: "Log into Ubuntu manually",
@@ -554,7 +554,7 @@ export default function DocsPage() {
               },
               {
                 label: "Run Pi manually inside Ubuntu",
-                cmd: "cd ~/pi-agent && pi",
+                cmd: "cd ~/agent && pi",
               },
               {
                 label: "Install Termux API skills",
@@ -575,7 +575,7 @@ export default function DocsPage() {
                     {item.label}
                   </span>
                   <div className="flex items-center gap-2">
-                    <code className="overflow-x-auto whitespace-nowrap rounded bg-pi-code px-3 py-1.5 font-mono text-[0.8rem] text-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                    <code className="overflow-x-auto whitespace-nowrap rounded bg-code-block px-3 py-1.5 font-mono text-[0.8rem] text-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                       {item.cmd}
                     </code>
                     <CopyButton text={item.cmd} />
@@ -609,7 +609,7 @@ export default function DocsPage() {
                 a: "Check your internet connection. Run pkg update -y first, then try the setup script again.",
               },
               {
-                q: "start-pi command not found",
+                q: "ruuh command not found",
                 a: "The setup script may not have completed. Re-run the full install command from the top of this page.",
               },
               {
@@ -618,7 +618,7 @@ export default function DocsPage() {
               },
               {
                 q: "Config files not showing in file manager",
-                a: "Look for Internal Storage > pi in your Android file manager. The files are plain Markdown (.md) and can be opened with any text editor.",
+                a: "Look for Internal Storage > ruuh in your Android file manager. The files are plain Markdown (.md) and can be opened with any text editor.",
               },
             ].map((item) => (
               <StaggerItem key={item.q}>
@@ -642,7 +642,7 @@ export default function DocsPage() {
           <div className="mx-auto max-w-[860px] space-y-2 px-6">
             <p>
               <a
-                href="https://github.com/perminder-klair/droidclaw"
+                href="https://github.com/perminder-klair/ruuh"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"

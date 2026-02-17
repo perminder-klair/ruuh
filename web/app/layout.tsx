@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pi — Your AI Coding Agent on Android",
+  title: "Ruuh — Your AI Coding Agent on Android",
   description:
     "A personal AI coding assistant that runs on your Android device — powered by cloud APIs or local models via Ollama.",
 };

@@ -22,10 +22,10 @@ import {
 } from "@/components/motion";
 
 const INSTALL_CMD =
-  "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/setup.sh | bash";
+  "curl -fsSL https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/setup.sh | bash";
 
 const SKILLS_CMD =
-  "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/skills-setup.sh | bash";
+  "curl -fsSL https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/skills-setup.sh | bash";
 
 const features = [
   {
@@ -50,25 +50,25 @@ const features = [
     icon: Brain,
     title: "Persistent Memory",
     description:
-      "MEMORY.md preserves context across sessions. Pi remembers what you're working on and picks up where you left off.",
+      "MEMORY.md preserves context across sessions. Ruuh remembers what you're working on and picks up where you left off.",
   },
   {
     icon: Sparkles,
     title: "Custom AI Persona",
     description:
-      "Define Pi's personality and behavior in SOUL.md. Make it match your coding style and communication preferences.",
+      "Define Ruuh's personality and behavior in SOUL.md. Make it match your coding style and communication preferences.",
   },
   {
     icon: FolderOpen,
     title: "Android File Access",
     description:
-      "Agent configs live in /sdcard/pi — edit them from any text editor on your phone. No terminal required for configuration.",
+      "Agent configs live in /sdcard/ruuh — edit them from any text editor on your phone. No terminal required for configuration.",
   },
   {
     icon: Plug,
     title: "Termux API Skills",
     description:
-      "Pi knows how to use your Android hardware — camera, SMS, sensors, location, notifications, and more via auto-discovered Termux API skills.",
+      "Ruuh knows how to use your Android hardware — camera, SMS, sensors, location, notifications, and more via auto-discovered Termux API skills.",
   },
 ];
 
@@ -83,7 +83,7 @@ const installSteps = [
   },
   {
     title: "Setup Shared Storage",
-    description: "Creates ~/storage/shared/pi/ for config files",
+    description: "Creates ~/storage/shared/ruuh/ for config files",
   },
   {
     title: "Create Agent Configs",
@@ -103,7 +103,7 @@ const installSteps = [
   },
   {
     title: "Create Launcher & Symlinks",
-    description: "Adds start-pi command and Termux API symlinks",
+    description: "Adds ruuh command and Termux API symlinks",
   },
 ];
 
@@ -121,7 +121,7 @@ export default function Home() {
           </AnimatedDiv>
           <AnimatedDiv delay={0.1}>
             <h1 className="mb-5 text-[clamp(2.2rem,6vw,3.5rem)] font-extrabold leading-[1.1] tracking-tight">
-              <span className="text-primary">Pi</span> — Your AI Coding Agent on
+              <span className="text-primary">Ruuh</span> — Your AI Coding Agent on
               Android
             </h1>
           </AnimatedDiv>
@@ -133,7 +133,7 @@ export default function Home() {
             </p>
           </AnimatedDiv>
           <AnimatedDiv delay={0.3}>
-            <div className="mx-auto flex max-w-[620px] flex-col items-center gap-3 rounded-lg border border-border bg-pi-code p-4 shadow-premium-sm text-left md:flex-row">
+            <div className="mx-auto flex max-w-[620px] flex-col items-center gap-3 rounded-lg border border-border bg-code-block p-4 shadow-premium-sm text-left md:flex-row">
               <span className="hidden shrink-0 select-none font-mono text-sm text-primary md:block">
                 $
               </span>
@@ -152,18 +152,18 @@ export default function Home() {
         </div>
       </section>
 
-      {/* What is Pi */}
+      {/* What is Ruuh */}
       <section className="border-t border-border py-24">
         <div className="mx-auto max-w-[1100px] px-6">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
-              What is <span className="text-primary">Pi</span>?
+              What is <span className="text-primary">Ruuh</span>?
             </h2>
           </AnimatedDiv>
           <AnimatedSection className="grid items-center gap-12 md:grid-cols-2">
             <div className="space-y-4">
               <p className="text-[1.05rem] text-muted-foreground">
-                Pi is a personal AI coding assistant powered by the{" "}
+                Ruuh is a personal AI coding assistant powered by the{" "}
                 <strong className="text-foreground">pi-coding-agent</strong> npm
                 package. It runs inside a full Ubuntu environment on your
                 Android device via Termux and proot-distro — no root required.
@@ -183,7 +183,7 @@ export default function Home() {
                 time.
               </p>
             </div>
-            <div className="overflow-hidden rounded-lg border border-border bg-pi-code">
+            <div className="overflow-hidden rounded-lg border border-border bg-code-block">
               <div className="flex gap-2 border-b border-border px-4 py-2.5">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
                 <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
@@ -191,7 +191,7 @@ export default function Home() {
               </div>
               <div className="p-5 font-mono text-[0.82rem] leading-[1.8] text-muted-foreground">
                 <div>
-                  <span className="text-primary">~ $</span> start-pi
+                  <span className="text-primary">~ $</span> ruuh
                 </div>
                 <div>Starting pi-coding-agent...</div>
                 <div>Loading MEMORY.md...</div>
@@ -269,10 +269,10 @@ export default function Home() {
                 </h3>
                 <p className="text-[0.92rem] text-muted-foreground">
                   Type{" "}
-                  <code className="rounded bg-pi-code px-2 py-0.5 font-mono text-[0.82rem] text-primary">
-                    start-pi
+                  <code className="rounded bg-code-block px-2 py-0.5 font-mono text-[0.82rem] text-primary">
+                    ruuh
                   </code>{" "}
-                  and you&apos;re in. Pi is ready to help you build, debug, and
+                  and you&apos;re in. Ruuh is ready to help you build, debug, and
                   ship code — right from your phone.
                 </p>
               </div>
@@ -324,7 +324,7 @@ export default function Home() {
           <AnimatedSection className="grid items-center gap-12 md:grid-cols-2">
             <div className="space-y-4">
               <p className="text-[1.05rem] text-muted-foreground">
-                Don&apos;t want to rely on cloud APIs? Pi supports{" "}
+                Don&apos;t want to rely on cloud APIs? Ruuh supports{" "}
                 <strong className="text-foreground">Ollama</strong> as a local
                 backend — run models like Llama 3, CodeGemma, and DeepSeek
                 Coder directly on your device. No API keys, no internet, no
@@ -332,7 +332,7 @@ export default function Home() {
               </p>
               <p className="text-[1.05rem] text-muted-foreground">
                 Switching between cloud and local is a single config change.
-                Point Pi at your Ollama instance and it auto-detects available
+                Point Ruuh at your Ollama instance and it auto-detects available
                 models — no restart required.
               </p>
               <p className="text-[1.05rem] text-muted-foreground">
@@ -341,7 +341,7 @@ export default function Home() {
                 — or both.
               </p>
             </div>
-            <div className="overflow-hidden rounded-lg border border-border bg-pi-code">
+            <div className="overflow-hidden rounded-lg border border-border bg-code-block">
               <div className="flex gap-2 border-b border-border px-4 py-2.5">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
                 <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
@@ -357,7 +357,7 @@ export default function Home() {
                 <div>success</div>
                 <div>&nbsp;</div>
                 <div>
-                  <span className="text-primary">~ $</span> start-pi --model
+                  <span className="text-primary">~ $</span> ruuh --model
                   codellama
                 </div>
                 <div>Connecting to Ollama...</div>
@@ -427,18 +427,18 @@ export default function Home() {
           <AnimatedSection className="grid items-center gap-12 md:grid-cols-2">
             <div className="space-y-4">
               <p className="text-[1.05rem] text-muted-foreground">
-                Pi can interact with your Android hardware through{" "}
+                Ruuh can interact with your Android hardware through{" "}
                 <strong className="text-foreground">Termux API skills</strong>.
                 Send SMS, take photos, check battery, read sensors, show
                 notifications, record audio, and more — all through natural
                 conversation with your agent.
               </p>
               <p className="text-[1.05rem] text-muted-foreground">
-                Skills are auto-discovered when Pi starts. Install them with a
-                single command and Pi immediately knows how to use every Termux
+                Skills are auto-discovered when Ruuh starts. Install them with a
+                single command and Ruuh immediately knows how to use every Termux
                 API command on your device.
               </p>
-              <div className="flex flex-col items-start gap-3 rounded-lg border border-border bg-pi-code p-4 shadow-premium-sm md:flex-row md:items-center">
+              <div className="flex flex-col items-start gap-3 rounded-lg border border-border bg-code-block p-4 shadow-premium-sm md:flex-row md:items-center">
                 <span className="hidden shrink-0 select-none font-mono text-sm text-primary md:block">
                   $
                 </span>
@@ -519,7 +519,7 @@ export default function Home() {
           <div className="mx-auto max-w-[1100px] space-y-2 px-6">
             <p>
               <a
-                href="https://github.com/perminder-klair/droidclaw"
+                href="https://github.com/perminder-klair/ruuh"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"

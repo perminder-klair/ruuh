@@ -166,7 +166,7 @@ function dashboardHTML(): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pi Dashboard</title>
+<title>Ruuh Dashboard</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -256,7 +256,7 @@ function dashboardHTML(): string {
 </style>
 </head>
 <body>
-<h1>Pi Dashboard</h1>
+<h1>Ruuh Dashboard</h1>
 <div class="disconnected" id="disconnected">Reconnecting...</div>
 
 <!-- Status Card -->
@@ -282,7 +282,7 @@ function dashboardHTML(): string {
 
 <!-- Custom Status -->
 <div class="card">
-  <div class="card-title">What Pi is doing</div>
+  <div class="card-title">What Ruuh is doing</div>
   <div class="custom-status empty" id="customStatus">No status set</div>
 </div>
 
@@ -509,7 +509,7 @@ const extension: PiExtension = {
     registerTool({
       name: "pi_status",
       description:
-        "Set a human-readable status message on the Pi dashboard. " +
+        "Set a human-readable status message on the Ruuh dashboard. " +
         "Use this to tell the user what you are currently working on.",
       parameters: {
         type: "object",
