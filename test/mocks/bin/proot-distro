@@ -1,0 +1,51 @@
+#!/bin/bash
+# Mock proot-distro — runs commands directly since we're already on Ubuntu
+# Creates fake rootfs structure for symlink verification
+
+PREFIX="${PREFIX:-/data/data/com.termux/files/usr}"
+ROOTFS="$PREFIX/var/lib/proot-distro/installed-rootfs/ubuntu"
+
+case "$1" in
+    install)
+        echo "[mock proot-distro] Installing '$2' (creating fake rootfs)"
+        mkdir -p "$ROOTFS/usr/local/bin"
+        mkdir -p "$ROOTFS/root"
+        mkdir -p "$ROOTFS/etc"
+        echo "ubuntu" > "$ROOTFS/etc/hostname"
+        ;;
+    list)
+        echo "  - ubuntu"
+        echo "    Alias:     ubuntu"
+        echo "    Status:    Installed"
+        echo "    Comment:   Ubuntu 22.04"
+        ;;
+    login)
+        # Parse: proot-distro login ubuntu -- bash -c '<script>'
+        shift  # skip 'login'
+        DISTRO="$1"
+        shift  # skip distro name
+
+        if [ "$1" = "--" ]; then
+            shift  # skip '--'
+        fi
+
+        # Execute the remaining command directly
+        # Set up environment to mimic proot
+        export DEBIAN_FRONTEND=noninteractive
+
+        # Ensure /sdcard/pi exists (simulates Android shared storage bind)
+        TERMUX_HOME="${HOME}"
+        if [ -d "$TERMUX_HOME/storage/shared/pi" ]; then
+            mkdir -p /sdcard
+            ln -sf "$TERMUX_HOME/storage/shared/pi" /sdcard/pi 2>/dev/null || true
+        fi
+
+        echo "[mock proot-distro] Running command in fake proot environment"
+        # Execute the command — typically 'bash -c <script>'
+        "$@"
+        ;;
+    *)
+        echo "[mock proot-distro] Unknown command: $1"
+        exit 1
+        ;;
+esac

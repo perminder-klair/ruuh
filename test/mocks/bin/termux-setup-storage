@@ -1,0 +1,14 @@
+#!/bin/bash
+# Mock termux-setup-storage — creates the storage directory structure
+
+HOME_DIR="${HOME:-/data/data/com.termux/files/home}"
+
+echo "[mock termux-setup-storage] Creating storage directories"
+mkdir -p "$HOME_DIR/storage/shared"
+mkdir -p "$HOME_DIR/storage/downloads"
+mkdir -p "$HOME_DIR/storage/dcim"
+mkdir -p "$HOME_DIR/storage/pictures"
+mkdir -p "$HOME_DIR/storage/music"
+mkdir -p "$HOME_DIR/storage/movies"
+
+echo "[mock termux-setup-storage] Storage directories created"

@@ -1,0 +1,65 @@
+#!/bin/bash
+# Mock pkg command — translates to apt-get
+# Skips Termux-only packages that are mocked separately
+
+ACTION=""
+PACKAGES=()
+EXTRA_ARGS=()
+
+# Parse arguments
+while [ $# -gt 0 ]; do
+    case "$1" in
+        update|upgrade|install)
+            ACTION="$1"
+            shift
+            ;;
+        -y)
+            EXTRA_ARGS+=("-y")
+            shift
+            ;;
+        -o)
+            EXTRA_ARGS+=("-o" "$2")
+            shift 2
+            ;;
+        *)
+            PACKAGES+=("$1")
+            shift
+            ;;
+    esac
+done
+
+# Filter out packages we mock
+REAL_PACKAGES=()
+for pkg in "${PACKAGES[@]}"; do
+    case "$pkg" in
+        proot-distro|termux-api|ollama)
+            echo "[mock pkg] Skipping $pkg (mocked)"
+            ;;
+        *)
+            REAL_PACKAGES+=("$pkg")
+            ;;
+    esac
+done
+
+case "$ACTION" in
+    update)
+        echo "[mock pkg] Running apt-get update"
+        apt-get update -qq
+        ;;
+    upgrade)
+        echo "[mock pkg] Running apt-get upgrade"
+        apt-get upgrade "${EXTRA_ARGS[@]}" -qq
+        ;;
+    install)
+        if [ ${#REAL_PACKAGES[@]} -gt 0 ]; then
+            echo "[mock pkg] Installing: ${REAL_PACKAGES[*]}"
+            apt-get install "${EXTRA_ARGS[@]}" -qq "${REAL_PACKAGES[@]}"
+        else
+            echo "[mock pkg] No real packages to install"
+        fi
+        ;;
+    *)
+        echo "[mock pkg] Unknown action: $ACTION"
+        exit 1
+        ;;
+esac

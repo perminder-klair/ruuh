@@ -51,22 +51,32 @@ echo "============================================"
 run_script "pi-setup.sh"
 
 # ------------------------------------------
-# Step 2: Ollama setup
+# Step 2: Ollama setup (optional)
 # ------------------------------------------
 echo ""
-echo "============================================"
-echo "  [2/3] Running ollama-setup.sh..."
-echo "============================================"
-run_script "ollama-setup.sh"
+read -p "  Install Ollama + model? [Y/n] " ollama_choice
+if [ "$ollama_choice" != "n" ] && [ "$ollama_choice" != "N" ]; then
+  echo "============================================"
+  echo "  [2/3] Running ollama-setup.sh..."
+  echo "============================================"
+  run_script "ollama-setup.sh"
+else
+  echo "  Skipping Ollama setup."
+fi
 
 # ------------------------------------------
-# Step 3: Termux API skills
+# Step 3: Termux API skills (optional)
 # ------------------------------------------
 echo ""
-echo "============================================"
-echo "  [3/3] Running skills-setup.sh..."
-echo "============================================"
-run_script "skills-setup.sh"
+read -p "  Install Termux API skills? [Y/n] " skills_choice
+if [ "$skills_choice" != "n" ] && [ "$skills_choice" != "N" ]; then
+  echo "============================================"
+  echo "  [3/3] Running skills-setup.sh..."
+  echo "============================================"
+  run_script "skills-setup.sh"
+else
+  echo "  Skipping skills setup."
+fi
 
 # ------------------------------------------
 # Done

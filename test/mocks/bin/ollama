@@ -1,0 +1,19 @@
+#!/bin/bash
+# Mock ollama command — stubs serve/signin/pull
+
+case "$1" in
+    serve)
+        echo "[mock ollama] Server started on http://localhost:11434"
+        # Keep running in background like real ollama
+        while true; do sleep 3600; done
+        ;;
+    signin)
+        echo "[mock ollama] Signed in successfully"
+        ;;
+    pull)
+        echo "[mock ollama] Pulled model: $2"
+        ;;
+    *)
+        echo "[mock ollama] Unknown command: $1"
+        ;;
+esac

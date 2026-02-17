@@ -106,6 +106,22 @@ These files are accessible from:
 
 You can edit these files from any Android text editor to customise Pi's behaviour.
 
+## Development Testing
+
+A Docker-based test environment simulates Termux so you can test script changes locally without an Android device.
+
+**Prerequisites:** Docker
+
+```bash
+# Run all scripts and verify outputs (~30s)
+bash test/run.sh
+
+# Interactive shell for debugging
+bash test/run.sh --interactive
+```
+
+The test container uses Ubuntu 22.04 with Termux's directory structure (`$PREFIX`, `$HOME`) and mock versions of `pkg`, `proot-distro`, `termux-setup-storage`, and all `termux-*` API commands. Scripts run unmodified — mocking is purely external via `$PATH`.
+
 ## How It Works
 
 The entire script body is wrapped in a `main()` function. This ensures the full script is loaded into memory before execution, preventing breakage if `pkg upgrade` replaces bash mid-run.

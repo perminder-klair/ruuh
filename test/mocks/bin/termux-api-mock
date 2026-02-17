@@ -1,0 +1,56 @@
+#!/bin/bash
+# Generic Termux API mock — returns sample JSON based on command name
+# Symlinked as termux-battery-status, termux-sms-send, etc.
+
+CMD="$(basename "$0")"
+
+case "$CMD" in
+    termux-battery-status)
+        echo '{"health":"GOOD","percentage":85,"plugged":"UNPLUGGED","status":"DISCHARGING","temperature":25.0}'
+        ;;
+    termux-brightness)
+        echo "[mock] Brightness set"
+        ;;
+    termux-camera-info)
+        echo '[{"id":"0","facing":"back","jpeg_output_sizes":["4032x3024"]},{"id":"1","facing":"front","jpeg_output_sizes":["3264x2448"]}]'
+        ;;
+    termux-clipboard-get)
+        echo "mock clipboard content"
+        ;;
+    termux-clipboard-set)
+        echo "[mock] Clipboard set"
+        ;;
+    termux-contact-list)
+        echo '[{"name":"Test Contact","number":"+1234567890"}]'
+        ;;
+    termux-location)
+        echo '{"latitude":37.7749,"longitude":-122.4194,"altitude":10.0,"accuracy":5.0,"provider":"gps"}'
+        ;;
+    termux-notification)
+        echo "[mock] Notification posted"
+        ;;
+    termux-sms-list)
+        echo '[{"threadid":1,"address":"+1234567890","body":"Test message","date":"2024-01-01 12:00","type":"inbox"}]'
+        ;;
+    termux-sms-send)
+        echo "[mock] SMS sent"
+        ;;
+    termux-toast)
+        echo "[mock] Toast shown"
+        ;;
+    termux-tts-speak)
+        echo "[mock] TTS spoken"
+        ;;
+    termux-vibrate)
+        echo "[mock] Vibrated"
+        ;;
+    termux-volume)
+        echo '[{"stream":"music","volume":7,"max_volume":15}]'
+        ;;
+    termux-wifi-connectioninfo)
+        echo '{"bssid":"00:11:22:33:44:55","frequency_mhz":5180,"ip":"192.168.1.100","link_speed_mbps":866,"rssi":-45,"ssid":"TestWifi"}'
+        ;;
+    *)
+        echo "{\"mock\":true,\"command\":\"$CMD\",\"args\":\"$*\"}"
+        ;;
+esac
