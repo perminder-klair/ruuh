@@ -93,6 +93,9 @@ echo "    Proot:    /sdcard/pi/.pi/skills/"
 echo ""
 echo "  The agent will auto-discover these skills"
 echo "  next time you run: start-pi"
+echo ""
+echo "  💡 Want a live web dashboard?"
+echo "     Run: bash dashboard-setup.sh"
 echo "============================================"
 
 }
