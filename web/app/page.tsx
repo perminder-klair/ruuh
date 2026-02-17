@@ -11,6 +11,13 @@ import {
   Shield,
 } from "lucide-react";
 import { CopyButton } from "@/components/copy-button";
+import {
+  AnimatedSection,
+  AnimatedDiv,
+  StaggerContainer,
+  StaggerItem,
+  HoverCard,
+} from "@/components/motion";
 
 const INSTALL_CMD =
   "curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/termux-setup.sh | bash";
@@ -100,39 +107,55 @@ export default function Home() {
     <main>
       {/* Hero */}
       <section className="relative flex min-h-[90vh] items-center justify-center overflow-hidden px-6 py-20 text-center">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(0,229,160,0.08),transparent_70%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(251,170,25,0.06),transparent_70%)]" />
         <div className="relative max-w-[740px]">
-          <span className="animate-fade-in-up mb-6 inline-block rounded-full border border-primary/25 bg-primary/15 px-3.5 py-1 font-mono text-xs tracking-wide text-primary">
-            Open Source
-          </span>
-          <h1 className="animate-fade-in-up mb-5 text-[clamp(2.2rem,6vw,3.5rem)] font-extrabold leading-[1.15] [animation-delay:100ms]">
-            <span className="text-primary">Pi</span> — Your AI Coding Agent on
-            Android
-          </h1>
-          <p className="animate-fade-in-up mx-auto mb-10 max-w-[520px] text-lg text-muted-foreground [animation-delay:200ms]">
-            A personal AI coding assistant that runs locally on your Android
-            device — powered by cloud APIs or local models via Ollama. One
-            command to install, one command to start.
-          </p>
-          <div className="animate-fade-in-up mx-auto flex max-w-[620px] flex-col items-center gap-3 rounded-xl border border-border bg-pi-code p-4 text-left md:flex-row [animation-delay:300ms]">
-            <span className="hidden shrink-0 select-none font-mono text-sm text-primary md:block">
-              $
+          <AnimatedDiv>
+            <span className="mb-6 inline-block rounded-full border border-primary/25 bg-primary/15 px-3.5 py-1 font-mono text-xs tracking-wide text-primary">
+              Open Source
             </span>
-            <code className="flex-1 overflow-x-auto whitespace-nowrap font-mono text-[0.82rem] text-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {INSTALL_CMD}
-            </code>
-            <CopyButton text={INSTALL_CMD} />
-          </div>
+          </AnimatedDiv>
+          <AnimatedDiv delay={0.1}>
+            <h1 className="mb-5 text-[clamp(2.2rem,6vw,3.5rem)] font-extrabold leading-[1.1] tracking-tight">
+              <span className="text-primary">Pi</span> — Your AI Coding Agent on
+              Android
+            </h1>
+          </AnimatedDiv>
+          <AnimatedDiv delay={0.2}>
+            <p className="mx-auto mb-10 max-w-[520px] text-lg leading-relaxed text-muted-foreground">
+              A personal AI coding assistant that runs locally on your Android
+              device — powered by cloud APIs or local models via Ollama. One
+              command to install, one command to start.
+            </p>
+          </AnimatedDiv>
+          <AnimatedDiv delay={0.3}>
+            <div className="mx-auto flex max-w-[620px] flex-col items-center gap-3 rounded-lg border border-border bg-pi-code p-4 shadow-premium-sm text-left md:flex-row">
+              <span className="hidden shrink-0 select-none font-mono text-sm text-primary md:block">
+                $
+              </span>
+              <code className="flex-1 overflow-x-auto whitespace-nowrap font-mono text-[0.82rem] text-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                {INSTALL_CMD}
+              </code>
+              <CopyButton text={INSTALL_CMD} />
+            </div>
+            <a
+              href="/docs"
+              className="mt-4 inline-block text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              Read the docs &rarr;
+            </a>
+          </AnimatedDiv>
         </div>
       </section>
 
       {/* What is Pi */}
-      <section className="border-t border-border py-20">
+      <section className="border-t border-border py-24">
         <div className="mx-auto max-w-[1100px] px-6">
-          <h2 className="mb-4 text-[1.75rem] font-bold">
-            What is <span className="text-primary">Pi</span>?
-          </h2>
-          <div className="grid items-center gap-12 md:grid-cols-2">
+          <AnimatedDiv>
+            <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
+              What is <span className="text-primary">Pi</span>?
+            </h2>
+          </AnimatedDiv>
+          <AnimatedSection className="grid items-center gap-12 md:grid-cols-2">
             <div className="space-y-4">
               <p className="text-[1.05rem] text-muted-foreground">
                 Pi is a personal AI coding assistant powered by the{" "}
@@ -155,7 +178,7 @@ export default function Home() {
                 time.
               </p>
             </div>
-            <div className="overflow-hidden rounded-xl border border-border bg-pi-code">
+            <div className="overflow-hidden rounded-lg border border-border bg-pi-code">
               <div className="flex gap-2 border-b border-border px-4 py-2.5">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
                 <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
@@ -177,88 +200,98 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </div>
+          </AnimatedSection>
         </div>
       </section>
 
       {/* How It Works */}
-      <section className="border-t border-border py-20">
+      <section className="border-t border-border py-24">
         <div className="mx-auto max-w-[1100px] px-6">
-          <h2 className="mb-4 text-[1.75rem] font-bold">
-            How It <span className="text-primary">Works</span>
-          </h2>
-          <p className="mb-12 max-w-[600px] text-[1.05rem] text-muted-foreground">
-            Three steps. Five minutes. No root access required.
-          </p>
-          <div className="mx-auto grid max-w-[400px] grid-cols-1 gap-8 md:max-w-none md:grid-cols-3">
-            <div className="rounded-xl border border-border bg-card p-8 text-center">
-              <span className="mb-4 inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/15 font-mono text-xs font-bold text-primary">
-                1
-              </span>
-              <h3 className="mb-2 text-[1.1rem] font-semibold">
-                Install Termux
-              </h3>
-              <p className="text-[0.92rem] text-muted-foreground">
-                Download Termux from{" "}
-                <a
-                  href="https://f-droid.org/en/packages/com.termux/"
-                  className="text-primary hover:underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  F-Droid
-                </a>
-                . The Play Store version is outdated — use F-Droid for the
-                latest build.
-              </p>
-            </div>
-            <div className="rounded-xl border border-border bg-card p-8 text-center">
-              <span className="mb-4 inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/15 font-mono text-xs font-bold text-primary">
-                2
-              </span>
-              <h3 className="mb-2 text-[1.1rem] font-semibold">
-                Run the Setup
-              </h3>
-              <p className="text-[0.92rem] text-muted-foreground">
-                Paste the one-line install command into Termux. It handles
-                everything automatically — packages, Ubuntu, Node.js, and the
-                agent.
-              </p>
-            </div>
-            <div className="rounded-xl border border-border bg-card p-8 text-center">
-              <span className="mb-4 inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/15 font-mono text-xs font-bold text-primary">
-                3
-              </span>
-              <h3 className="mb-2 text-[1.1rem] font-semibold">
-                Start Coding
-              </h3>
-              <p className="text-[0.92rem] text-muted-foreground">
-                Type{" "}
-                <code className="rounded bg-pi-code px-2 py-0.5 font-mono text-[0.82rem] text-primary">
-                  start-pi
-                </code>{" "}
-                and you&apos;re in. Pi is ready to help you build, debug, and
-                ship code — right from your phone.
-              </p>
-            </div>
-          </div>
+          <AnimatedDiv>
+            <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
+              How It <span className="text-primary">Works</span>
+            </h2>
+            <p className="mb-12 max-w-[600px] text-[1.05rem] text-muted-foreground">
+              Three steps. Five minutes. No root access required.
+            </p>
+          </AnimatedDiv>
+          <StaggerContainer className="mx-auto grid max-w-[400px] grid-cols-1 gap-8 md:max-w-none md:grid-cols-3">
+            <StaggerItem>
+              <div className="rounded-lg border border-border bg-card p-8 text-center">
+                <span className="mb-4 inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/15 font-mono text-xs font-bold text-primary">
+                  1
+                </span>
+                <h3 className="mb-2 text-[1.1rem] font-semibold">
+                  Install Termux
+                </h3>
+                <p className="text-[0.92rem] text-muted-foreground">
+                  Download Termux from{" "}
+                  <a
+                    href="https://f-droid.org/en/packages/com.termux/"
+                    className="text-primary hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    F-Droid
+                  </a>
+                  . The Play Store version is outdated — use F-Droid for the
+                  latest build.
+                </p>
+              </div>
+            </StaggerItem>
+            <StaggerItem>
+              <div className="rounded-lg border border-border bg-card p-8 text-center">
+                <span className="mb-4 inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/15 font-mono text-xs font-bold text-primary">
+                  2
+                </span>
+                <h3 className="mb-2 text-[1.1rem] font-semibold">
+                  Run the Setup
+                </h3>
+                <p className="text-[0.92rem] text-muted-foreground">
+                  Paste the one-line install command into Termux. It handles
+                  everything automatically — packages, Ubuntu, Node.js, and the
+                  agent.
+                </p>
+              </div>
+            </StaggerItem>
+            <StaggerItem>
+              <div className="rounded-lg border border-border bg-card p-8 text-center">
+                <span className="mb-4 inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/15 font-mono text-xs font-bold text-primary">
+                  3
+                </span>
+                <h3 className="mb-2 text-[1.1rem] font-semibold">
+                  Start Coding
+                </h3>
+                <p className="text-[0.92rem] text-muted-foreground">
+                  Type{" "}
+                  <code className="rounded bg-pi-code px-2 py-0.5 font-mono text-[0.82rem] text-primary">
+                    start-pi
+                  </code>{" "}
+                  and you&apos;re in. Pi is ready to help you build, debug, and
+                  ship code — right from your phone.
+                </p>
+              </div>
+            </StaggerItem>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* Features */}
-      <section className="border-t border-border py-20">
+      <section className="border-t border-border py-24">
         <div className="mx-auto max-w-[1100px] px-6">
-          <h2 className="mb-4 text-[1.75rem] font-bold">
-            <span className="text-primary">Features</span>
-          </h2>
-          <p className="mb-12 max-w-[600px] text-[1.05rem] text-muted-foreground">
-            Everything you need for a productive AI coding workflow on mobile.
-          </p>
-          <div className="mx-auto grid max-w-[400px] grid-cols-1 gap-6 md:max-w-none md:grid-cols-2 lg:grid-cols-3">
+          <AnimatedDiv>
+            <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
+              <span className="text-primary">Features</span>
+            </h2>
+            <p className="mb-12 max-w-[600px] text-[1.05rem] text-muted-foreground">
+              Everything you need for a productive AI coding workflow on mobile.
+            </p>
+          </AnimatedDiv>
+          <StaggerContainer className="mx-auto grid max-w-[400px] grid-cols-1 gap-6 md:max-w-none md:grid-cols-2 lg:grid-cols-3">
             {features.map((feature) => (
-              <div
+              <HoverCard
                 key={feature.title}
-                className="rounded-xl border border-border bg-card p-7 transition-colors hover:border-primary/30"
+                className="rounded-lg border border-border bg-card p-7"
               >
                 <span className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
                   <feature.icon className="size-5" />
@@ -269,19 +302,21 @@ export default function Home() {
                 <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
                   {feature.description}
                 </p>
-              </div>
+              </HoverCard>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* Run Local with Ollama */}
-      <section className="border-t border-border py-20">
+      <section className="border-t border-border py-24">
         <div className="mx-auto max-w-[1100px] px-6">
-          <h2 className="mb-4 text-[1.75rem] font-bold">
-            Run Local with <span className="text-primary">Ollama</span>
-          </h2>
-          <div className="grid items-center gap-12 md:grid-cols-2">
+          <AnimatedDiv>
+            <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
+              Run Local with <span className="text-primary">Ollama</span>
+            </h2>
+          </AnimatedDiv>
+          <AnimatedSection className="grid items-center gap-12 md:grid-cols-2">
             <div className="space-y-4">
               <p className="text-[1.05rem] text-muted-foreground">
                 Don&apos;t want to rely on cloud APIs? Pi supports{" "}
@@ -301,7 +336,7 @@ export default function Home() {
                 — or both.
               </p>
             </div>
-            <div className="overflow-hidden rounded-xl border border-border bg-pi-code">
+            <div className="overflow-hidden rounded-lg border border-border bg-pi-code">
               <div className="flex gap-2 border-b border-border px-4 py-2.5">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
                 <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
@@ -330,104 +365,113 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="mx-auto mt-12 grid max-w-[400px] grid-cols-1 gap-6 md:max-w-none md:grid-cols-3">
-            <div className="rounded-xl border border-border bg-card p-7 text-center">
-              <span className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary mx-auto">
-                <WifiOff className="size-5" />
-              </span>
-              <h3 className="mb-2 text-base font-semibold">Fully Offline</h3>
-              <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
-                Run models without an internet connection. Perfect for
-                coding on the go or in restricted networks.
-              </p>
-            </div>
-            <div className="rounded-xl border border-border bg-card p-7 text-center">
-              <span className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary mx-auto">
-                <Shield className="size-5" />
-              </span>
-              <h3 className="mb-2 text-base font-semibold">
-                Private by Default
-              </h3>
-              <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
-                Your code never leaves your device. No tokens sent to
-                third-party servers, no usage tracking.
-              </p>
-            </div>
-            <div className="rounded-xl border border-border bg-card p-7 text-center">
-              <span className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary mx-auto">
-                <Cloud className="size-5" />
-              </span>
-              <h3 className="mb-2 text-base font-semibold">
-                Seamless Switching
-              </h3>
-              <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
-                Switch between cloud APIs and local models with a single
-                config change. No re-install, no downtime.
-              </p>
-            </div>
-          </div>
+          </AnimatedSection>
+          <StaggerContainer className="mx-auto mt-12 grid max-w-[400px] grid-cols-1 gap-6 md:max-w-none md:grid-cols-3">
+            <StaggerItem>
+              <div className="rounded-lg border border-border bg-card p-7 text-center">
+                <span className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary mx-auto">
+                  <WifiOff className="size-5" />
+                </span>
+                <h3 className="mb-2 text-base font-semibold">Fully Offline</h3>
+                <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
+                  Run models without an internet connection. Perfect for
+                  coding on the go or in restricted networks.
+                </p>
+              </div>
+            </StaggerItem>
+            <StaggerItem>
+              <div className="rounded-lg border border-border bg-card p-7 text-center">
+                <span className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary mx-auto">
+                  <Shield className="size-5" />
+                </span>
+                <h3 className="mb-2 text-base font-semibold">
+                  Private by Default
+                </h3>
+                <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
+                  Your code never leaves your device. No tokens sent to
+                  third-party servers, no usage tracking.
+                </p>
+              </div>
+            </StaggerItem>
+            <StaggerItem>
+              <div className="rounded-lg border border-border bg-card p-7 text-center">
+                <span className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary mx-auto">
+                  <Cloud className="size-5" />
+                </span>
+                <h3 className="mb-2 text-base font-semibold">
+                  Seamless Switching
+                </h3>
+                <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
+                  Switch between cloud APIs and local models with a single
+                  config change. No re-install, no downtime.
+                </p>
+              </div>
+            </StaggerItem>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* What Gets Installed */}
-      <section className="border-t border-border py-20">
+      <section className="border-t border-border py-24">
         <div className="mx-auto max-w-[1100px] px-6">
-          <h2 className="mb-4 text-[1.75rem] font-bold">
-            What Gets <span className="text-primary">Installed</span>
-          </h2>
-          <p className="mb-12 max-w-[600px] text-[1.05rem] text-muted-foreground">
-            Here&apos;s exactly what the setup script does — no surprises.
-          </p>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <AnimatedDiv>
+            <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
+              What Gets <span className="text-primary">Installed</span>
+            </h2>
+            <p className="mb-12 max-w-[600px] text-[1.05rem] text-muted-foreground">
+              Here&apos;s exactly what the setup script does — no surprises.
+            </p>
+          </AnimatedDiv>
+          <StaggerContainer className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {installSteps.map((step, i) => (
-              <div
-                key={i}
-                className="flex items-start gap-3.5 rounded-xl border border-border bg-card px-5 py-[18px]"
-              >
-                <span className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md bg-primary/15 font-mono text-xs font-bold text-primary">
-                  {i + 1}
-                </span>
-                <div>
-                  <h4 className="mb-0.5 text-[0.95rem] font-semibold">
-                    {step.title}
-                  </h4>
-                  <p className="text-[0.85rem] text-muted-foreground">
-                    {step.description}
-                  </p>
+              <StaggerItem key={i}>
+                <div className="flex items-start gap-3.5 rounded-lg border border-border bg-card px-5 py-[18px]">
+                  <span className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md bg-primary/15 font-mono text-xs font-bold text-primary">
+                    {i + 1}
+                  </span>
+                  <div>
+                    <h4 className="mb-0.5 text-[0.95rem] font-semibold">
+                      {step.title}
+                    </h4>
+                    <p className="text-[0.85rem] text-muted-foreground">
+                      {step.description}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border py-10 text-center text-[0.9rem] text-muted-foreground">
-        <div className="mx-auto max-w-[1100px] space-y-2 px-6">
-          <p>
-            <a
-              href="https://github.com/perminder-klair/droidclaw"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:underline"
-            >
-              View the source on GitHub
-            </a>
-          </p>
-          <p>
-            Built by{" "}
-            <a
-              href="https://github.com/perminder-klair"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:underline"
-            >
-              Perminder Klair
-            </a>
-          </p>
-        </div>
-      </footer>
+      <AnimatedDiv>
+        <footer className="border-t border-border py-10 text-center text-[0.9rem] text-muted-foreground">
+          <div className="mx-auto max-w-[1100px] space-y-2 px-6">
+            <p>
+              <a
+                href="https://github.com/perminder-klair/droidclaw"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                View the source on GitHub
+              </a>
+            </p>
+            <p>
+              Built by{" "}
+              <a
+                href="https://github.com/perminder-klair"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                Perminder Klair
+              </a>
+            </p>
+          </div>
+        </footer>
+      </AnimatedDiv>
     </main>
   );
 }

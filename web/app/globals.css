@@ -7,7 +7,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-jakarta-sans);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -47,76 +47,76 @@
   --radius-4xl: calc(var(--radius) + 16px);
 
   /* Pi custom colors */
-  --color-pi-code: #0d1117;
+  --color-pi-code: #111111;
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: #0a0e17;
-  --foreground: #e2e8f0;
-  --card: #111827;
-  --card-foreground: #e2e8f0;
-  --popover: #111827;
-  --popover-foreground: #e2e8f0;
-  --primary: #00e5a0;
-  --primary-foreground: #0a0e17;
-  --secondary: #1e293b;
-  --secondary-foreground: #e2e8f0;
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  --accent: #162a23;
-  --accent-foreground: #00e5a0;
+  --radius: 0.5rem;
+  --background: #0a0a0a;
+  --foreground: #f0f0f0;
+  --card: #141414;
+  --card-foreground: #f0f0f0;
+  --popover: #141414;
+  --popover-foreground: #f0f0f0;
+  --primary: #FBAA19;
+  --primary-foreground: #0a0a0a;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #f0f0f0;
+  --muted: #1a1a1a;
+  --muted-foreground: #888888;
+  --accent: #1f1708;
+  --accent-foreground: #FBAA19;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: #1e293b;
-  --input: #1e293b;
-  --ring: #00e5a0;
-  --chart-1: #00e5a0;
-  --chart-2: #0ea5e9;
-  --chart-3: #8b5cf6;
-  --chart-4: #f59e0b;
+  --border: #222222;
+  --input: #222222;
+  --ring: #FBAA19;
+  --chart-1: #FBAA19;
+  --chart-2: #E8920E;
+  --chart-3: #C67A0A;
+  --chart-4: #FFD166;
   --chart-5: #ef4444;
-  --sidebar: #111827;
-  --sidebar-foreground: #e2e8f0;
-  --sidebar-primary: #00e5a0;
-  --sidebar-primary-foreground: #0a0e17;
-  --sidebar-accent: #1e293b;
-  --sidebar-accent-foreground: #e2e8f0;
-  --sidebar-border: #1e293b;
-  --sidebar-ring: #00e5a0;
+  --sidebar: #141414;
+  --sidebar-foreground: #f0f0f0;
+  --sidebar-primary: #FBAA19;
+  --sidebar-primary-foreground: #0a0a0a;
+  --sidebar-accent: #1a1a1a;
+  --sidebar-accent-foreground: #f0f0f0;
+  --sidebar-border: #222222;
+  --sidebar-ring: #FBAA19;
 }
 
 .dark {
-  --background: #0a0e17;
-  --foreground: #e2e8f0;
-  --card: #111827;
-  --card-foreground: #e2e8f0;
-  --popover: #111827;
-  --popover-foreground: #e2e8f0;
-  --primary: #00e5a0;
-  --primary-foreground: #0a0e17;
-  --secondary: #1e293b;
-  --secondary-foreground: #e2e8f0;
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  --accent: #162a23;
-  --accent-foreground: #00e5a0;
+  --background: #0a0a0a;
+  --foreground: #f0f0f0;
+  --card: #141414;
+  --card-foreground: #f0f0f0;
+  --popover: #141414;
+  --popover-foreground: #f0f0f0;
+  --primary: #FBAA19;
+  --primary-foreground: #0a0a0a;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #f0f0f0;
+  --muted: #1a1a1a;
+  --muted-foreground: #888888;
+  --accent: #1f1708;
+  --accent-foreground: #FBAA19;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: #1e293b;
-  --input: #1e293b;
-  --ring: #00e5a0;
-  --chart-1: #00e5a0;
-  --chart-2: #0ea5e9;
-  --chart-3: #8b5cf6;
-  --chart-4: #f59e0b;
+  --border: #222222;
+  --input: #222222;
+  --ring: #FBAA19;
+  --chart-1: #FBAA19;
+  --chart-2: #E8920E;
+  --chart-3: #C67A0A;
+  --chart-4: #FFD166;
   --chart-5: #ef4444;
-  --sidebar: #111827;
-  --sidebar-foreground: #e2e8f0;
-  --sidebar-primary: #00e5a0;
-  --sidebar-primary-foreground: #0a0e17;
-  --sidebar-accent: #1e293b;
-  --sidebar-accent-foreground: #e2e8f0;
-  --sidebar-border: #1e293b;
-  --sidebar-ring: #00e5a0;
+  --sidebar: #141414;
+  --sidebar-foreground: #f0f0f0;
+  --sidebar-primary: #FBAA19;
+  --sidebar-primary-foreground: #0a0a0a;
+  --sidebar-accent: #1a1a1a;
+  --sidebar-accent-foreground: #f0f0f0;
+  --sidebar-border: #222222;
+  --sidebar-ring: #FBAA19;
 }
 
 @layer base {
@@ -131,27 +131,14 @@
   }
 }
 
+.shadow-premium { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25); }
+.shadow-premium-sm { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); }
+
 /* Animations */
 @keyframes blink {
   50% { opacity: 0; }
 }
 
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .animate-blink {
   animation: blink 1s step-end infinite;
-}
-
-.animate-fade-in-up {
-  opacity: 0;
-  animation: fade-in-up 0.7s ease-out forwards;
 }
