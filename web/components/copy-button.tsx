@@ -26,7 +26,7 @@ export function CopyButton({ text }: { text: string }) {
       ) : (
         <Copy className="size-3.5" />
       )}
-      {copied ? "Copied!" : "Copy"}
+      <span className="hidden sm:inline">{copied ? "Copied!" : "Copy"}</span>
     </button>
   );
 }

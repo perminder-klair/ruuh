@@ -11,6 +11,7 @@ import {
   Shield,
   Smartphone,
   MessageSquare,
+  Settings,
 } from "lucide-react";
 import { CopyButton } from "@/components/copy-button";
 import {
@@ -133,11 +134,11 @@ export default function Home() {
             </p>
           </AnimatedDiv>
           <AnimatedDiv delay={0.3}>
-            <div className="mx-auto flex max-w-[620px] flex-col items-center gap-3 rounded-lg border border-border bg-code-block p-4 shadow-premium-sm text-left md:flex-row">
+            <div className="mx-auto flex max-w-[620px] flex-col items-center gap-3 rounded-lg border border-border bg-code-block p-3 sm:p-4 shadow-premium-sm text-left md:flex-row">
               <span className="hidden shrink-0 select-none font-mono text-sm text-primary md:block">
                 $
               </span>
-              <code className="flex-1 overflow-x-auto whitespace-nowrap font-mono text-[0.82rem] text-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <code className="flex-1 overflow-x-auto break-all sm:break-normal sm:whitespace-nowrap font-mono text-[0.75rem] sm:text-[0.82rem] text-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {INSTALL_CMD}
               </code>
               <CopyButton text={INSTALL_CMD} />
@@ -438,11 +439,25 @@ export default function Home() {
                 single command and Ruuh immediately knows how to use every Termux
                 API command on your device.
               </p>
-              <div className="flex flex-col items-start gap-3 rounded-lg border border-border bg-code-block p-4 shadow-premium-sm md:flex-row md:items-center">
+              <p className="text-[1.05rem] text-muted-foreground">
+                Requires the{" "}
+                <a
+                  href="https://f-droid.org/en/packages/com.termux.api/"
+                  className="text-primary hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Termux:API
+                </a>{" "}
+                companion app installed from F-Droid for hardware access. Both
+                Termux and Termux:API must be installed from F-Droid — mixing
+                Play Store and F-Droid versions causes signature mismatch errors.
+              </p>
+              <div className="flex flex-col items-start gap-3 rounded-lg border border-border bg-code-block p-3 sm:p-4 shadow-premium-sm md:flex-row md:items-center">
                 <span className="hidden shrink-0 select-none font-mono text-sm text-primary md:block">
                   $
                 </span>
-                <code className="flex-1 overflow-x-auto whitespace-nowrap font-mono text-[0.82rem] text-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <code className="flex-1 overflow-x-auto break-all sm:break-normal sm:whitespace-nowrap font-mono text-[0.75rem] sm:text-[0.82rem] text-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                   {SKILLS_CMD}
                 </code>
                 <CopyButton text={SKILLS_CMD} />
@@ -473,6 +488,18 @@ export default function Home() {
                   SMS send &amp; receive, contacts, call log, camera photos,
                   microphone recording, text-to-speech, media playback, file
                   sharing, storage picker, and calendar access.
+                </p>
+              </div>
+              <div className="rounded-lg border border-border bg-card p-7">
+                <span className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                  <Settings className="size-5" />
+                </span>
+                <h3 className="mb-2 text-base font-semibold">
+                  System &amp; Automation
+                </h3>
+                <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
+                  Job scheduling, infrared transmit, USB device access, NFC tag
+                  read/write, and hardware keystore crypto.
                 </p>
               </div>
             </div>

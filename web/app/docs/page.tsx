@@ -217,11 +217,11 @@ export default function DocsPage() {
             </p>
           </AnimatedDiv>
           <AnimatedDiv delay={0.1}>
-            <div className="mb-12 flex flex-col items-start gap-3 rounded-lg border border-border bg-code-block p-4 shadow-premium-sm md:flex-row md:items-center">
+            <div className="mb-12 flex flex-col items-start gap-3 rounded-lg border border-border bg-code-block p-3 sm:p-4 shadow-premium-sm md:flex-row md:items-center">
               <span className="hidden shrink-0 select-none font-mono text-sm text-primary md:block">
                 $
               </span>
-              <code className="flex-1 overflow-x-auto whitespace-nowrap font-mono text-[0.82rem] text-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <code className="flex-1 overflow-x-auto break-all sm:break-normal sm:whitespace-nowrap font-mono text-[0.75rem] sm:text-[0.82rem] text-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {INSTALL_CMD}
               </code>
               <CopyButton text={INSTALL_CMD} />
@@ -347,17 +347,31 @@ export default function DocsPage() {
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
               Termux API <span className="text-primary">Skills</span>
             </h2>
-            <p className="mb-6 text-[1.05rem] text-muted-foreground">
+            <p className="mb-4 text-[1.05rem] text-muted-foreground">
               Teach Ruuh how to use your Android device features. Skills are
               auto-discovered on startup — install once, use everywhere.
             </p>
+            <p className="mb-6 text-[1.05rem] text-muted-foreground">
+              Requires the{" "}
+              <a
+                href="https://f-droid.org/en/packages/com.termux.api/"
+                className="text-primary hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Termux:API
+              </a>{" "}
+              companion app installed from F-Droid for hardware access. Both
+              Termux and Termux:API must be installed from F-Droid — mixing
+              Play Store and F-Droid versions causes signature mismatch errors.
+            </p>
           </AnimatedDiv>
           <AnimatedDiv delay={0.1}>
-            <div className="mb-10 flex flex-col items-start gap-3 rounded-lg border border-border bg-code-block p-4 shadow-premium-sm md:flex-row md:items-center">
+            <div className="mb-10 flex flex-col items-start gap-3 rounded-lg border border-border bg-code-block p-3 sm:p-4 shadow-premium-sm md:flex-row md:items-center">
               <span className="hidden shrink-0 select-none font-mono text-sm text-primary md:block">
                 $
               </span>
-              <code className="flex-1 overflow-x-auto whitespace-nowrap font-mono text-[0.82rem] text-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <code className="flex-1 overflow-x-auto break-all sm:break-normal sm:whitespace-nowrap font-mono text-[0.75rem] sm:text-[0.82rem] text-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {SKILLS_CMD}
               </code>
               <CopyButton text={SKILLS_CMD} />
@@ -395,6 +409,23 @@ export default function DocsPage() {
                     Communication and media — SMS send &amp; receive, contacts, call log,
                     camera photos, microphone recording, text-to-speech, media playback,
                     file sharing, storage picker, and calendar access.
+                  </p>
+                </div>
+              </div>
+            </StaggerItem>
+            <StaggerItem>
+              <div className="flex items-start gap-4 rounded-lg border border-border bg-card px-6 py-5">
+                <span className="mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                  <Settings className="size-5" />
+                </span>
+                <div>
+                  <h3 className="mb-1 font-mono text-[0.95rem] font-semibold text-primary">
+                    termux-system
+                  </h3>
+                  <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
+                    System integration and automation — job scheduling, infrared
+                    transmit, USB device access, NFC tag read/write, and hardware
+                    keystore crypto.
                   </p>
                 </div>
               </div>
@@ -574,8 +605,8 @@ export default function DocsPage() {
                   <span className="text-[0.9rem] text-muted-foreground">
                     {item.label}
                   </span>
-                  <div className="flex items-center gap-2">
-                    <code className="overflow-x-auto whitespace-nowrap rounded bg-code-block px-3 py-1.5 font-mono text-[0.8rem] text-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <code className="overflow-x-auto break-all sm:break-normal sm:whitespace-nowrap rounded bg-code-block px-3 py-1.5 font-mono text-[0.75rem] sm:text-[0.8rem] text-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                       {item.cmd}
                     </code>
                     <CopyButton text={item.cmd} />

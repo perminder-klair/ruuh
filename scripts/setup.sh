@@ -54,7 +54,7 @@ run_script "ruuh-setup.sh"
 # Step 2: Ollama setup (optional)
 # ------------------------------------------
 echo ""
-read -p "  Install Ollama + model? [Y/n] " ollama_choice
+read -p "  Install Ollama + model? [Y/n] " ollama_choice < /dev/tty
 if [ "$ollama_choice" != "n" ] && [ "$ollama_choice" != "N" ]; then
   echo "============================================"
   echo "  [2/3] Running ollama-setup.sh..."
@@ -68,7 +68,7 @@ fi
 # Step 3: Termux API skills (optional)
 # ------------------------------------------
 echo ""
-read -p "  Install Termux API skills? [Y/n] " skills_choice
+read -p "  Install Termux API skills? [Y/n] " skills_choice < /dev/tty
 if [ "$skills_choice" != "n" ] && [ "$skills_choice" != "N" ]; then
   echo "============================================"
   echo "  [3/3] Running skills-setup.sh..."
