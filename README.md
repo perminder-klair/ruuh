@@ -23,7 +23,7 @@ A one-command setup script that turns [Termux](https://termux.dev) into a fully 
 Run the one-line installer in Termux:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/termux-setup.sh | bash
+curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/termux-setup.sh | bash
 ```
 
 Once setup completes, launch the agent anytime with:
@@ -44,7 +44,7 @@ cd ~/pi-agent && pi
 To run AI models locally on your device using Ollama, run this **after** the main setup:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/ollama-setup.sh | bash
+curl -fsSL https://raw.githubusercontent.com/perminder-klair/droidclaw/main/scripts/ollama-setup.sh | bash
 ```
 
 This installs Ollama, pulls the `glm-5:cloud` model, and configures pi-coding-agent to use it. During setup, `ollama signin` will prompt you to open a URL in your browser to authenticate with your Ollama account (required for cloud models). To use Ollama with Pi:
