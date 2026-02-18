@@ -293,6 +293,7 @@ function dashboardHTML(): string {
     color: #f0f0f0;
     min-height: 100vh;
     padding: 16px;
+    overflow: hidden;
   }
   h1 { font-size: 1.4rem; font-weight: 600; margin-bottom: 16px; color: #f0f0f0; }
   .card {
@@ -415,7 +416,8 @@ function dashboardHTML(): string {
 
   /* Chat */
   .chat-messages {
-    max-height: 45vh;
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -496,24 +498,42 @@ function dashboardHTML(): string {
   .tab {
     background: transparent; border: 1px solid #201e1b; border-radius: 8px;
     color: #8a8480; padding: 6px 14px; font-size: 0.8rem; font-weight: 600;
-    cursor: pointer;
+    cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
   }
+  .tab svg { vertical-align: middle; }
   .tab.active { background: #141210; color: #f0f0f0; border-color: #FBAA19; }
   .view { display: none; }
   .view.active { display: block; }
+  .view.active.view-chat { display: flex; flex-direction: column; height: calc(100vh - 70px); }
+  .view-chat .card { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 </style>
 </head>
 <body>
 <div class="top-bar">
   <h1>Ruuh</h1>
   <nav class="tabs">
-    <button class="tab active" data-tab="home">Home</button>
-    <button class="tab" data-tab="chat">Chat</button>
+    <button class="tab active" data-tab="chat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Chat</button>
+    <button class="tab" data-tab="info"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> Info</button>
   </nav>
 </div>
 <div class="disconnected" id="disconnected">Reconnecting...</div>
 
-<div id="viewHome" class="view active">
+<div id="viewChat" class="view view-chat active">
+  <!-- Chat -->
+  <div class="card">
+    <div class="card-title">Chat</div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-empty">Send a message to Ruuh</div>
+    </div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chatInput" type="text" placeholder="Type a message..." autocomplete="off">
+      <button class="chat-send" id="chatSend">Send</button>
+    </div>
+    <div class="chat-hint" id="chatHint"></div>
+  </div>
+</div>
+
+<div id="viewInfo" class="view">
   <div class="install-banner" id="installBanner">
     <div class="install-banner-text"><strong>Ruuh</strong> can be added to your home screen for an app-like experience.</div>
     <button class="install-btn" id="installBtn">Install</button>
@@ -545,21 +565,6 @@ function dashboardHTML(): string {
   <div class="card">
     <div class="card-title">What Ruuh is doing</div>
     <div class="custom-status empty" id="customStatus">No status set</div>
-  </div>
-</div>
-
-<div id="viewChat" class="view">
-  <!-- Chat -->
-  <div class="card">
-    <div class="card-title">Chat</div>
-    <div class="chat-messages" id="chatMessages">
-      <div class="chat-empty">Send a message to Ruuh</div>
-    </div>
-    <div class="chat-input-row">
-      <input class="chat-input" id="chatInput" type="text" placeholder="Type a message..." autocomplete="off">
-      <button class="chat-send" id="chatSend">Send</button>
-    </div>
-    <div class="chat-hint" id="chatHint"></div>
   </div>
 
   <!-- Activity Log -->
@@ -747,6 +752,7 @@ function dashboardHTML(): string {
       document.querySelectorAll(".view").forEach(function(v) { v.classList.remove("active"); });
       btn.classList.add("active");
       document.getElementById("view" + capitalize(btn.dataset.tab)).classList.add("active");
+      document.body.style.overflow = btn.dataset.tab === "chat" ? "hidden" : "";
     });
   });
 </script>
