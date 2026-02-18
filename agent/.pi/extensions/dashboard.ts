@@ -179,8 +179,8 @@ function handleRequest(req: http.IncomingMessage, res: http.ServerResponse) {
       short_name: "Ruuh",
       start_url: "/",
       display: "standalone",
-      background_color: "#0f1117",
-      theme_color: "#0f1117",
+      background_color: "#0b0907",
+      theme_color: "#0b0907",
       icons: [
         { src: "/icon.svg", sizes: "any", type: "image/svg+xml", purpose: "any" },
       ],
@@ -204,9 +204,9 @@ function handleRequest(req: http.IncomingMessage, res: http.ServerResponse) {
   if (url === "/icon.svg") {
     res.writeHead(200, { "Content-Type": "image/svg+xml" });
     res.end(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="96" fill="#0f1117"/>
+  <rect width="512" height="512" rx="96" fill="#0b0907"/>
   <circle cx="256" cy="256" r="200" fill="#FBAA19"/>
-  <text x="256" y="310" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="280" fill="#0f1117">R</text>
+  <text x="256" y="310" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="280" fill="#0b0907">R</text>
 </svg>
 `);
     return;
@@ -282,22 +282,22 @@ function dashboardHTML(): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0f1117">
+<meta name="theme-color" content="#0b0907">
 <link rel="manifest" href="/manifest.json">
 <title>Ruuh Dashboard</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: #0f1117;
-    color: #e1e4e8;
+    background: #0b0907;
+    color: #f0f0f0;
     min-height: 100vh;
     padding: 16px;
   }
-  h1 { font-size: 1.4rem; font-weight: 600; margin-bottom: 16px; color: #f0f3f6; }
+  h1 { font-size: 1.4rem; font-weight: 600; margin-bottom: 16px; color: #f0f0f0; }
   .card {
-    background: #1a1e2a;
-    border: 1px solid #2d3348;
+    background: #141210;
+    border: 1px solid #201e1b;
     border-radius: 12px;
     padding: 16px;
     margin-bottom: 12px;
@@ -306,7 +306,7 @@ function dashboardHTML(): string {
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: #6b7394;
+    color: #8a8480;
     margin-bottom: 8px;
   }
 
@@ -325,16 +325,16 @@ function dashboardHTML(): string {
     50% { opacity: 0.5; }
   }
   .status-label { font-size: 1.1rem; font-weight: 500; }
-  .tool-name { color: #79c0ff; font-family: monospace; font-size: 0.9rem; margin-top: 4px; }
+  .tool-name { color: #FBAA19; font-family: monospace; font-size: 0.9rem; margin-top: 4px; }
 
   /* Session info */
   .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .info-item label { font-size: 0.7rem; color: #6b7394; display: block; }
+  .info-item label { font-size: 0.7rem; color: #8a8480; display: block; }
   .info-item span { font-size: 0.95rem; }
 
   /* Custom status */
-  .custom-status { font-size: 1rem; color: #c9d1d9; font-style: italic; }
-  .custom-status.empty { color: #484f5e; }
+  .custom-status { font-size: 1rem; color: #d4d0cc; font-style: italic; }
+  .custom-status.empty { color: #5a5550; }
 
   /* Activity log */
   .log { max-height: 50vh; overflow-y: auto; }
@@ -342,11 +342,11 @@ function dashboardHTML(): string {
     display: flex;
     gap: 8px;
     padding: 6px 0;
-    border-bottom: 1px solid #1e2235;
+    border-bottom: 1px solid #1a1816;
     font-size: 0.82rem;
     line-height: 1.4;
   }
-  .log-time { color: #484f5e; flex-shrink: 0; font-family: monospace; font-size: 0.75rem; }
+  .log-time { color: #5a5550; flex-shrink: 0; font-family: monospace; font-size: 0.75rem; }
   .log-badge {
     font-size: 0.65rem;
     padding: 1px 6px;
@@ -357,10 +357,10 @@ function dashboardHTML(): string {
   }
   .log-badge.session { background: #1f3d2d; color: #3fb950; }
   .log-badge.agent   { background: #3b2e12; color: #d29922; }
-  .log-badge.turn    { background: #1b2a4a; color: #58a6ff; }
+  .log-badge.turn    { background: #2a1d08; color: #FBAA19; }
   .log-badge.tool    { background: #3b1520; color: #f85149; }
-  .log-badge.message { background: #272046; color: #bc8cff; }
-  .log-text { color: #c9d1d9; word-break: break-word; }
+  .log-badge.message { background: #2a1d08; color: #FBAA19; }
+  .log-text { color: #d4d0cc; word-break: break-word; }
 
   .disconnected {
     background: #3b1520;
@@ -375,7 +375,7 @@ function dashboardHTML(): string {
   /* PWA install banner */
   .install-banner {
     display: none;
-    background: #1a1e2a;
+    background: #141210;
     border: 1px solid #FBAA19;
     border-radius: 10px;
     padding: 12px 16px;
@@ -387,13 +387,13 @@ function dashboardHTML(): string {
   .install-banner-text {
     flex: 1;
     font-size: 0.85rem;
-    color: #e1e4e8;
+    color: #f0f0f0;
     line-height: 1.4;
   }
   .install-banner-text strong { color: #FBAA19; }
   .install-btn {
     background: #FBAA19;
-    color: #0f1117;
+    color: #0b0907;
     border: none;
     border-radius: 8px;
     padding: 8px 16px;
@@ -406,7 +406,7 @@ function dashboardHTML(): string {
   .install-dismiss {
     background: none;
     border: none;
-    color: #6b7394;
+    color: #8a8480;
     font-size: 1.2rem;
     cursor: pointer;
     padding: 0 4px;
@@ -423,7 +423,7 @@ function dashboardHTML(): string {
     padding: 8px 0;
   }
   .chat-empty {
-    color: #484f5e;
+    color: #5a5550;
     font-size: 0.85rem;
     text-align: center;
     padding: 24px 0;
@@ -439,20 +439,20 @@ function dashboardHTML(): string {
   }
   .chat-msg.user {
     align-self: flex-end;
-    background: #1b3a5c;
-    color: #79c0ff;
+    background: #2a1d08;
+    color: #FBAA19;
     border-bottom-right-radius: 4px;
   }
   .chat-msg.agent {
     align-self: flex-start;
-    background: #272b3a;
-    color: #c9d1d9;
+    background: #1a1816;
+    color: #d4d0cc;
     border-bottom-left-radius: 4px;
   }
   .chat-msg .chat-time {
     display: block;
     font-size: 0.65rem;
-    color: #484f5e;
+    color: #5a5550;
     margin-top: 4px;
   }
   .chat-input-row {
@@ -462,18 +462,18 @@ function dashboardHTML(): string {
   }
   .chat-input {
     flex: 1;
-    background: #0f1117;
-    border: 1px solid #2d3348;
+    background: #0b0907;
+    border: 1px solid #201e1b;
     border-radius: 8px;
     padding: 8px 12px;
-    color: #e1e4e8;
+    color: #f0f0f0;
     font-size: 0.9rem;
     outline: none;
   }
-  .chat-input:focus { border-color: #58a6ff; }
+  .chat-input:focus { border-color: #FBAA19; }
   .chat-send {
-    background: #1b3a5c;
-    color: #79c0ff;
+    background: #2a1d08;
+    color: #FBAA19;
     border: none;
     border-radius: 8px;
     padding: 8px 16px;
@@ -484,7 +484,7 @@ function dashboardHTML(): string {
   .chat-send:active { opacity: 0.7; }
   .chat-hint {
     font-size: 0.7rem;
-    color: #484f5e;
+    color: #5a5550;
     margin-top: 4px;
     min-height: 1em;
   }
@@ -494,11 +494,11 @@ function dashboardHTML(): string {
   .top-bar h1 { margin-bottom: 0; }
   .tabs { display: flex; gap: 4px; }
   .tab {
-    background: transparent; border: 1px solid #2d3348; border-radius: 8px;
-    color: #6b7394; padding: 6px 14px; font-size: 0.8rem; font-weight: 600;
+    background: transparent; border: 1px solid #201e1b; border-radius: 8px;
+    color: #8a8480; padding: 6px 14px; font-size: 0.8rem; font-weight: 600;
     cursor: pointer;
   }
-  .tab.active { background: #1a1e2a; color: #e1e4e8; border-color: #58a6ff; }
+  .tab.active { background: #141210; color: #f0f0f0; border-color: #FBAA19; }
   .view { display: none; }
   .view.active { display: block; }
 </style>

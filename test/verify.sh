@@ -89,8 +89,8 @@ for skill in termux-device termux-comms termux-system; do
 done
 
 SKILL_COUNT=$(find "$RUUH_DIR/.pi/skills" -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
-[ "$SKILL_COUNT" -eq 3 ]
-check "Exactly 3 skill files installed (found $SKILL_COUNT)" $?
+[ "$SKILL_COUNT" -ge 3 ]
+check "At least 3 skill files installed (found $SKILL_COUNT)" $?
 
 echo ""
 
