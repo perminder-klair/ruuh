@@ -126,6 +126,19 @@ echo ""
 echo "[5/5] Installing pi-coding-agent..."
 npm install -g @mariozechner/pi-coding-agent
 
+# Patch estimateTokens: message.content can be null/undefined, not always an array
+COMPACTION_JS="/usr/lib/node_modules/@mariozechner/pi-coding-agent/dist/core/compaction/compaction.js"
+if [ ! -f "$COMPACTION_JS" ]; then
+    echo "  ⚠️  compaction.js not found, skipping patch"
+elif grep -q "Array\.isArray(message\.content)" "$COMPACTION_JS"; then
+    echo "  ✅ compaction.js already patched"
+elif grep -q "for (const block of message\.content)" "$COMPACTION_JS"; then
+    sed -i "s/for (const block of message\.content) {/for (const block of (Array.isArray(message.content) ? message.content : [])) {/" "$COMPACTION_JS"
+    echo "  ✅ Patched estimateTokens in compaction.js"
+else
+    echo "  ⚠️  Patch target not found in compaction.js (upstream may have fixed it)"
+fi
+
 # Symlink shared pi directory into Ubuntu home for convenience
 # Note: /sdcard/ruuh and "agent" must match SDCARD_DIR and AGENT_SYMLINK_NAME in config.sh
 ln -sf /sdcard/ruuh "$HOME/agent" 2>/dev/null || true
