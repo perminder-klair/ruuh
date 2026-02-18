@@ -20,6 +20,7 @@ import {
   StaggerContainer,
   StaggerItem,
   HoverCard,
+  GlowIcon,
 } from "@/components/motion";
 
 const INSTALL_CMD =
@@ -113,10 +114,11 @@ export default function Home() {
     <main>
       {/* Hero */}
       <section className="relative flex min-h-[90vh] items-center justify-center overflow-hidden px-6 py-20 text-center">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(251,170,25,0.06),transparent_70%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(251,170,25,0.08),transparent_70%)]" />
+        <div className="pointer-events-none absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 h-[340px] w-[340px] animate-breathe rounded-full bg-[radial-gradient(circle,rgba(251,170,25,0.07),transparent_70%)] blur-3xl" />
         <div className="relative max-w-[740px]">
           <AnimatedDiv>
-            <span className="mb-6 inline-block rounded-full border border-primary/25 bg-primary/15 px-3.5 py-1 font-mono text-xs tracking-wide text-primary">
+            <span className="mb-6 inline-block animate-breathe rounded-full border border-primary/25 bg-primary/15 px-3.5 py-1 font-mono text-xs tracking-wide text-primary">
               Open Source
             </span>
           </AnimatedDiv>
@@ -154,7 +156,7 @@ export default function Home() {
       </section>
 
       {/* What is Ruuh */}
-      <section className="border-t border-border py-24">
+      <section className="border-t-soft py-24">
         <div className="mx-auto max-w-[1100px] px-6">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -184,7 +186,7 @@ export default function Home() {
                 time.
               </p>
             </div>
-            <div className="overflow-hidden rounded-lg border border-border bg-code-block">
+            <div className="overflow-hidden rounded-lg border border-border bg-code-block shadow-terminal">
               <div className="flex gap-2 border-b border-border px-4 py-2.5">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
                 <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
@@ -211,7 +213,7 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section className="border-t border-border py-24">
+      <section className="border-t-soft py-24">
         <div className="mx-auto max-w-[1100px] px-6">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -283,7 +285,7 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="border-t border-border py-24">
+      <section className="border-t-soft py-24">
         <div className="mx-auto max-w-[1100px] px-6">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -299,9 +301,9 @@ export default function Home() {
                 key={feature.title}
                 className="rounded-lg border border-border bg-card p-7"
               >
-                <span className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                <GlowIcon className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
                   <feature.icon className="size-5" />
-                </span>
+                </GlowIcon>
                 <h3 className="mb-2 text-base font-semibold">
                   {feature.title}
                 </h3>
@@ -315,7 +317,7 @@ export default function Home() {
       </section>
 
       {/* Run Local with Ollama */}
-      <section className="border-t border-border py-24">
+      <section className="border-t-soft py-24">
         <div className="mx-auto max-w-[1100px] px-6">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -342,7 +344,7 @@ export default function Home() {
                 — or both.
               </p>
             </div>
-            <div className="overflow-hidden rounded-lg border border-border bg-code-block">
+            <div className="overflow-hidden rounded-lg border border-border bg-code-block shadow-terminal">
               <div className="flex gap-2 border-b border-border px-4 py-2.5">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
                 <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
@@ -375,9 +377,9 @@ export default function Home() {
           <StaggerContainer className="mx-auto mt-12 grid max-w-[400px] grid-cols-1 gap-6 md:max-w-none md:grid-cols-3">
             <StaggerItem>
               <div className="rounded-lg border border-border bg-card p-7 text-center">
-                <span className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary mx-auto">
+                <GlowIcon className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary mx-auto">
                   <WifiOff className="size-5" />
-                </span>
+                </GlowIcon>
                 <h3 className="mb-2 text-base font-semibold">Fully Offline</h3>
                 <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
                   Run models without an internet connection. Perfect for
@@ -387,9 +389,9 @@ export default function Home() {
             </StaggerItem>
             <StaggerItem>
               <div className="rounded-lg border border-border bg-card p-7 text-center">
-                <span className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary mx-auto">
+                <GlowIcon className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary mx-auto">
                   <Shield className="size-5" />
-                </span>
+                </GlowIcon>
                 <h3 className="mb-2 text-base font-semibold">
                   Private by Default
                 </h3>
@@ -401,9 +403,9 @@ export default function Home() {
             </StaggerItem>
             <StaggerItem>
               <div className="rounded-lg border border-border bg-card p-7 text-center">
-                <span className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary mx-auto">
+                <GlowIcon className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary mx-auto">
                   <Cloud className="size-5" />
-                </span>
+                </GlowIcon>
                 <h3 className="mb-2 text-base font-semibold">
                   Seamless Switching
                 </h3>
@@ -418,7 +420,7 @@ export default function Home() {
       </section>
 
       {/* Termux API Skills */}
-      <section className="border-t border-border py-24">
+      <section className="border-t-soft py-24">
         <div className="mx-auto max-w-[1100px] px-6">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -473,9 +475,9 @@ export default function Home() {
             </div>
             <div className="space-y-4">
               <div className="rounded-lg border border-border bg-card p-7">
-                <span className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                <GlowIcon className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
                   <Smartphone className="size-5" />
-                </span>
+                </GlowIcon>
                 <h3 className="mb-2 text-base font-semibold">
                   Device &amp; Sensors
                 </h3>
@@ -486,9 +488,9 @@ export default function Home() {
                 </p>
               </div>
               <div className="rounded-lg border border-border bg-card p-7">
-                <span className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                <GlowIcon className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
                   <MessageSquare className="size-5" />
-                </span>
+                </GlowIcon>
                 <h3 className="mb-2 text-base font-semibold">
                   Comms &amp; Media
                 </h3>
@@ -499,9 +501,9 @@ export default function Home() {
                 </p>
               </div>
               <div className="rounded-lg border border-border bg-card p-7">
-                <span className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                <GlowIcon className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
                   <Settings className="size-5" />
-                </span>
+                </GlowIcon>
                 <h3 className="mb-2 text-base font-semibold">
                   System &amp; Automation
                 </h3>
@@ -516,7 +518,7 @@ export default function Home() {
       </section>
 
       {/* What Gets Installed */}
-      <section className="border-t border-border py-24">
+      <section className="border-t-soft py-24">
         <div className="mx-auto max-w-[1100px] px-6">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -550,7 +552,7 @@ export default function Home() {
 
       {/* Footer */}
       <AnimatedDiv>
-        <footer className="border-t border-border py-10 text-center text-[0.9rem] text-muted-foreground">
+        <footer className="border-t-soft py-10 text-center text-[0.9rem] text-muted-foreground">
           <div className="mx-auto max-w-[1100px] space-y-2 px-6">
             <p>
               <a

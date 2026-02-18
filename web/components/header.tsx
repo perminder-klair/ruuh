@@ -8,10 +8,10 @@ export function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md" style={{ borderBottomColor: 'rgba(251,170,25,0.08)' }}>
       <div className="mx-auto flex h-14 max-w-[1100px] items-center justify-between px-6">
         <Link href="/" className="font-bold tracking-tight text-foreground">
-          <span className="text-primary">Ruuh</span>
+          <span className="text-primary animate-text-glow">Ruuh</span>
         </Link>
         <nav className="flex items-center gap-6">
           <Link

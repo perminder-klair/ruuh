@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import type { ReactNode } from "react";
 
-const ease = [0.22, 1, 0.36, 1] as const;
+const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
 export function AnimatedSection({
   children,
@@ -17,7 +17,7 @@ export function AnimatedSection({
       initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.7, ease }}
+      transition={{ duration: 0.8, ease }}
       className={className}
     >
       {children}
@@ -39,7 +39,7 @@ export function AnimatedDiv({
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.6, ease, delay }}
+      transition={{ duration: 0.7, ease, delay }}
       className={className}
     >
       {children}
@@ -61,7 +61,7 @@ export function StaggerContainer({
       viewport={{ once: true, margin: "-100px" }}
       variants={{
         hidden: {},
-        visible: { transition: { staggerChildren: 0.1 } },
+        visible: { transition: { staggerChildren: 0.08 } },
       }}
       className={className}
     >
@@ -104,14 +104,36 @@ export function HoverCard({
         visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease } },
       }}
       whileHover={{
-        y: -4,
-        boxShadow: "0 8px 24px rgba(0, 0, 0, 0.25)",
+        y: -2,
+        boxShadow:
+          "0 8px 24px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(251, 170, 25, 0.12), 0 4px 16px rgba(251, 170, 25, 0.08)",
         borderColor: "rgba(251, 170, 25, 0.3)",
       }}
-      transition={{ duration: 0.25, ease }}
+      transition={{ duration: 0.35, ease }}
       className={className}
     >
       {children}
     </motion.div>
+  );
+}
+
+export function GlowIcon({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <motion.span
+      whileHover={{
+        boxShadow:
+          "0 0 12px rgba(251, 170, 25, 0.25), 0 0 24px rgba(251, 170, 25, 0.1)",
+      }}
+      transition={{ duration: 0.35, ease }}
+      className={className}
+    >
+      {children}
+    </motion.span>
   );
 }

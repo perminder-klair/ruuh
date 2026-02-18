@@ -14,6 +14,13 @@ interface ActivityEntry {
   text: string;
 }
 
+interface ChatMessage {
+  id: string;
+  role: "user" | "agent";
+  text: string;
+  timestamp: string;
+}
+
 interface DashboardState {
   agentStatus: "idle" | "thinking" | "executing_tool";
   currentToolName: string | null;
@@ -22,6 +29,7 @@ interface DashboardState {
   sessionName: string | null;
   activityLog: ActivityEntry[];
   customStatus: string | null;
+  chatMessages: ChatMessage[];
 }
 
 const state: DashboardState = {
@@ -32,9 +40,13 @@ const state: DashboardState = {
   sessionName: null,
   activityLog: [],
   customStatus: null,
+  chatMessages: [],
 };
 
 const MAX_LOG_ENTRIES = 50;
+const MAX_CHAT_MESSAGES = 100;
+
+let piRef: ExtensionAPI | null = null;
 
 function pushLog(type: ActivityEntry["type"], text: string) {
   state.activityLog.unshift({
@@ -84,6 +96,69 @@ function handleRequest(req: http.IncomingMessage, res: http.ServerResponse) {
     return;
   }
 
+  // -- Chat endpoint --
+  if (url === "/api/chat" && req.method === "OPTIONS") {
+    res.writeHead(204, {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+    });
+    res.end();
+    return;
+  }
+
+  if (url === "/api/chat" && req.method === "POST") {
+    let body = "";
+    req.on("data", (chunk: Buffer) => { body += chunk.toString(); });
+    req.on("end", () => {
+      const headers = {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      };
+      try {
+        const parsed = JSON.parse(body);
+        const msg = typeof parsed.message === "string" ? parsed.message.trim() : "";
+        if (!msg) {
+          res.writeHead(400, headers);
+          res.end(JSON.stringify({ error: "Empty message" }));
+          return;
+        }
+        if (!piRef) {
+          res.writeHead(503, headers);
+          res.end(JSON.stringify({ error: "Agent not ready" }));
+          return;
+        }
+
+        // Add user message to chat
+        state.chatMessages.push({
+          id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+          role: "user",
+          text: msg,
+          timestamp: new Date().toISOString(),
+        });
+        if (state.chatMessages.length > MAX_CHAT_MESSAGES) {
+          state.chatMessages.splice(0, state.chatMessages.length - MAX_CHAT_MESSAGES);
+        }
+        broadcastSSE({ type: "state", data: state });
+
+        // Send to agent — queue as followUp if busy
+        const isBusy = state.agentStatus !== "idle";
+        if (isBusy) {
+          piRef.sendUserMessage(msg, { deliverAs: "followUp" });
+        } else {
+          piRef.sendUserMessage(msg);
+        }
+
+        res.writeHead(200, headers);
+        res.end(JSON.stringify({ ok: true, queued: isBusy }));
+      } catch {
+        res.writeHead(400, headers);
+        res.end(JSON.stringify({ error: "Invalid JSON" }));
+      }
+    });
+    return;
+  }
+
   if (url === "/api/events") {
     res.writeHead(200, {
       "Content-Type": "text/event-stream",
@@ -94,6 +169,46 @@ function handleRequest(req: http.IncomingMessage, res: http.ServerResponse) {
     res.write(`data: ${JSON.stringify({ type: "state", data: state })}\n\n`);
     sseClients.add(res);
     req.on("close", () => sseClients.delete(res));
+    return;
+  }
+
+  // -- PWA: Web App Manifest --
+  if (url === "/manifest.json") {
+    const manifest = {
+      name: "Ruuh Dashboard",
+      short_name: "Ruuh",
+      start_url: "/",
+      display: "standalone",
+      background_color: "#0f1117",
+      theme_color: "#0f1117",
+      icons: [
+        { src: "/icon.svg", sizes: "any", type: "image/svg+xml", purpose: "any" },
+      ],
+    };
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(manifest));
+    return;
+  }
+
+  // -- PWA: Service Worker --
+  if (url === "/sw.js") {
+    res.writeHead(200, { "Content-Type": "application/javascript" });
+    res.end(`self.addEventListener("fetch", function(event) {
+  event.respondWith(fetch(event.request));
+});
+`);
+    return;
+  }
+
+  // -- PWA: App Icon --
+  if (url === "/icon.svg") {
+    res.writeHead(200, { "Content-Type": "image/svg+xml" });
+    res.end(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0f1117"/>
+  <circle cx="256" cy="256" r="200" fill="#FBAA19"/>
+  <text x="256" y="310" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="280" fill="#0f1117">R</text>
+</svg>
+`);
     return;
   }
 
@@ -167,6 +282,8 @@ function dashboardHTML(): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0f1117">
+<link rel="manifest" href="/manifest.json">
 <title>Ruuh Dashboard</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -254,11 +371,133 @@ function dashboardHTML(): string {
     margin-bottom: 12px;
     display: none;
   }
+
+  /* PWA install banner */
+  .install-banner {
+    display: none;
+    background: #1a1e2a;
+    border: 1px solid #FBAA19;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    align-items: center;
+    gap: 12px;
+  }
+  .install-banner.visible { display: flex; }
+  .install-banner-text {
+    flex: 1;
+    font-size: 0.85rem;
+    color: #e1e4e8;
+    line-height: 1.4;
+  }
+  .install-banner-text strong { color: #FBAA19; }
+  .install-btn {
+    background: #FBAA19;
+    color: #0f1117;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .install-btn:active { opacity: 0.7; }
+  .install-dismiss {
+    background: none;
+    border: none;
+    color: #6b7394;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+  }
+
+  /* Chat */
+  .chat-messages {
+    max-height: 45vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 0;
+  }
+  .chat-empty {
+    color: #484f5e;
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 24px 0;
+  }
+  .chat-msg {
+    max-width: 85%;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 0.88rem;
+    line-height: 1.45;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+  .chat-msg.user {
+    align-self: flex-end;
+    background: #1b3a5c;
+    color: #79c0ff;
+    border-bottom-right-radius: 4px;
+  }
+  .chat-msg.agent {
+    align-self: flex-start;
+    background: #272b3a;
+    color: #c9d1d9;
+    border-bottom-left-radius: 4px;
+  }
+  .chat-msg .chat-time {
+    display: block;
+    font-size: 0.65rem;
+    color: #484f5e;
+    margin-top: 4px;
+  }
+  .chat-input-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .chat-input {
+    flex: 1;
+    background: #0f1117;
+    border: 1px solid #2d3348;
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #e1e4e8;
+    font-size: 0.9rem;
+    outline: none;
+  }
+  .chat-input:focus { border-color: #58a6ff; }
+  .chat-send {
+    background: #1b3a5c;
+    color: #79c0ff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  .chat-send:active { opacity: 0.7; }
+  .chat-hint {
+    font-size: 0.7rem;
+    color: #484f5e;
+    margin-top: 4px;
+    min-height: 1em;
+  }
 </style>
 </head>
 <body>
 <h1>Ruuh Dashboard</h1>
 <div class="disconnected" id="disconnected">Reconnecting...</div>
+<div class="install-banner" id="installBanner">
+  <div class="install-banner-text"><strong>Ruuh</strong> can be added to your home screen for an app-like experience.</div>
+  <button class="install-btn" id="installBtn">Install</button>
+  <button class="install-dismiss" id="installDismiss">&times;</button>
+</div>
 
 <!-- Status Card -->
 <div class="card">
@@ -285,6 +524,19 @@ function dashboardHTML(): string {
 <div class="card">
   <div class="card-title">What Ruuh is doing</div>
   <div class="custom-status empty" id="customStatus">No status set</div>
+</div>
+
+<!-- Chat -->
+<div class="card">
+  <div class="card-title">Chat</div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-empty">Send a message to Ruuh</div>
+  </div>
+  <div class="chat-input-row">
+    <input class="chat-input" id="chatInput" type="text" placeholder="Type a message..." autocomplete="off">
+    <button class="chat-send" id="chatSend">Send</button>
+  </div>
+  <div class="chat-hint" id="chatHint"></div>
 </div>
 
 <!-- Activity Log -->
@@ -331,7 +583,32 @@ function dashboardHTML(): string {
       cs.className = "custom-status empty";
     }
 
-    // Activity log
+    // Chat messages
+    var chatEl = $("chatMessages");
+    var chatCount = (s.chatMessages || []).length;
+    if (chatEl.dataset.count !== String(chatCount)) {
+      chatEl.dataset.count = String(chatCount);
+      if (chatCount === 0) {
+        chatEl.innerHTML = '<div class="chat-empty">Send a message to Ruuh</div>';
+      } else {
+        // Safe: all text is escaped via escapeHtml before insertion
+        chatEl.innerHTML = s.chatMessages.map(function(m) {
+          var t = new Date(m.timestamp).toLocaleTimeString();
+          return '<div class="chat-msg ' + m.role + '">' +
+            escapeHtml(m.text) +
+            '<span class="chat-time">' + t + '</span>' +
+            '</div>';
+        }).join("");
+        chatEl.scrollTop = chatEl.scrollHeight;
+      }
+    }
+
+    // Chat delivery hint
+    $("chatHint").textContent = s.agentStatus !== "idle"
+      ? "Agent is busy — message will be queued"
+      : "";
+
+    // Activity log — safe: all text escaped via escapeHtml
     const logEl = $("log");
     logEl.innerHTML = s.activityLog.map(function(e) {
       const t = new Date(e.timestamp);
@@ -384,6 +661,59 @@ function dashboardHTML(): string {
   }
 
   connect();
+
+  // Chat
+  async function sendChat() {
+    var input = $("chatInput");
+    var msg = input.value.trim();
+    if (!msg) return;
+    input.disabled = true;
+    $("chatSend").disabled = true;
+    try {
+      var resp = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: msg }),
+      });
+      if (resp.ok) input.value = "";
+    } catch (e) {
+      // network error — ignore, user can retry
+    } finally {
+      input.disabled = false;
+      $("chatSend").disabled = false;
+      input.focus();
+    }
+  }
+
+  $("chatInput").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") sendChat();
+  });
+  $("chatSend").addEventListener("click", sendChat);
+
+  // PWA: Service Worker registration
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js").catch(function() {});
+  }
+
+  // PWA: Install prompt
+  var deferredPrompt = null;
+  window.addEventListener("beforeinstallprompt", function(e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    $("installBanner").classList.add("visible");
+  });
+  $("installBtn").addEventListener("click", function() {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function() {
+      deferredPrompt = null;
+      $("installBanner").classList.remove("visible");
+    });
+  });
+  $("installDismiss").addEventListener("click", function() {
+    $("installBanner").classList.remove("visible");
+    deferredPrompt = null;
+  });
 </script>
 </body>
 </html>`;
@@ -394,6 +724,8 @@ function dashboardHTML(): string {
 // ---------------------------------------------------------------------------
 
 export default function dashboardExtension(pi: ExtensionAPI) {
+  piRef = pi;
+
   // ---- session_start ----
   pi.on("session_start", async (_ev, ctx) => {
     state.sessionStartTime = new Date().toISOString();
@@ -402,6 +734,7 @@ export default function dashboardExtension(pi: ExtensionAPI) {
     state.activityLog = [];
     state.customStatus = null;
     state.currentToolName = null;
+    state.chatMessages = [];
 
     try {
       const port = await startServer();
@@ -476,6 +809,20 @@ export default function dashboardExtension(pi: ExtensionAPI) {
     const preview = text.length > 100 ? text.slice(0, 100) + "..." : text;
     if (preview) {
       pushLog("message", preview);
+    }
+
+    // Add agent response to chat
+    if (text.trim()) {
+      state.chatMessages.push({
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        role: "agent",
+        text: text,
+        timestamp: new Date().toISOString(),
+      });
+      if (state.chatMessages.length > MAX_CHAT_MESSAGES) {
+        state.chatMessages.splice(0, state.chatMessages.length - MAX_CHAT_MESSAGES);
+      }
+      broadcastSSE({ type: "state", data: state });
     }
   });
 

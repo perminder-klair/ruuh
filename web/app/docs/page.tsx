@@ -27,6 +27,7 @@ import {
   AnimatedSection,
   StaggerContainer,
   StaggerItem,
+  GlowIcon,
 } from "@/components/motion";
 
 export const metadata: Metadata = {
@@ -182,7 +183,7 @@ export default function DocsPage() {
   return (
     <main>
       {/* Header */}
-      <section className="border-b border-border py-24 px-6">
+      <section className="border-b-soft py-24 px-6 relative bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(251,170,25,0.04),transparent_70%)]">
         <div className="mx-auto max-w-[860px]">
           <AnimatedDiv>
             <a
@@ -208,7 +209,7 @@ export default function DocsPage() {
       </section>
 
       {/* Prerequisites */}
-      <section className="border-b border-border py-24 px-6">
+      <section className="border-b-soft py-24 px-6">
         <div className="mx-auto max-w-[860px]">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -222,9 +223,9 @@ export default function DocsPage() {
             {prerequisites.map((item) => (
               <StaggerItem key={item.title}>
                 <div className="rounded-lg border border-border bg-card p-6 h-full">
-                  <span className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                  <GlowIcon className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
                     <item.icon className="size-5" />
-                  </span>
+                  </GlowIcon>
                   <h3 className="mb-1.5 text-[0.95rem] font-semibold">
                     {item.title}
                   </h3>
@@ -249,7 +250,7 @@ export default function DocsPage() {
       </section>
 
       {/* Installation */}
-      <section className="border-b border-border py-24 px-6">
+      <section className="border-b-soft py-24 px-6">
         <div className="mx-auto max-w-[860px]">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -292,7 +293,7 @@ export default function DocsPage() {
                       {step.description}
                     </p>
                     {step.terminal && (
-                      <div className="overflow-hidden rounded-lg border border-border bg-code-block">
+                      <div className="overflow-hidden rounded-lg border border-border bg-code-block shadow-terminal">
                         <div className="flex gap-2 border-b border-border px-4 py-2.5">
                           <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
                           <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
@@ -327,7 +328,7 @@ export default function DocsPage() {
       </section>
 
       {/* Config Files */}
-      <section className="border-b border-border py-24 px-6">
+      <section className="border-b-soft py-24 px-6">
         <div className="mx-auto max-w-[860px]">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -342,9 +343,9 @@ export default function DocsPage() {
             {configFiles.map((file) => (
               <StaggerItem key={file.name}>
                 <div className="flex items-start gap-4 rounded-lg border border-border bg-card px-6 py-5">
-                  <span className="mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                  <GlowIcon className="mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
                     <file.icon className="size-5" />
-                  </span>
+                  </GlowIcon>
                   <div>
                     <h3 className="mb-1 font-mono text-[0.95rem] font-semibold text-primary">
                       {file.name}
@@ -385,7 +386,7 @@ export default function DocsPage() {
       </section>
 
       {/* Termux API Skills */}
-      <section className="border-b border-border py-24 px-6">
+      <section className="border-b-soft py-24 px-6">
         <div className="mx-auto max-w-[860px]">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -432,9 +433,9 @@ export default function DocsPage() {
           <StaggerContainer className="space-y-4">
             <StaggerItem>
               <div className="flex items-start gap-4 rounded-lg border border-border bg-card px-6 py-5">
-                <span className="mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                <GlowIcon className="mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
                   <Plug className="size-5" />
-                </span>
+                </GlowIcon>
                 <div>
                   <h3 className="mb-1 font-mono text-[0.95rem] font-semibold text-primary">
                     termux-device
@@ -450,9 +451,9 @@ export default function DocsPage() {
             </StaggerItem>
             <StaggerItem>
               <div className="flex items-start gap-4 rounded-lg border border-border bg-card px-6 py-5">
-                <span className="mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                <GlowIcon className="mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
                   <MessageSquare className="size-5" />
-                </span>
+                </GlowIcon>
                 <div>
                   <h3 className="mb-1 font-mono text-[0.95rem] font-semibold text-primary">
                     termux-comms
@@ -467,9 +468,9 @@ export default function DocsPage() {
             </StaggerItem>
             <StaggerItem>
               <div className="flex items-start gap-4 rounded-lg border border-border bg-card px-6 py-5">
-                <span className="mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                <GlowIcon className="mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
                   <Settings className="size-5" />
-                </span>
+                </GlowIcon>
                 <div>
                   <h3 className="mb-1 font-mono text-[0.95rem] font-semibold text-primary">
                     termux-system
@@ -484,7 +485,7 @@ export default function DocsPage() {
             </StaggerItem>
           </StaggerContainer>
           <AnimatedDiv className="mt-8">
-            <div className="overflow-hidden rounded-lg border border-border bg-code-block">
+            <div className="overflow-hidden rounded-lg border border-border bg-code-block shadow-terminal">
               <div className="flex gap-2 border-b border-border px-4 py-2.5">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
                 <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
@@ -509,7 +510,7 @@ export default function DocsPage() {
       </section>
 
       {/* Using Ollama */}
-      <section className="border-b border-border py-24 px-6">
+      <section className="border-b-soft py-24 px-6">
         <div className="mx-auto max-w-[860px]">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -534,7 +535,7 @@ export default function DocsPage() {
                     If you chose &ldquo;Y&rdquo; when prompted during setup, Ollama is
                     already installed with a model. Just run:
                   </p>
-                  <div className="overflow-hidden rounded-lg border border-border bg-code-block">
+                  <div className="overflow-hidden rounded-lg border border-border bg-code-block shadow-terminal">
                     <div className="flex gap-2 border-b border-border px-4 py-2.5">
                       <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
                       <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
@@ -562,7 +563,7 @@ export default function DocsPage() {
                     script manually. It installs Ollama, signs you in, and pulls
                     a model.
                   </p>
-                  <div className="overflow-hidden rounded-lg border border-border bg-code-block">
+                  <div className="overflow-hidden rounded-lg border border-border bg-code-block shadow-terminal">
                     <div className="flex gap-2 border-b border-border px-4 py-2.5">
                       <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
                       <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
@@ -600,7 +601,7 @@ export default function DocsPage() {
       </section>
 
       {/* Useful Commands */}
-      <section className="border-b border-border py-24 px-6">
+      <section className="border-b-soft py-24 px-6">
         <div className="mx-auto max-w-[860px]">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -664,7 +665,7 @@ export default function DocsPage() {
       </section>
 
       {/* Troubleshooting */}
-      <section className="border-b border-border py-24 px-6">
+      <section className="border-b-soft py-24 px-6">
         <div className="mx-auto max-w-[860px]">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -714,7 +715,7 @@ export default function DocsPage() {
 
       {/* Footer */}
       <AnimatedDiv>
-        <footer className="py-10 text-center text-[0.9rem] text-muted-foreground">
+        <footer className="border-t-soft py-10 text-center text-[0.9rem] text-muted-foreground">
           <div className="mx-auto max-w-[860px] space-y-2 px-6">
             <p>
               <a
