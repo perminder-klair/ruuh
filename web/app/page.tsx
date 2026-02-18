@@ -40,7 +40,7 @@ const features = [
     icon: Cpu,
     title: "Hybrid AI Backend",
     description:
-      "Choose cloud APIs (OpenAI, Anthropic) or run models locally via Ollama for offline, private coding.",
+      "Choose cloud APIs (OpenAI, Anthropic) or run models locally via Ollama for offline, private use — no internet required.",
   },
   {
     icon: Server,
@@ -58,7 +58,7 @@ const features = [
     icon: Sparkles,
     title: "Custom AI Persona",
     description:
-      "Define Ruuh's personality and behavior in SOUL.md. Make it match your coding style and communication preferences.",
+      "Define Ruuh's personality and behavior in SOUL.md. Make it match your communication style, tone, and personal preferences.",
   },
   {
     icon: FolderOpen,
@@ -124,15 +124,15 @@ export default function Home() {
           </AnimatedDiv>
           <AnimatedDiv delay={0.1}>
             <h1 className="mb-5 text-[clamp(2.2rem,6vw,3.5rem)] font-extrabold leading-[1.1] tracking-tight">
-              <span className="text-primary">Ruuh</span> — Your AI Coding Agent on
-              Android
+              <span className="text-primary">Ruuh</span> — Your Personal AI
+              Agent on Android
             </h1>
           </AnimatedDiv>
           <AnimatedDiv delay={0.2}>
             <p className="mx-auto mb-10 max-w-[520px] text-lg leading-relaxed text-muted-foreground">
-              A personal AI coding assistant that runs locally on your Android
-              device — powered by cloud APIs or local models via Ollama. One
-              command to install, one command to start.
+              A personal AI assistant that lives on your Android device — chat,
+              code, control your phone, and automate your life. Powered by cloud
+              APIs or local models via Ollama. One command to install.
             </p>
           </AnimatedDiv>
           <AnimatedDiv delay={0.3}>
@@ -166,13 +166,13 @@ export default function Home() {
           <AnimatedSection className="grid items-center gap-12 md:grid-cols-2">
             <div className="space-y-4">
               <p className="text-[1.05rem] text-muted-foreground">
-                Ruuh is a personal AI coding assistant powered by the{" "}
+                Ruuh is a personal AI assistant powered by the{" "}
                 <strong className="text-foreground">pi-coding-agent</strong> npm
                 package. It runs inside a full Ubuntu environment on your
                 Android device via Termux and proot-distro — no root required.
                 Connect to cloud APIs like OpenAI and Anthropic, or run models
                 locally with <strong className="text-foreground">Ollama</strong>{" "}
-                for fully offline coding.
+                for fully offline use.
               </p>
               <p className="text-[1.05rem] text-muted-foreground">
                 It remembers context across sessions, follows custom
@@ -181,9 +181,9 @@ export default function Home() {
                 phone.
               </p>
               <p className="text-[1.05rem] text-muted-foreground">
-                Think of it as having a sharp, opinionated senior engineer in
-                your pocket — one that actually listens and gets better over
-                time.
+                Think of it as having a sharp, thoughtful personal assistant in
+                your pocket — one that actually listens, remembers, and gets
+                better over time.
               </p>
             </div>
             <div className="overflow-hidden rounded-lg border border-border bg-code-block shadow-terminal">
@@ -200,7 +200,7 @@ export default function Home() {
                 <div>Loading MEMORY.md...</div>
                 <div>Loading SOUL.md persona...</div>
                 <div>&nbsp;</div>
-                <div>Ready. What are we building?</div>
+                <div>Ready. What do you need?</div>
                 <div>&nbsp;</div>
                 <div>
                   <span className="text-primary">pi &gt;</span>{" "}
@@ -268,15 +268,15 @@ export default function Home() {
                   3
                 </span>
                 <h3 className="mb-2 text-[1.1rem] font-semibold">
-                  Start Coding
+                  Start Using Ruuh
                 </h3>
                 <p className="text-[0.92rem] text-muted-foreground">
                   Type{" "}
                   <code className="rounded bg-code-block px-2 py-0.5 font-mono text-[0.82rem] text-primary">
                     ruuh
                   </code>{" "}
-                  and you&apos;re in. Ruuh is ready to help you build, debug, and
-                  ship code — right from your phone.
+                  and you&apos;re in. Ruuh is ready to help with anything —
+                  code, messages, reminders, your phone, your life.
                 </p>
               </div>
             </StaggerItem>
@@ -292,7 +292,8 @@ export default function Home() {
               <span className="text-primary">Features</span>
             </h2>
             <p className="mb-12 max-w-[600px] text-[1.05rem] text-muted-foreground">
-              Everything you need for a productive AI coding workflow on mobile.
+              Everything you need for a capable AI assistant that lives on your
+              phone.
             </p>
           </AnimatedDiv>
           <StaggerContainer className="mx-auto grid max-w-[400px] grid-cols-1 gap-6 md:max-w-none md:grid-cols-2 lg:grid-cols-3">
@@ -329,9 +330,9 @@ export default function Home() {
               <p className="text-[1.05rem] text-muted-foreground">
                 Don&apos;t want to rely on cloud APIs? Ruuh supports{" "}
                 <strong className="text-foreground">Ollama</strong> as a local
-                backend — run models like Llama 3, CodeGemma, and DeepSeek
-                Coder directly on your device. No API keys, no internet, no
-                data leaving your phone.
+                backend — run models like Llama 3, CodeGemma, and DeepSeek Coder
+                directly on your device. No API keys, no internet, no data
+                leaving your phone.
               </p>
               <p className="text-[1.05rem] text-muted-foreground">
                 Switching between cloud and local is a single config change.
@@ -340,8 +341,8 @@ export default function Home() {
               </p>
               <p className="text-[1.05rem] text-muted-foreground">
                 Cloud APIs give you the most capable models. Ollama gives you
-                full privacy and offline access. Use whichever fits the moment
-                — or both.
+                full privacy and offline access. Use whichever fits the moment —
+                or both.
               </p>
             </div>
             <div className="overflow-hidden rounded-lg border border-border bg-code-block shadow-terminal">
@@ -382,8 +383,8 @@ export default function Home() {
                 </GlowIcon>
                 <h3 className="mb-2 text-base font-semibold">Fully Offline</h3>
                 <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
-                  Run models without an internet connection. Perfect for
-                  coding on the go or in restricted networks.
+                  Run models without an internet connection. Perfect for use on
+                  the go or in restricted networks.
                 </p>
               </div>
             </StaggerItem>
@@ -438,8 +439,8 @@ export default function Home() {
               </p>
               <p className="text-[1.05rem] text-muted-foreground">
                 Skills are auto-discovered when Ruuh starts. Install them with a
-                single command and Ruuh immediately knows how to use every Termux
-                API command on your device.
+                single command and Ruuh immediately knows how to use every
+                Termux API command on your device.
               </p>
               <p className="text-[1.05rem] text-muted-foreground">
                 Requires the{" "}
@@ -460,8 +461,8 @@ export default function Home() {
                 >
                   Termux
                 </a>{" "}
-                and Termux:API must be installed from F-Droid — mixing
-                Play Store and F-Droid versions causes signature mismatch errors.
+                and Termux:API must be installed from F-Droid — mixing Play
+                Store and F-Droid versions causes signature mismatch errors.
               </p>
               <div className="flex flex-col items-start gap-3 rounded-lg border border-border bg-code-block p-3 sm:p-4 shadow-premium-sm md:flex-row md:items-center">
                 <span className="hidden shrink-0 select-none font-mono text-sm text-primary md:block">

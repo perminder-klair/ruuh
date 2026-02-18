@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ruuh — Your AI Coding Agent on Android",
+  title: "Ruuh — Your Personal AI Agent on Android",
   description:
-    "A personal AI coding assistant that runs on your Android device — powered by cloud APIs or local models via Ollama.",
+    "A personal AI assistant that lives on your Android device — chat, code, control your phone, and automate your life.",
 };
 
 export default function RootLayout({

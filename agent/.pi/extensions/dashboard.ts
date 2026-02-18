@@ -488,61 +488,85 @@ function dashboardHTML(): string {
     margin-top: 4px;
     min-height: 1em;
   }
+
+  /* Tabs */
+  .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .top-bar h1 { margin-bottom: 0; }
+  .tabs { display: flex; gap: 4px; }
+  .tab {
+    background: transparent; border: 1px solid #2d3348; border-radius: 8px;
+    color: #6b7394; padding: 6px 14px; font-size: 0.8rem; font-weight: 600;
+    cursor: pointer;
+  }
+  .tab.active { background: #1a1e2a; color: #e1e4e8; border-color: #58a6ff; }
+  .view { display: none; }
+  .view.active { display: block; }
 </style>
 </head>
 <body>
-<h1>Ruuh Dashboard</h1>
+<div class="top-bar">
+  <h1>Ruuh</h1>
+  <nav class="tabs">
+    <button class="tab active" data-tab="home">Home</button>
+    <button class="tab" data-tab="chat">Chat</button>
+  </nav>
+</div>
 <div class="disconnected" id="disconnected">Reconnecting...</div>
-<div class="install-banner" id="installBanner">
-  <div class="install-banner-text"><strong>Ruuh</strong> can be added to your home screen for an app-like experience.</div>
-  <button class="install-btn" id="installBtn">Install</button>
-  <button class="install-dismiss" id="installDismiss">&times;</button>
-</div>
 
-<!-- Status Card -->
-<div class="card">
-  <div class="card-title">Status</div>
-  <div class="status-row">
-    <div class="status-dot idle" id="statusDot"></div>
-    <span class="status-label" id="statusLabel">Idle</span>
+<div id="viewHome" class="view active">
+  <div class="install-banner" id="installBanner">
+    <div class="install-banner-text"><strong>Ruuh</strong> can be added to your home screen for an app-like experience.</div>
+    <button class="install-btn" id="installBtn">Install</button>
+    <button class="install-dismiss" id="installDismiss">&times;</button>
   </div>
-  <div class="tool-name" id="toolName"></div>
-</div>
 
-<!-- Session Info -->
-<div class="card">
-  <div class="card-title">Session</div>
-  <div class="info-grid">
-    <div class="info-item"><label>Name</label><span id="sessionName">—</span></div>
-    <div class="info-item"><label>Started</label><span id="sessionStart">—</span></div>
-    <div class="info-item"><label>Turns</label><span id="turnCount">0</span></div>
-    <div class="info-item"><label>Uptime</label><span id="uptime">—</span></div>
+  <!-- Status Card -->
+  <div class="card">
+    <div class="card-title">Status</div>
+    <div class="status-row">
+      <div class="status-dot idle" id="statusDot"></div>
+      <span class="status-label" id="statusLabel">Idle</span>
+    </div>
+    <div class="tool-name" id="toolName"></div>
+  </div>
+
+  <!-- Session Info -->
+  <div class="card">
+    <div class="card-title">Session</div>
+    <div class="info-grid">
+      <div class="info-item"><label>Name</label><span id="sessionName">—</span></div>
+      <div class="info-item"><label>Started</label><span id="sessionStart">—</span></div>
+      <div class="info-item"><label>Turns</label><span id="turnCount">0</span></div>
+      <div class="info-item"><label>Uptime</label><span id="uptime">—</span></div>
+    </div>
+  </div>
+
+  <!-- Custom Status -->
+  <div class="card">
+    <div class="card-title">What Ruuh is doing</div>
+    <div class="custom-status empty" id="customStatus">No status set</div>
   </div>
 </div>
 
-<!-- Custom Status -->
-<div class="card">
-  <div class="card-title">What Ruuh is doing</div>
-  <div class="custom-status empty" id="customStatus">No status set</div>
-</div>
-
-<!-- Chat -->
-<div class="card">
-  <div class="card-title">Chat</div>
-  <div class="chat-messages" id="chatMessages">
-    <div class="chat-empty">Send a message to Ruuh</div>
+<div id="viewChat" class="view">
+  <!-- Chat -->
+  <div class="card">
+    <div class="card-title">Chat</div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-empty">Send a message to Ruuh</div>
+    </div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chatInput" type="text" placeholder="Type a message..." autocomplete="off">
+      <button class="chat-send" id="chatSend">Send</button>
+    </div>
+    <div class="chat-hint" id="chatHint"></div>
   </div>
-  <div class="chat-input-row">
-    <input class="chat-input" id="chatInput" type="text" placeholder="Type a message..." autocomplete="off">
-    <button class="chat-send" id="chatSend">Send</button>
-  </div>
-  <div class="chat-hint" id="chatHint"></div>
-</div>
 
-<!-- Activity Log -->
-<div class="card">
-  <div class="card-title">Activity Log</div>
-  <div class="log" id="log"></div>
+  <!-- Activity Log -->
+  <div class="card">
+    <div class="card-title">Activity Log</div>
+    <div class="log" id="log"></div>
+  </div>
 </div>
 
 <script>
@@ -714,6 +738,17 @@ function dashboardHTML(): string {
     $("installBanner").classList.remove("visible");
     deferredPrompt = null;
   });
+
+  // Tab switching
+  function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  document.querySelectorAll(".tab").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      document.querySelectorAll(".tab").forEach(function(b) { b.classList.remove("active"); });
+      document.querySelectorAll(".view").forEach(function(v) { v.classList.remove("active"); });
+      btn.classList.add("active");
+      document.getElementById("view" + capitalize(btn.dataset.tab)).classList.add("active");
+    });
+  });
 </script>
 </body>
 </html>`;
@@ -805,7 +840,13 @@ export default function dashboardExtension(pi: ExtensionAPI) {
 
   // ---- message_end ----
   pi.on("message_end", async (ev) => {
-    const text = ev.text ?? "";
+    const msg = ev.message;
+    const text = msg && "content" in msg && Array.isArray((msg as any).content)
+      ? (msg as any).content
+          .filter((c: any) => c.type === "text")
+          .map((c: any) => c.text as string)
+          .join("")
+      : "";
     const preview = text.length > 100 ? text.slice(0, 100) + "..." : text;
     if (preview) {
       pushLog("message", preview);

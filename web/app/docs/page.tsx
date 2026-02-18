@@ -33,7 +33,7 @@ import {
 export const metadata: Metadata = {
   title: "Docs — Ruuh Setup Guide",
   description:
-    "Step-by-step guide to install and use Ruuh, your AI coding agent on Android via Termux.",
+    "Step-by-step guide to install and use Ruuh, your personal AI assistant on Android via Termux.",
 };
 
 const INSTALL_CMD =
@@ -110,7 +110,7 @@ const setupSteps = [
         { prompt: false, text: "Starting Ruuh agent..." },
         { prompt: false, text: "Web dashboard: http://localhost:3000" },
         { prompt: false, text: "" },
-        { prompt: false, text: "Ready. What are we building?" },
+        { prompt: false, text: "Ready. What do you need?" },
       ],
     },
   },
