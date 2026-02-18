@@ -520,6 +520,24 @@ function dashboardHTML(): string {
     margin-top: 4px;
     min-height: 1em;
   }
+  .chat-thinking {
+    align-self: flex-start;
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: #1a1816;
+    color: #8a8480;
+    font-size: 0.85rem;
+    font-style: italic;
+    border-bottom-left-radius: 4px;
+  }
+  .chat-thinking .thinking-dots { display: inline-block; }
+  .chat-thinking .thinking-dots span {
+    animation: blink 1.4s infinite both;
+    font-style: normal;
+  }
+  .chat-thinking .thinking-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .chat-thinking .thinking-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink { 0%, 80%, 100% { opacity: 0.2; } 40% { opacity: 1; } }
 
   /* Tabs */
   .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
@@ -534,8 +552,8 @@ function dashboardHTML(): string {
   .tab.active { background: #141210; color: #f0f0f0; border-color: #FBAA19; }
   .view { display: none; }
   .view.active { display: block; }
-  .view-info { max-height: calc(100vh - 70px); overflow-y: auto; }
-  .view.active.view-chat { display: flex; flex-direction: column; height: calc(100vh - 100px); }
+  .view-info { max-height: calc(100vh - 70px); overflow-y: auto; padding-bottom: 24px; }
+  .view.active.view-chat { display: flex; flex-direction: column; height: calc(100vh - 120px); }
   .view-chat .card { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
 </style>
 </head>
@@ -624,7 +642,9 @@ function dashboardHTML(): string {
   <!-- Files -->
   <div class="card">
     <div class="card-title">Files</div>
-    <div class="info-item"><label>Agent Home</label><span id="agentHome" class="mono-value">—</span></div>
+    <div class="info-item"><label>Agent Home (proot)</label><span id="agentHome" class="mono-value">—</span></div>
+    <div class="info-item" style="margin-top:6px"><label>Shared Storage (Android)</label><span class="mono-value">/sdcard/ruuh</span></div>
+    <div class="info-item" style="margin-top:6px"><label>Termux Path</label><span class="mono-value">~/storage/shared/ruuh</span></div>
   </div>
 
   <!-- Activity Log -->
@@ -703,26 +723,32 @@ function dashboardHTML(): string {
     // Chat messages
     var chatEl = $("chatMessages");
     var chatCount = (s.chatMessages || []).length;
-    if (chatEl.dataset.count !== String(chatCount)) {
-      chatEl.dataset.count = String(chatCount);
-      if (chatCount === 0) {
+    var isBusy = s.agentStatus !== "idle";
+    var chatKey = chatCount + ":" + (isBusy ? "busy" : "idle");
+    if (chatEl.dataset.key !== chatKey) {
+      chatEl.dataset.key = chatKey;
+      if (chatCount === 0 && !isBusy) {
         chatEl.innerHTML = '<div class="chat-empty">Send a message to Ruuh</div>';
       } else {
         // Safe: all text is escaped via escapeHtml before insertion
-        chatEl.innerHTML = s.chatMessages.map(function(m) {
+        var html = (s.chatMessages || []).map(function(m) {
           var t = new Date(m.timestamp).toLocaleTimeString();
           return '<div class="chat-msg ' + m.role + '">' +
             escapeHtml(m.text) +
             '<span class="chat-time">' + t + '</span>' +
             '</div>';
         }).join("");
+        if (isBusy) {
+          html += '<div class="chat-thinking">Thinking<span class="thinking-dots"><span>.</span><span>.</span><span>.</span></span></div>';
+        }
+        chatEl.innerHTML = html;
         chatEl.scrollTop = chatEl.scrollHeight;
       }
     }
 
     // Chat delivery hint
-    $("chatHint").textContent = s.agentStatus !== "idle"
-      ? "Agent is busy — message will be queued"
+    $("chatHint").textContent = isBusy
+      ? "Agent is busy \u2014 message will be queued"
       : "";
 
     // Activity log — safe: all text escaped via escapeHtml
@@ -962,6 +988,7 @@ export default function dashboardExtension(pi: ExtensionAPI) {
   // ---- message_end ----
   pi.on("message_end", async (ev) => {
     const msg = ev.message;
+    const role = (msg as any)?.role;
     const text = msg && "content" in msg && Array.isArray((msg as any).content)
       ? (msg as any).content
           .filter((c: any) => c.type === "text")
@@ -973,8 +1000,8 @@ export default function dashboardExtension(pi: ExtensionAPI) {
       pushLog("message", preview);
     }
 
-    // Add agent response to chat
-    if (text.trim()) {
+    // Only add assistant messages to chat (user messages are added via /api/chat)
+    if (role !== "user" && text.trim()) {
       state.chatMessages.push({
         id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
         role: "agent",
