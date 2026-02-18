@@ -12,8 +12,8 @@ set -e
 main() {
 
 # -- Model catalogue --
-MODEL_IDS=("glm-5:cloud" "qwen3:1.7b" "gemma3:1b" "llama3.2:1b" "phi4-mini")
-MODEL_DESCS=("cloud, recommended" "local, ~1GB" "local, ~815MB" "local, ~1.3GB" "local, ~2.5GB")
+MODEL_IDS=("glm-5:cloud" "minimax-m2.5:cloud" "qwen3.5:cloud" "kimi-k2.5:cloud" "qwen3:1.7b")
+MODEL_DESCS=("cloud, recommended" "cloud" "cloud" "cloud" "local, ~1GB")
 MODEL_COUNT=5
 
 is_cloud_model() {
