@@ -14,6 +14,12 @@ import {
   RefreshCw,
   Plug,
   MessageSquare,
+  Fingerprint,
+  User,
+  Rocket,
+  Power,
+  HeartPulse,
+  Wrench,
 } from "lucide-react";
 import { CopyButton } from "@/components/copy-button";
 import {
@@ -68,15 +74,17 @@ const setupSteps = [
     step: 2,
     title: "Run the Install Command",
     description:
-      "Paste the one-liner below into Termux. It runs all three setup scripts in order — Termux environment with Ubuntu and Node.js, Ollama with a model, and Termux API skills.",
+      "Paste the one-liner below into Termux. It runs one command with three steps — the Termux + Ubuntu environment installs automatically, then Ollama and Termux API skills each prompt Y/n so you can skip them.",
     terminal: {
       lines: [
         { prompt: true, text: "curl -fsSL https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/setup.sh | bash" },
         { prompt: false, text: "[1/3] Running ruuh-setup.sh..." },
+        { prompt: false, text: "  Install Ollama + model? [Y/n] y" },
         { prompt: false, text: "[2/3] Running ollama-setup.sh..." },
+        { prompt: false, text: "  Install Termux API skills? [Y/n] y" },
         { prompt: false, text: "[3/3] Running skills-setup.sh..." },
         { prompt: false, text: "" },
-        { prompt: false, text: "🎉 Full setup complete!" },
+        { prompt: false, text: "Full setup complete!" },
       ],
     },
   },
@@ -91,15 +99,15 @@ const setupSteps = [
     step: 4,
     title: "Start Ruuh",
     description:
-      "Once the install finishes, type ruuh to launch the agent. It logs into the Ubuntu proot environment and starts pi-coding-agent from the shared config directory.",
+      "Once the install finishes, type ruuh to launch the agent. Use ruuh --ollama to start with a local model via Ollama. It logs into the Ubuntu proot environment and starts pi-coding-agent from the shared config directory. A web dashboard starts automatically at localhost:3000 — open it in your device browser while the agent is running.",
     terminal: {
       lines: [
-        { prompt: true, text: "ruuh" },
-        { prompt: false, text: "🤖 Starting Ruuh agent..." },
+        { prompt: true, text: "ruuh --ollama" },
+        { prompt: false, text: "Starting Ollama server..." },
+        { prompt: false, text: "Ollama ready" },
         { prompt: false, text: "" },
-        { prompt: false, text: "Starting pi-coding-agent..." },
-        { prompt: false, text: "Loading MEMORY.md..." },
-        { prompt: false, text: "Loading SOUL.md persona..." },
+        { prompt: false, text: "Starting Ruuh agent..." },
+        { prompt: false, text: "Web dashboard: http://localhost:3000" },
         { prompt: false, text: "" },
         { prompt: false, text: "Ready. What are we building?" },
       ],
@@ -112,19 +120,55 @@ const configFiles = [
     icon: FileText,
     name: "AGENTS.md",
     description:
-      "Overview and instructions for the agent — defines what Ruuh can do and how it should behave when coding.",
+      "Master workspace config — startup routine, memory structure, and how the agent behaves each session.",
   },
   {
     icon: Pencil,
     name: "SOUL.md",
     description:
-      "Ruuh's personality and persona file. Customize its tone, communication style, and coding preferences.",
+      "Personality and behavioral guidelines — tone, communication style, and boundaries.",
+  },
+  {
+    icon: Fingerprint,
+    name: "IDENTITY.md",
+    description:
+      "The agent fills this in during its first conversation — name, creature type, vibe, and emoji.",
+  },
+  {
+    icon: User,
+    name: "USER.md",
+    description:
+      "Profile of the human — name, pronouns, timezone, and contextual notes. Updated as the agent learns about you.",
   },
   {
     icon: RefreshCw,
     name: "MEMORY.md",
     description:
-      "Persistent memory that survives across sessions. Ruuh writes here to remember context about your projects.",
+      "Persistent long-term memory across sessions. The agent writes here to remember decisions and context.",
+  },
+  {
+    icon: Rocket,
+    name: "BOOTSTRAP.md",
+    description:
+      "First-run ritual — guides the intro conversation. Deleted after the first session.",
+  },
+  {
+    icon: Power,
+    name: "BOOT.md",
+    description:
+      "Custom startup tasks the agent runs each session. Leave empty if unused.",
+  },
+  {
+    icon: HeartPulse,
+    name: "HEARTBEAT.md",
+    description:
+      "Periodic task scheduler for interval-based checks. Leave empty if unused.",
+  },
+  {
+    icon: Wrench,
+    name: "TOOLS.md",
+    description:
+      "Quick reference of available Termux API commands from installed skills.",
   },
 ];
 
@@ -290,8 +334,8 @@ export default function DocsPage() {
               Configuration <span className="text-primary">Files</span>
             </h2>
             <p className="mb-10 text-[1.05rem] text-muted-foreground">
-              Ruuh creates three Markdown files you can edit from any text editor
-              on your phone. No terminal required.
+              Ruuh creates a set of Markdown files you can edit from any text
+              editor on your phone. No terminal required.
             </p>
           </AnimatedDiv>
           <StaggerContainer className="space-y-4">
@@ -484,34 +528,11 @@ export default function DocsPage() {
                 </span>
                 <div>
                   <h3 className="mb-2 text-[1.05rem] font-semibold">
-                    Install Ollama
+                    Already installed?
                   </h3>
                   <p className="mb-3 text-[0.92rem] leading-relaxed text-muted-foreground">
-                    Install Ollama on your device or on a machine accessible from your network.
-                    Visit{" "}
-                    <a
-                      href="https://ollama.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-primary hover:underline"
-                    >
-                      ollama.com
-                    </a>{" "}
-                    for installation instructions.
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-5">
-                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary/15 font-mono text-sm font-bold text-primary">
-                  2
-                </span>
-                <div className="flex-1">
-                  <h3 className="mb-2 text-[1.05rem] font-semibold">
-                    Pull a Model
-                  </h3>
-                  <p className="mb-3 text-[0.92rem] leading-relaxed text-muted-foreground">
-                    Download a coding-optimized model like CodeLlama, DeepSeek
-                    Coder, or Llama 3.
+                    If you chose &ldquo;Y&rdquo; when prompted during setup, Ollama is
+                    already installed with a model. Just run:
                   </p>
                   <div className="overflow-hidden rounded-lg border border-border bg-code-block">
                     <div className="flex gap-2 border-b border-border px-4 py-2.5">
@@ -522,11 +543,38 @@ export default function DocsPage() {
                     <div className="p-5 font-mono text-[0.8rem] leading-[1.8] text-muted-foreground">
                       <div>
                         <span className="text-primary">~ $</span>{" "}
-                        <span className="text-foreground">ollama pull codellama</span>
+                        <span className="text-foreground">ruuh --ollama</span>
                       </div>
-                      <div>pulling manifest...</div>
-                      <div>pulling 3a43f93b78ec... 100%</div>
-                      <div>success</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-5">
+                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary/15 font-mono text-sm font-bold text-primary">
+                  2
+                </span>
+                <div className="flex-1">
+                  <h3 className="mb-2 text-[1.05rem] font-semibold">
+                    Install separately
+                  </h3>
+                  <p className="mb-3 text-[0.92rem] leading-relaxed text-muted-foreground">
+                    If you skipped Ollama during setup, run the Ollama setup
+                    script manually. It installs Ollama, signs you in, and pulls
+                    a model.
+                  </p>
+                  <div className="overflow-hidden rounded-lg border border-border bg-code-block">
+                    <div className="flex gap-2 border-b border-border px-4 py-2.5">
+                      <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+                      <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+                      <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+                    </div>
+                    <div className="p-5 font-mono text-[0.8rem] leading-[1.8] text-muted-foreground">
+                      <div>
+                        <span className="text-primary">~ $</span>{" "}
+                        <span className="text-foreground break-all">
+                          curl -fsSL https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/ollama-setup.sh | bash
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -537,28 +585,13 @@ export default function DocsPage() {
                 </span>
                 <div className="flex-1">
                   <h3 className="mb-2 text-[1.05rem] font-semibold">
-                    Start Ruuh with a Local Model
+                    How it works
                   </h3>
-                  <p className="mb-3 text-[0.92rem] leading-relaxed text-muted-foreground">
-                    Pass the model name when launching Ruuh. It auto-detects
-                    available Ollama models.
+                  <p className="text-[0.92rem] leading-relaxed text-muted-foreground">
+                    <code className="rounded bg-code-block px-1.5 py-0.5 text-[0.82rem]">ruuh --ollama</code>{" "}
+                    starts the Ollama server, launches the agent with the local
+                    model, and stops Ollama when you exit. No API keys needed.
                   </p>
-                  <div className="overflow-hidden rounded-lg border border-border bg-code-block">
-                    <div className="flex gap-2 border-b border-border px-4 py-2.5">
-                      <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
-                      <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
-                      <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
-                    </div>
-                    <div className="p-5 font-mono text-[0.8rem] leading-[1.8] text-muted-foreground">
-                      <div>
-                        <span className="text-primary">~ $</span>{" "}
-                        <span className="text-foreground">ruuh --model codellama</span>
-                      </div>
-                      <div>Connecting to Ollama...</div>
-                      <div>Model: codellama (3.8B)</div>
-                      <div>Running fully offline</div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -584,8 +617,12 @@ export default function DocsPage() {
                 cmd: "ruuh",
               },
               {
-                label: "Start with a specific model",
-                cmd: "ruuh --model codellama",
+                label: "Start with Ollama (local model)",
+                cmd: "ruuh --ollama",
+              },
+              {
+                label: "Open web dashboard",
+                cmd: "http://localhost:3000",
               },
               {
                 label: "Log into Ubuntu manually",

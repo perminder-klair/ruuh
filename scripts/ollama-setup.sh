@@ -11,6 +11,15 @@ set -e
 
 main() {
 
+# -- Model catalogue --
+MODEL_IDS=("glm-5:cloud" "qwen3:1.7b" "gemma3:1b" "llama3.2:1b" "phi4-mini")
+MODEL_DESCS=("cloud, recommended" "local, ~1GB" "local, ~815MB" "local, ~1.3GB" "local, ~2.5GB")
+MODEL_COUNT=5
+
+is_cloud_model() {
+    case "$1" in *:cloud) return 0 ;; *) return 1 ;; esac
+}
+
 echo "============================================"
 echo "  🦙 Ollama Setup for Ruuh Agent"
 echo "============================================"
@@ -19,14 +28,14 @@ echo "============================================"
 # Step 1: Install Ollama
 # ------------------------------------------
 echo ""
-echo "[1/5] Installing Ollama..."
+echo "[1/6] Installing Ollama..."
 pkg install -y ollama
 
 # ------------------------------------------
-# Step 2: Start Ollama and pull model
+# Step 2: Start Ollama server
 # ------------------------------------------
 echo ""
-echo "[2/5] Starting Ollama server..."
+echo "[2/6] Starting Ollama server..."
 ollama serve &
 OLLAMA_PID=$!
 
@@ -45,53 +54,88 @@ for i in $(seq 1 30); do
     sleep 1
 done
 
+# ------------------------------------------
+# Step 3: Select model
+# ------------------------------------------
 echo ""
-echo "[3/5] Authenticating with Ollama..."
-echo "   You need an Ollama account to use cloud models."
-echo "   A URL will appear below — open it in your browser to sign in."
+echo "[3/6] Select a model:"
 echo ""
-ollama signin
+for i in $(seq 0 $((MODEL_COUNT - 1))); do
+    printf "  %d) %-18s (%s)\n" "$((i + 1))" "${MODEL_IDS[$i]}" "${MODEL_DESCS[$i]}"
+done
+echo ""
+printf "Choice [1]: "
+read -r choice < /dev/tty
 
+if [ -z "$choice" ]; then
+    choice=1
+fi
+
+if ! [[ "$choice" =~ ^[0-9]+$ ]] || [ "$choice" -lt 1 ] || [ "$choice" -gt "$MODEL_COUNT" ]; then
+    echo "   Invalid choice, defaulting to 1 (${MODEL_IDS[0]})"
+    choice=1
+fi
+
+SELECTED_MODEL="${MODEL_IDS[$((choice - 1))]}"
+echo "   Selected: $SELECTED_MODEL"
+
+# ------------------------------------------
+# Step 4: Authenticate (cloud models only)
+# ------------------------------------------
 echo ""
-echo "[4/5] Pulling glm-5:cloud model (this may take a while)..."
-ollama pull glm-5:cloud
+if is_cloud_model "$SELECTED_MODEL"; then
+    echo "[4/6] Authenticating with Ollama..."
+    echo "   You need an Ollama account to use cloud models."
+    echo "   A URL will appear below — open it in your browser to sign in."
+    echo ""
+    ollama signin
+else
+    echo "[4/6] Skipping authentication (local model selected)."
+fi
+
+# ------------------------------------------
+# Step 5: Pull model
+# ------------------------------------------
+echo ""
+echo "[5/6] Pulling $SELECTED_MODEL model (this may take a while)..."
+ollama pull "$SELECTED_MODEL"
 
 # Stop the background server now that the pull is done
 kill "$OLLAMA_PID" 2>/dev/null || true
 wait "$OLLAMA_PID" 2>/dev/null || true
 
 # ------------------------------------------
-# Step 3: Configure pi-coding-agent
+# Step 6: Configure pi-coding-agent
 # ------------------------------------------
 echo ""
-echo "[5/5] Configuring pi-coding-agent to use Ollama..."
+echo "[6/6] Configuring pi-coding-agent to use Ollama..."
 
-proot-distro login ubuntu -- bash -c '
+proot-distro login ubuntu -- env SELECTED_MODEL="$SELECTED_MODEL" bash -c "
 set -e
-mkdir -p "$HOME/.pi/agent"
-cat > "$HOME/.pi/agent/models.json" << '"'"'MODELSEOF'"'"'
+mkdir -p \"\$HOME/.pi/agent\"
+cat > \"\$HOME/.pi/agent/models.json\" << MODELSEOF
 {
-  "providers": {
-    "ollama": {
-      "baseUrl": "http://localhost:11434/v1",
-      "api": "openai-completions",
-      "apiKey": "ollama",
-      "models": [
-        { "id": "glm-5:cloud" }
+  \"providers\": {
+    \"ollama\": {
+      \"baseUrl\": \"http://localhost:11434/v1\",
+      \"api\": \"openai-completions\",
+      \"apiKey\": \"ollama\",
+      \"models\": [
+        { \"id\": \"$SELECTED_MODEL\" }
       ]
     }
   }
 }
 MODELSEOF
-echo "✅ models.json written to ~/.pi/agent/models.json"
-cat > "$HOME/.pi/agent/settings.json" << '"'"'SETTINGSEOF'"'"'
+echo \"✅ models.json written to ~/.pi/agent/models.json\"
+cat > \"\$HOME/.pi/agent/settings.json\" << SETTINGSEOF
 {
-  "defaultProvider": "ollama",
-  "defaultModel": "glm-5:cloud"
+  \"defaultProvider\": \"ollama\",
+  \"defaultModel\": \"$SELECTED_MODEL\"
 }
 SETTINGSEOF
-echo "✅ settings.json written to ~/.pi/agent/settings.json"
-'
+echo \"✅ settings.json written to ~/.pi/agent/settings.json\"
+"
 
 # ------------------------------------------
 # Done
@@ -108,7 +152,7 @@ echo ""
 echo "  This starts Ollama and the agent in one session."
 echo "  Ollama stops automatically when you exit."
 echo ""
-echo "  The glm-5:cloud model is now the default —"
+echo "  The $SELECTED_MODEL model is now the default —"
 echo "  no need to select it manually."
 echo "============================================"
 
