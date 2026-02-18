@@ -1,5 +1,7 @@
 import http from "node:http";
 import os from "node:os";
+import fs from "node:fs";
+import path from "node:path";
 import { execSync } from "node:child_process";
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { Type } from "@sinclair/typebox";
@@ -30,6 +32,12 @@ interface DashboardState {
   activityLog: ActivityEntry[];
   customStatus: string | null;
   chatMessages: ChatMessage[];
+  modelName: string | null;
+  modelId: string | null;
+  skills: string[];
+  extensions: string[];
+  prompts: string[];
+  agentHome: string | null;
 }
 
 const state: DashboardState = {
@@ -41,6 +49,12 @@ const state: DashboardState = {
   activityLog: [],
   customStatus: null,
   chatMessages: [],
+  modelName: null,
+  modelId: null,
+  skills: [],
+  extensions: [],
+  prompts: [],
+  agentHome: null,
 };
 
 const MAX_LOG_ENTRIES = 50;
@@ -337,6 +351,22 @@ function dashboardHTML(): string {
   .custom-status { font-size: 1rem; color: #d4d0cc; font-style: italic; }
   .custom-status.empty { color: #5a5550; }
 
+  /* Resource cards */
+  .resource-section { margin-bottom: 10px; }
+  .resource-section:last-child { margin-bottom: 0; }
+  .resource-label { font-size: 0.7rem; color: #8a8480; display: block; margin-bottom: 4px; }
+  .resource-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: #1a1816;
+    border: 1px solid #201e1b;
+    color: #d4d0cc;
+  }
+  .mono-value { font-family: monospace; font-size: 0.9rem; color: #d4d0cc; }
+  .none-value { color: #5a5550; font-style: italic; font-size: 0.9rem; }
+
   /* Activity log */
   .log { max-height: 50vh; overflow-y: auto; }
   .log-entry {
@@ -567,6 +597,35 @@ function dashboardHTML(): string {
     <div class="custom-status empty" id="customStatus">No status set</div>
   </div>
 
+  <!-- Model -->
+  <div class="card">
+    <div class="card-title">Model</div>
+    <span id="modelInfo" class="none-value">No model connected</span>
+  </div>
+
+  <!-- Loaded Resources -->
+  <div class="card">
+    <div class="card-title">Loaded Resources</div>
+    <div class="resource-section">
+      <span class="resource-label">Skills</span>
+      <div class="resource-tags" id="skillsList"></div>
+    </div>
+    <div class="resource-section">
+      <span class="resource-label">Extensions</span>
+      <div class="resource-tags" id="extensionsList"></div>
+    </div>
+    <div class="resource-section">
+      <span class="resource-label">Prompts</span>
+      <div class="resource-tags" id="promptsList"></div>
+    </div>
+  </div>
+
+  <!-- Files -->
+  <div class="card">
+    <div class="card-title">Files</div>
+    <div class="info-item"><label>Agent Home</label><span id="agentHome" class="mono-value">—</span></div>
+  </div>
+
   <!-- Activity Log -->
   <div class="card">
     <div class="card-title">Activity Log</div>
@@ -611,6 +670,34 @@ function dashboardHTML(): string {
       cs.textContent = "No status set";
       cs.className = "custom-status empty";
     }
+
+    // Model
+    var modelEl = $("modelInfo");
+    if (s.modelName) {
+      modelEl.textContent = s.modelName + (s.modelId ? " (" + s.modelId + ")" : "");
+      modelEl.className = "";
+    } else {
+      modelEl.textContent = "No model connected";
+      modelEl.className = "none-value";
+    }
+
+    // Loaded resources — safe: all names escaped via escapeHtml before insertion
+    function renderTags(containerId, items) {
+      var el = $(containerId);
+      if (!items || items.length === 0) {
+        el.innerHTML = '<span class="none-value">None</span>';
+      } else {
+        el.innerHTML = items.map(function(name) {
+          return '<span class="tag">' + escapeHtml(name) + '</span>';
+        }).join("");
+      }
+    }
+    renderTags("skillsList", s.skills);
+    renderTags("extensionsList", s.extensions);
+    renderTags("promptsList", s.prompts);
+
+    // Agent home
+    $("agentHome").textContent = s.agentHome || "\u2014";
 
     // Chat messages
     var chatEl = $("chatMessages");
@@ -777,6 +864,33 @@ export default function dashboardExtension(pi: ExtensionAPI) {
     state.currentToolName = null;
     state.chatMessages = [];
 
+    // Model info
+    if (ctx.model) {
+      state.modelName = ctx.model.name ?? null;
+      state.modelId = ctx.model.id ?? null;
+    }
+
+    // Agent home
+    state.agentHome = ctx.cwd ?? null;
+
+    // Scan loaded resources
+    const base = ctx.cwd ?? ".";
+    try {
+      state.skills = fs.readdirSync(path.join(base, ".pi", "skills")).filter(
+        (f) => fs.statSync(path.join(base, ".pi", "skills", f)).isDirectory()
+      ).sort();
+    } catch { state.skills = []; }
+    try {
+      state.extensions = fs.readdirSync(path.join(base, ".pi", "extensions")).filter(
+        (f) => !fs.statSync(path.join(base, ".pi", "extensions", f)).isDirectory()
+      ).sort();
+    } catch { state.extensions = []; }
+    try {
+      state.prompts = fs.readdirSync(path.join(base, ".pi", "prompts")).filter(
+        (f) => !fs.statSync(path.join(base, ".pi", "prompts", f)).isDirectory()
+      ).sort();
+    } catch { state.prompts = []; }
+
     try {
       const port = await startServer();
       boundPort = port;
@@ -871,6 +985,13 @@ export default function dashboardExtension(pi: ExtensionAPI) {
       }
       broadcastSSE({ type: "state", data: state });
     }
+  });
+
+  // ---- model_select ----
+  pi.on("model_select", async (ev) => {
+    state.modelName = ev.model?.name ?? null;
+    state.modelId = ev.model?.id ?? null;
+    pushLog("session", `Model changed: ${state.modelName ?? "unknown"}`);
   });
 
   // ---- /status command ----
