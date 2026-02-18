@@ -534,8 +534,9 @@ function dashboardHTML(): string {
   .tab.active { background: #141210; color: #f0f0f0; border-color: #FBAA19; }
   .view { display: none; }
   .view.active { display: block; }
-  .view.active.view-chat { display: flex; flex-direction: column; height: calc(100vh - 70px); }
-  .view-chat .card { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .view-info { max-height: calc(100vh - 70px); overflow-y: auto; }
+  .view.active.view-chat { display: flex; flex-direction: column; height: calc(100vh - 100px); }
+  .view-chat .card { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
 </style>
 </head>
 <body>
@@ -563,7 +564,7 @@ function dashboardHTML(): string {
   </div>
 </div>
 
-<div id="viewInfo" class="view">
+<div id="viewInfo" class="view view-info">
   <div class="install-banner" id="installBanner">
     <div class="install-banner-text"><strong>Ruuh</strong> can be added to your home screen for an app-like experience.</div>
     <button class="install-btn" id="installBtn">Install</button>
