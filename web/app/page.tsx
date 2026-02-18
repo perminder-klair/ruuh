@@ -2,7 +2,6 @@ import {
   Terminal,
   Server,
   Brain,
-  Sparkles,
   FolderOpen,
   Plug,
   Cpu,
@@ -55,12 +54,6 @@ const features = [
       "MEMORY.md preserves context across sessions. Ruuh remembers what you're working on and picks up where you left off.",
   },
   {
-    icon: Sparkles,
-    title: "Custom AI Persona",
-    description:
-      "Define Ruuh's personality and behavior in SOUL.md. Make it match your communication style, tone, and personal preferences.",
-  },
-  {
     icon: FolderOpen,
     title: "Android File Access",
     description:
@@ -71,41 +64,6 @@ const features = [
     title: "Termux API Skills",
     description:
       "Ruuh knows how to use your Android hardware — camera, SMS, sensors, location, notifications, and more via auto-discovered Termux API skills.",
-  },
-];
-
-const installSteps = [
-  {
-    title: "Update Termux",
-    description: "Upgrades all Termux packages non-interactively",
-  },
-  {
-    title: "Install proot-distro & termux-api",
-    description: "Adds proot for Linux distros and API access",
-  },
-  {
-    title: "Setup Shared Storage",
-    description: "Creates ~/storage/shared/ruuh/ for config files",
-  },
-  {
-    title: "Create Agent Configs",
-    description: "Writes AGENTS.md, SOUL.md, and MEMORY.md",
-  },
-  {
-    title: "Install Ubuntu",
-    description: "Sets up Ubuntu via proot-distro",
-  },
-  {
-    title: "Install Node.js 22",
-    description: "Adds Node.js via NodeSource inside Ubuntu",
-  },
-  {
-    title: "Install pi-coding-agent",
-    description: "Installs @mariozechner/pi-coding-agent globally",
-  },
-  {
-    title: "Create Launcher & Symlinks",
-    description: "Adds ruuh command and Termux API symlinks",
   },
 ];
 
@@ -515,39 +473,6 @@ export default function Home() {
               </div>
             </div>
           </AnimatedSection>
-        </div>
-      </section>
-
-      {/* What Gets Installed */}
-      <section className="border-t-soft py-24">
-        <div className="mx-auto max-w-[1100px] px-6">
-          <AnimatedDiv>
-            <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
-              What Gets <span className="text-primary">Installed</span>
-            </h2>
-            <p className="mb-12 max-w-[600px] text-[1.05rem] text-muted-foreground">
-              Here&apos;s exactly what the setup script does — no surprises.
-            </p>
-          </AnimatedDiv>
-          <StaggerContainer className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {installSteps.map((step, i) => (
-              <StaggerItem key={i}>
-                <div className="flex items-start gap-3.5 rounded-lg border border-border bg-card px-5 py-[18px]">
-                  <span className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md bg-primary/15 font-mono text-xs font-bold text-primary">
-                    {i + 1}
-                  </span>
-                  <div>
-                    <h4 className="mb-0.5 text-[0.95rem] font-semibold">
-                      {step.title}
-                    </h4>
-                    <p className="text-[0.85rem] text-muted-foreground">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
         </div>
       </section>
 

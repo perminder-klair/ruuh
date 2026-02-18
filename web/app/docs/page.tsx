@@ -78,7 +78,10 @@ const setupSteps = [
       "Paste the one-liner below into Termux. It runs one command with three steps — the Termux + Ubuntu environment installs automatically, then Ollama and Termux API skills each prompt Y/n so you can skip them.",
     terminal: {
       lines: [
-        { prompt: true, text: "curl -fsSL https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/setup.sh | bash" },
+        {
+          prompt: true,
+          text: "curl -fsSL https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/setup.sh | bash",
+        },
         { prompt: false, text: "[1/3] Running ruuh-setup.sh..." },
         { prompt: false, text: "  Install Ollama + model? [Y/n] y" },
         { prompt: false, text: "[2/3] Running ollama-setup.sh..." },
@@ -201,8 +204,8 @@ export default function DocsPage() {
           </AnimatedDiv>
           <AnimatedDiv delay={0.2}>
             <p className="max-w-[560px] text-lg leading-relaxed text-muted-foreground">
-              Everything you need to install and run Ruuh on your Android device.
-              The entire process takes about five minutes.
+              Everything you need to install and run Ruuh on your Android
+              device. The entire process takes about five minutes.
             </p>
           </AnimatedDiv>
         </div>
@@ -394,7 +397,9 @@ export default function DocsPage() {
             </h2>
             <p className="mb-4 text-[1.05rem] text-muted-foreground">
               Teach Ruuh how to use your Android device features. Skills are
-              auto-discovered on startup — install once, use everywhere.
+              auto-discovered on startup — install once, use everywhere. If you
+              skipped skills during setup or want to reinstall them, run the
+              command below.
             </p>
             <p className="mb-6 text-[1.05rem] text-muted-foreground">
               Requires the{" "}
@@ -415,8 +420,8 @@ export default function DocsPage() {
               >
                 Termux
               </a>{" "}
-              and Termux:API must be installed from F-Droid — mixing
-              Play Store and F-Droid versions causes signature mismatch errors.
+              and Termux:API must be installed from F-Droid — mixing Play Store
+              and F-Droid versions causes signature mismatch errors.
             </p>
           </AnimatedDiv>
           <AnimatedDiv delay={0.1}>
@@ -441,10 +446,10 @@ export default function DocsPage() {
                     termux-device
                   </h3>
                   <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
-                    Device hardware, sensors, and UI — battery status, brightness,
-                    torch, vibrate, volume, sensors, fingerprint, GPS location, WiFi,
-                    clipboard, notifications, dialogs, toasts, wake lock, wallpaper,
-                    and downloads.
+                    Device hardware, sensors, and UI — battery status,
+                    brightness, torch, vibrate, volume, sensors, fingerprint,
+                    GPS location, WiFi, clipboard, notifications, dialogs,
+                    toasts, wake lock, wallpaper, and downloads.
                   </p>
                 </div>
               </div>
@@ -459,9 +464,10 @@ export default function DocsPage() {
                     termux-comms
                   </h3>
                   <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
-                    Communication and media — SMS send &amp; receive, contacts, call log,
-                    camera photos, microphone recording, text-to-speech, media playback,
-                    file sharing, storage picker, and calendar access.
+                    Communication and media — SMS send &amp; receive, contacts,
+                    call log, camera photos, microphone recording,
+                    text-to-speech, media playback, file sharing, storage
+                    picker, and calendar access.
                   </p>
                 </div>
               </div>
@@ -477,8 +483,8 @@ export default function DocsPage() {
                   </h3>
                   <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
                     System integration and automation — job scheduling, infrared
-                    transmit, USB device access, NFC tag read/write, and hardware
-                    keystore crypto.
+                    transmit, USB device access, NFC tag read/write, and
+                    hardware keystore crypto.
                   </p>
                 </div>
               </div>
@@ -532,8 +538,8 @@ export default function DocsPage() {
                     Already installed?
                   </h3>
                   <p className="mb-3 text-[0.92rem] leading-relaxed text-muted-foreground">
-                    If you chose &ldquo;Y&rdquo; when prompted during setup, Ollama is
-                    already installed with a model. Just run:
+                    If you chose &ldquo;Y&rdquo; when prompted during setup,
+                    Ollama is already installed with a model. Just run:
                   </p>
                   <div className="overflow-hidden rounded-lg border border-border bg-code-block shadow-terminal">
                     <div className="flex gap-2 border-b border-border px-4 py-2.5">
@@ -573,7 +579,9 @@ export default function DocsPage() {
                       <div>
                         <span className="text-primary">~ $</span>{" "}
                         <span className="text-foreground break-all">
-                          curl -fsSL https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/ollama-setup.sh | bash
+                          curl -fsSL
+                          https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/ollama-setup.sh
+                          | bash
                         </span>
                       </div>
                     </div>
@@ -589,7 +597,9 @@ export default function DocsPage() {
                     How it works
                   </h3>
                   <p className="text-[0.92rem] leading-relaxed text-muted-foreground">
-                    <code className="rounded bg-code-block px-1.5 py-0.5 text-[0.82rem]">ruuh --ollama</code>{" "}
+                    <code className="rounded bg-code-block px-1.5 py-0.5 text-[0.82rem]">
+                      ruuh --ollama
+                    </code>{" "}
                     starts the Ollama server, launches the agent with the local
                     model, and stops Ollama when you exit. No API keys needed.
                   </p>
@@ -634,16 +644,8 @@ export default function DocsPage() {
                 cmd: "cd ~/agent && pi",
               },
               {
-                label: "Install Termux API skills",
-                cmd: SKILLS_CMD,
-              },
-              {
                 label: "Check battery (Termux API)",
                 cmd: "termux-battery-status",
-              },
-              {
-                label: "Re-run the setup script",
-                cmd: INSTALL_CMD,
               },
             ].map((item) => (
               <StaggerItem key={item.label}>
