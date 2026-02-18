@@ -138,8 +138,12 @@ echo "============================================"
 '
 
 # Patch pi-coding-agent upstream bugs
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd)"
-proot-distro login ubuntu -- bash < "$SCRIPT_DIR/patch-pi-agent.sh"
+_patch="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd)/patch-pi-agent.sh"
+if [ -f "$_patch" ]; then
+    proot-distro login ubuntu -- bash < "$_patch"
+else
+    curl -fsSL "$REPO_RAW/scripts/patch-pi-agent.sh" | proot-distro login ubuntu -- bash
+fi
 
 # ------------------------------------------
 # Step 7: Create ruuh launcher script
