@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
 import {
   Download,
-  Terminal,
-  Play,
-  Settings,
-  FileText,
   Smartphone,
-  Cpu,
   ExternalLink,
-  FolderOpen,
   Plug,
   MessageSquare,
+  Settings,
 } from "lucide-react";
 import { CopyButton } from "@/components/copy-button";
 import {
@@ -43,15 +38,15 @@ const prerequisites = [
     icon: Download,
     title: "Download Termux",
     description:
-      "Download Termux from F-Droid (recommended) or the Play Store.",
+      "Download Termux from F-Droid (recommended for Termux:API) or the Play Store.",
     link: "https://f-droid.org/en/packages/com.termux/",
     playStoreLink: "https://play.google.com/store/apps/details?id=com.termux",
   },
   {
-    icon: Settings,
-    title: "API Key (optional)",
-    description:
-      "An OpenAI or Anthropic API key for cloud models, or use Ollama for fully local/offline.",
+    icon: Download,
+    title: "Download Termux:API (Optional)",
+    description: "Install the Termux:API companion app for hardware access.",
+    link: "https://f-droid.org/en/packages/com.termux.api/",
   },
 ];
 
@@ -94,8 +89,26 @@ const setupSteps = [
   {
     step: 4,
     title: "Start Ruuh",
-    description:
-      <>Once the install finishes, type ruuh to launch the agent. Use <code className="rounded bg-code-block px-2 py-0.5 font-mono text-[0.82rem] text-primary">ruuh --ollama</code> to start with a local model via Ollama. It logs into the Ubuntu proot environment and starts pi-coding-agent from the shared config directory. A web dashboard starts automatically at <a href="http://localhost:3000" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">localhost:3000</a> — open it in your device browser while the agent is running.</>,
+    description: (
+      <>
+        Once the install finishes, type ruuh to launch the agent. Use{" "}
+        <code className="rounded bg-code-block px-2 py-0.5 font-mono text-[0.82rem] text-primary">
+          ruuh --ollama
+        </code>{" "}
+        to start with a local model via Ollama. It logs into the Ubuntu proot
+        environment and starts pi-coding-agent from the shared config directory.
+        A web dashboard starts automatically at{" "}
+        <a
+          href="http://localhost:3000"
+          className="text-primary hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          localhost:3000
+        </a>{" "}
+        — open it in your device browser while the agent is running.
+      </>
+    ),
     terminal: {
       lines: [
         { prompt: true, text: "ruuh --ollama" },
@@ -109,31 +122,6 @@ const setupSteps = [
       ],
     },
   },
-];
-
-const configFiles = [
-  { name: "AGENTS.md", description: "Master workspace config — startup routine, memory structure, behaviour" },
-  { name: "SOUL.md", description: "Personality and tone — communication style and boundaries" },
-  { name: "IDENTITY.md", description: "Auto-filled on first run — name, creature type, vibe, emoji" },
-  { name: "USER.md", description: "Profile of the human — updated as the agent learns about you" },
-  { name: "MEMORY.md", description: "Persistent long-term memory across sessions" },
-  { name: "BOOTSTRAP.md", description: "First-run ritual — deleted after the first session" },
-  { name: "BOOT.md", description: "Custom startup tasks each session (optional)" },
-  { name: "HEARTBEAT.md", description: "Periodic task scheduler for interval-based checks (optional)" },
-  { name: "TOOLS.md", description: "Quick reference of available Termux API commands" },
-];
-
-const piStructure = [
-  { name: ".pi/settings.json", description: "Agent settings — model, API keys, preferences" },
-  { name: ".pi/prompts/", description: "Custom prompt templates for reusable workflows" },
-  { name: ".pi/extensions/", description: "Extensions like the web dashboard (dashboard.ts)" },
-  { name: ".pi/skills/", description: "Auto-discovered skill directories (termux-device, termux-comms, etc.)" },
-];
-
-const filePaths = [
-  { context: "Termux", path: "~/storage/shared/ruuh/" },
-  { context: "Ubuntu (proot)", path: "~/agent/" },
-  { context: "Android File Manager", path: "Internal Storage > ruuh" },
 ];
 
 export default function DocsPage() {
@@ -219,7 +207,8 @@ export default function DocsPage() {
               Installation
             </h2>
             <p className="mb-6 text-[1.05rem] text-muted-foreground">
-              Run a single command to set up everything automatically — Termux
+              Once Termux and Termux:API are installed, open Termux and run a
+              single command to set up everything automatically — Ubuntu
               environment, Ollama, and device skills.
             </p>
           </AnimatedDiv>
@@ -302,7 +291,7 @@ export default function DocsPage() {
               skipped skills during setup or want to reinstall them, run the
               command below.
             </p>
-            <p className="mb-6 text-[1.05rem] text-muted-foreground">
+            <blockquote className="mb-6 border-l-2 border-primary/40 pl-4 text-[0.95rem] leading-relaxed text-muted-foreground">
               Requires the{" "}
               <a
                 href="https://f-droid.org/en/packages/com.termux.api/"
@@ -323,7 +312,7 @@ export default function DocsPage() {
               </a>{" "}
               and Termux:API must be installed from F-Droid — mixing Play Store
               and F-Droid versions causes signature mismatch errors.
-            </p>
+            </blockquote>
           </AnimatedDiv>
           <AnimatedDiv delay={0.1}>
             <div className="mb-10 flex flex-col items-start gap-3 rounded-lg border border-border bg-code-block p-3 sm:p-4 shadow-premium-sm md:flex-row md:items-center">
@@ -391,28 +380,6 @@ export default function DocsPage() {
               </div>
             </StaggerItem>
           </StaggerContainer>
-          <AnimatedDiv className="mt-8">
-            <div className="overflow-hidden rounded-lg border border-border bg-code-block shadow-terminal">
-              <div className="flex gap-2 border-b border-border px-4 py-2.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
-                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
-                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
-              </div>
-              <div className="p-5 font-mono text-[0.8rem] leading-[1.8] text-muted-foreground">
-                <div>
-                  <span className="text-primary">~ $</span>{" "}
-                  <span className="text-foreground break-all">
-                    {SKILLS_CMD}
-                  </span>
-                </div>
-                <div>[1/3] Checking shared storage...</div>
-                <div>[2/3] Creating skill directories...</div>
-                <div>[3/3] Downloading skill files...</div>
-                <div>&nbsp;</div>
-                <div>Skills installed!</div>
-              </div>
-            </div>
-          </AnimatedDiv>
         </div>
       </section>
 
@@ -508,95 +475,30 @@ export default function DocsPage() {
               </div>
             </div>
           </AnimatedSection>
-        </div>
-      </section>
-
-      {/* Config Files */}
-      <section className="border-b-soft py-24 px-6">
-        <div className="mx-auto max-w-[860px]">
-          <AnimatedDiv>
-            <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
-              Configuration <span className="text-primary">Files</span>
-            </h2>
-            <p className="mb-10 text-[1.05rem] text-muted-foreground">
-              Ruuh creates a set of Markdown files in your Android&apos;s{" "}
-              <code className="rounded bg-code-block px-2 py-0.5 font-mono text-[0.82rem] text-primary">
-                Internal Storage &gt; ruuh
+          <AnimatedDiv className="mt-8">
+            <blockquote className="border-l-2 border-primary/40 pl-4 text-[0.95rem] leading-relaxed text-muted-foreground">
+              To switch models, pull a new one and restart:{" "}
+              <code className="rounded bg-code-block px-1.5 py-0.5 text-[0.82rem]">
+                ollama pull llama3
               </code>{" "}
-              directory. Open it with any file manager and edit with any text
-              editor — no terminal required.
-            </p>
-          </AnimatedDiv>
-          <AnimatedDiv>
-            <div className="rounded-lg border border-border bg-card p-6">
-              <h3 className="mb-4 flex items-center gap-2 text-[0.95rem] font-semibold">
-                <FileText className="size-4 text-primary" />
-                Agent Files
-              </h3>
-              <div className="space-y-2.5">
-                {configFiles.map((file) => (
-                  <div
-                    key={file.name}
-                    className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-3"
-                  >
-                    <code className="shrink-0 rounded bg-code-block px-2.5 py-1 font-mono text-[0.82rem] text-primary w-40">
-                      {file.name}
-                    </code>
-                    <span className="text-[0.85rem] text-muted-foreground">
-                      {file.description}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </AnimatedDiv>
-
-          <AnimatedDiv className="mt-4">
-            <div className="rounded-lg border border-border bg-card p-6">
-              <h3 className="mb-4 flex items-center gap-2 text-[0.95rem] font-semibold">
-                <Settings className="size-4 text-primary" />
-                .pi Directory
-              </h3>
-              <div className="space-y-2.5">
-                {piStructure.map((item) => (
-                  <div
-                    key={item.name}
-                    className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-3"
-                  >
-                    <code className="shrink-0 rounded bg-code-block px-2.5 py-1 font-mono text-[0.82rem] text-primary w-40">
-                      {item.name}
-                    </code>
-                    <span className="text-[0.85rem] text-muted-foreground">
-                      {item.description}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </AnimatedDiv>
-
-          <AnimatedDiv className="mt-4">
-            <div className="rounded-lg border border-border bg-card p-6">
-              <h3 className="mb-4 flex items-center gap-2 text-[0.95rem] font-semibold">
-                <FolderOpen className="size-4 text-primary" />
-                File Locations
-              </h3>
-              <div className="space-y-2.5">
-                {filePaths.map((item) => (
-                  <div
-                    key={item.context}
-                    className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3"
-                  >
-                    <span className="text-[0.85rem] font-medium text-muted-foreground w-44 flex-shrink-0">
-                      {item.context}
-                    </span>
-                    <code className="rounded bg-code-block px-2.5 py-1 font-mono text-[0.82rem] text-foreground">
-                      {item.path}
-                    </code>
-                  </div>
-                ))}
-              </div>
-            </div>
+              then{" "}
+              <code className="rounded bg-code-block px-1.5 py-0.5 text-[0.82rem]">
+                ruuh --ollama
+              </code>
+              . Ruuh automatically uses the latest model you pulled.
+            </blockquote>
+            <blockquote className="mt-4 border-l-2 border-primary/40 pl-4 text-[0.95rem] leading-relaxed text-muted-foreground">
+              Ollama supports both local and cloud models depending on your device.
+              Run a cloud model with{" "}
+              <code className="rounded bg-code-block px-1.5 py-0.5 text-[0.82rem]">
+                ollama pull qwen3:1.7b
+              </code>{" "}
+              for on-device or{" "}
+              <code className="rounded bg-code-block px-1.5 py-0.5 text-[0.82rem]">
+                ollama pull qwen3.5:cloud
+              </code>{" "}
+              to run via Ollama&apos;s cloud infrastructure.
+            </blockquote>
           </AnimatedDiv>
         </div>
       </section>
@@ -668,7 +570,8 @@ export default function DocsPage() {
           </StaggerContainer>
           <AnimatedDiv className="mt-6">
             <p className="text-[0.92rem] text-muted-foreground">
-              For the full list of commands, providers, and configuration options, see the{" "}
+              For the full list of commands, providers, and configuration
+              options, see the{" "}
               <a
                 href="https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent"
                 className="text-primary hover:underline"
@@ -732,34 +635,6 @@ export default function DocsPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <AnimatedDiv>
-        <footer className="border-t-soft py-10 text-center text-[0.9rem] text-muted-foreground">
-          <div className="mx-auto max-w-[860px] space-y-2 px-6">
-            <p>
-              <a
-                href="https://github.com/perminder-klair/ruuh"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:underline"
-              >
-                View the source on GitHub
-              </a>
-            </p>
-            <p>
-              Built by{" "}
-              <a
-                href="https://www.klair.co"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:underline"
-              >
-                Perminder Klair
-              </a>
-            </p>
-          </div>
-        </footer>
-      </AnimatedDiv>
     </main>
   );
 }

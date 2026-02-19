@@ -355,34 +355,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <AnimatedDiv>
-        <footer className="border-t-soft py-10 text-center text-[0.9rem] text-muted-foreground">
-          <div className="mx-auto max-w-[1100px] space-y-2 px-6">
-            <p>
-              <a
-                href="https://github.com/perminder-klair/ruuh"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:underline"
-              >
-                View the source on GitHub
-              </a>
-            </p>
-            <p>
-              Built by{" "}
-              <a
-                href="https://www.klair.co"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:underline"
-              >
-                Perminder Klair
-              </a>
-            </p>
-          </div>
-        </footer>
-      </AnimatedDiv>
     </main>
   );
 }

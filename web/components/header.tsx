@@ -25,6 +25,14 @@ export function Header() {
           >
             Docs
           </Link>
+          <Link
+            href="/sheet"
+            className={`text-sm transition-colors hover:text-primary ${
+              pathname === "/sheet" ? "text-primary" : "text-muted-foreground"
+            }`}
+          >
+            Cheatsheet
+          </Link>
           <a
             href="https://github.com/perminder-klair/ruuh"
             target="_blank"
