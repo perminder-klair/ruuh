@@ -1,13 +1,8 @@
 import {
-  Terminal,
-  Server,
   Brain,
   FolderOpen,
   Plug,
   Cpu,
-  Cloud,
-  WifiOff,
-  Shield,
   Smartphone,
   MessageSquare,
   Settings,
@@ -30,22 +25,10 @@ const SKILLS_CMD =
 
 const features = [
   {
-    icon: Terminal,
-    title: "One-Command Setup",
-    description:
-      "A single curl command sets up Termux, Ubuntu, Node.js 22, the agent, Ollama, and device skills — everything in one go.",
-  },
-  {
     icon: Cpu,
-    title: "Hybrid AI Backend",
+    title: "Run Local with Ollama",
     description:
-      "Choose cloud APIs (OpenAI, Anthropic) or run models locally via Ollama for offline, private use — no internet required.",
-  },
-  {
-    icon: Server,
-    title: "Full Ubuntu Environment",
-    description:
-      "Runs in a real Ubuntu instance via proot-distro with Node.js 22 — no root required, no containers, no VMs.",
+      "Run models like Llama 3, CodeGemma, and DeepSeek Coder directly on your device via Ollama — no API keys, no internet, no data leaving your phone.",
   },
   {
     icon: Brain,
@@ -125,9 +108,20 @@ export default function Home() {
             <div className="space-y-4">
               <p className="text-[1.05rem] text-muted-foreground">
                 Ruuh is a personal AI assistant powered by the{" "}
-                <strong className="text-foreground">pi-coding-agent</strong> npm
-                package. It runs inside a full Ubuntu environment on your
-                Android device via Termux and proot-distro — no root required.
+                <a
+                  href="https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent"
+                  className="font-semibold text-foreground hover:text-primary transition-colors underline decoration-primary/40 underline-offset-2"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  pi-coding-agent
+                </a>{" "}
+                npm package. It runs inside a full Ubuntu environment on your
+                Android device via Termux and proot-distro —{" "}
+                <span className="font-semibold text-primary">
+                  no root required
+                </span>
+                .
                 Connect to cloud APIs like OpenAI and Anthropic, or run models
                 locally with <strong className="text-foreground">Ollama</strong>{" "}
                 for fully offline use.
@@ -199,9 +193,18 @@ export default function Home() {
                     rel="noopener noreferrer"
                   >
                     F-Droid
+                  </a>{" "}
+                  or the{" "}
+                  <a
+                    href="https://github.com/termux/termux-app/releases"
+                    className="text-primary hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GitHub Releases
                   </a>
-                  . The Play Store version is outdated — use F-Droid for the
-                  latest build.
+                  . The Play Store version is outdated — use F-Droid or GitHub
+                  for the latest build.
                 </p>
               </div>
             </StaggerItem>
@@ -215,8 +218,7 @@ export default function Home() {
                 </h3>
                 <p className="text-[0.92rem] text-muted-foreground">
                   Paste the one-line install command into Termux. It handles
-                  everything automatically — packages, Ubuntu, Node.js, the
-                  agent, Ollama, and device skills.
+                  everything automatically.
                 </p>
               </div>
             </StaggerItem>
@@ -233,8 +235,8 @@ export default function Home() {
                   <code className="rounded bg-code-block px-2 py-0.5 font-mono text-[0.82rem] text-primary">
                     ruuh
                   </code>{" "}
-                  and you&apos;re in. Ruuh is ready to help with anything —
-                  code, messages, reminders, your phone, your life.
+                  and you&apos;re in. Ruuh is ready with anything like messages,
+                  reminders, your phone, your life.
                 </p>
               </div>
             </StaggerItem>
@@ -271,109 +273,6 @@ export default function Home() {
                 </p>
               </HoverCard>
             ))}
-          </StaggerContainer>
-        </div>
-      </section>
-
-      {/* Run Local with Ollama */}
-      <section className="border-t-soft py-24">
-        <div className="mx-auto max-w-[1100px] px-6">
-          <AnimatedDiv>
-            <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
-              Run Local with <span className="text-primary">Ollama</span>
-            </h2>
-          </AnimatedDiv>
-          <AnimatedSection className="grid items-center gap-12 md:grid-cols-2">
-            <div className="space-y-4">
-              <p className="text-[1.05rem] text-muted-foreground">
-                Don&apos;t want to rely on cloud APIs? Ruuh supports{" "}
-                <strong className="text-foreground">Ollama</strong> as a local
-                backend — run models like Llama 3, CodeGemma, and DeepSeek Coder
-                directly on your device. No API keys, no internet, no data
-                leaving your phone.
-              </p>
-              <p className="text-[1.05rem] text-muted-foreground">
-                Switching between cloud and local is a single config change.
-                Point Ruuh at your Ollama instance and it auto-detects available
-                models — no restart required.
-              </p>
-              <p className="text-[1.05rem] text-muted-foreground">
-                Cloud APIs give you the most capable models. Ollama gives you
-                full privacy and offline access. Use whichever fits the moment —
-                or both.
-              </p>
-            </div>
-            <div className="overflow-hidden rounded-lg border border-border bg-code-block shadow-terminal">
-              <div className="flex gap-2 border-b border-border px-4 py-2.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
-                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
-                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
-              </div>
-              <div className="p-5 font-mono text-[0.82rem] leading-[1.8] text-muted-foreground">
-                <div>
-                  <span className="text-primary">~ $</span> ollama pull
-                  codellama
-                </div>
-                <div>pulling manifest...</div>
-                <div>pulling 3a43f93b78ec... 100%</div>
-                <div>success</div>
-                <div>&nbsp;</div>
-                <div>
-                  <span className="text-primary">~ $</span> ruuh --model
-                  codellama
-                </div>
-                <div>Connecting to Ollama...</div>
-                <div>Model: codellama (3.8B)</div>
-                <div>Running fully offline</div>
-                <div>&nbsp;</div>
-                <div>
-                  <span className="text-primary">pi &gt;</span>{" "}
-                  <span className="animate-blink inline-block h-4 w-2 bg-primary align-text-bottom" />
-                </div>
-              </div>
-            </div>
-          </AnimatedSection>
-          <StaggerContainer className="mx-auto mt-12 grid max-w-[400px] grid-cols-1 gap-6 md:max-w-none md:grid-cols-3">
-            <StaggerItem>
-              <div className="rounded-lg border border-border bg-card p-7 text-center">
-                <GlowIcon className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary mx-auto">
-                  <WifiOff className="size-5" />
-                </GlowIcon>
-                <h3 className="mb-2 text-base font-semibold">Fully Offline</h3>
-                <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
-                  Run models without an internet connection. Perfect for use on
-                  the go or in restricted networks.
-                </p>
-              </div>
-            </StaggerItem>
-            <StaggerItem>
-              <div className="rounded-lg border border-border bg-card p-7 text-center">
-                <GlowIcon className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary mx-auto">
-                  <Shield className="size-5" />
-                </GlowIcon>
-                <h3 className="mb-2 text-base font-semibold">
-                  Private by Default
-                </h3>
-                <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
-                  Your code never leaves your device. No tokens sent to
-                  third-party servers, no usage tracking.
-                </p>
-              </div>
-            </StaggerItem>
-            <StaggerItem>
-              <div className="rounded-lg border border-border bg-card p-7 text-center">
-                <GlowIcon className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary mx-auto">
-                  <Cloud className="size-5" />
-                </GlowIcon>
-                <h3 className="mb-2 text-base font-semibold">
-                  Seamless Switching
-                </h3>
-                <p className="text-[0.9rem] leading-relaxed text-muted-foreground">
-                  Switch between cloud APIs and local models with a single
-                  config change. No re-install, no downtime.
-                </p>
-              </div>
-            </StaggerItem>
           </StaggerContainer>
         </div>
       </section>
