@@ -1,6 +1,5 @@
 import {
   Brain,
-  FolderOpen,
   Plug,
   Cpu,
   Smartphone,
@@ -37,10 +36,10 @@ const features = [
       "MEMORY.md preserves context across sessions. Ruuh remembers what you're working on and picks up where you left off.",
   },
   {
-    icon: FolderOpen,
-    title: "Android File Access",
+    icon: Smartphone,
+    title: "Run on Any Android",
     description:
-      "Agent configs live in /sdcard/ruuh — edit them from any text editor on your phone. No terminal required for configuration.",
+      "Works on any Android 7+ phone or tablet. No root required — runs in a full Ubuntu environment via Termux and proot-distro.",
   },
   {
     icon: Plug,
@@ -194,17 +193,16 @@ export default function Home() {
                   >
                     F-Droid
                   </a>{" "}
-                  or the{" "}
+                  (recommended) or the{" "}
                   <a
-                    href="https://github.com/termux/termux-app/releases"
+                    href="https://play.google.com/store/apps/details?id=com.termux"
                     className="text-primary hover:underline"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    GitHub Releases
+                    Play Store
                   </a>
-                  . The Play Store version is outdated — use F-Droid or GitHub
-                  for the latest build.
+                  .
                 </p>
               </div>
             </StaggerItem>
