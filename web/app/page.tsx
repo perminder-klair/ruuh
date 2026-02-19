@@ -15,6 +15,8 @@ import {
   HoverCard,
   GlowIcon,
 } from "@/components/motion";
+import { TerminalDemo } from "@/components/terminal-demo/terminal-demo";
+import { WatchDemoButton } from "@/components/video-modal";
 
 const INSTALL_CMD =
   "curl -fsSL https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/setup.sh | bash";
@@ -136,29 +138,9 @@ export default function Home() {
                 your pocket — one that actually listens, remembers, and gets
                 better over time.
               </p>
+              <WatchDemoButton />
             </div>
-            <div className="overflow-hidden rounded-lg border border-border bg-code-block shadow-terminal">
-              <div className="flex gap-2 border-b border-border px-4 py-2.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
-                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
-                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
-              </div>
-              <div className="p-5 font-mono text-[0.82rem] leading-[1.8] text-muted-foreground">
-                <div>
-                  <span className="text-primary">~ $</span> ruuh
-                </div>
-                <div>Starting pi-coding-agent...</div>
-                <div>Loading MEMORY.md...</div>
-                <div>Loading SOUL.md persona...</div>
-                <div>&nbsp;</div>
-                <div>Ready. What do you need?</div>
-                <div>&nbsp;</div>
-                <div>
-                  <span className="text-primary">pi &gt;</span>{" "}
-                  <span className="animate-blink inline-block h-4 w-2 bg-primary align-text-bottom" />
-                </div>
-              </div>
-            </div>
+            <TerminalDemo />
           </AnimatedSection>
         </div>
       </section>
