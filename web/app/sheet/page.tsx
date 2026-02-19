@@ -96,7 +96,6 @@ const configFiles = [
   { name: "USER.md", desc: "Profile of the human, auto-updated" },
   { name: "MEMORY.md", desc: "Persistent long-term memory" },
   { name: "TOOLS.md", desc: "Available Termux API commands reference" },
-  { name: "BOOT.md", desc: "Custom startup tasks per session" },
   { name: "HEARTBEAT.md", desc: "Periodic scheduled checks" },
 ];
 
@@ -114,59 +113,239 @@ interface CmdEntry {
 }
 
 const deviceCmds: CmdEntry[] = [
-  { cmd: "termux-battery-status", desc: "Battery level, status, health, temperature", example: "termux-battery-status" },
-  { cmd: "termux-audio-info", desc: "Current audio output device and routing", example: "termux-audio-info" },
-  { cmd: "termux-brightness", desc: "Set screen brightness (0-255 or auto)", example: "termux-brightness 128" },
-  { cmd: "termux-torch", desc: "Toggle the flashlight on/off", example: "termux-torch on" },
-  { cmd: "termux-vibrate", desc: "Vibrate the device (-d ms, -f force)", example: "termux-vibrate -d 500" },
-  { cmd: "termux-volume", desc: "Get/set audio stream volumes", example: "termux-volume music 8" },
-  { cmd: "termux-sensor", desc: "Read hardware sensors (accelerometer, gyro...)", example: "termux-sensor -l" },
-  { cmd: "termux-fingerprint", desc: "Authenticate via fingerprint scanner", example: "termux-fingerprint" },
-  { cmd: "termux-location", desc: "Get GPS or network location", example: "termux-location -p gps" },
-  { cmd: "termux-wifi-connectioninfo", desc: "Current WiFi connection details", example: "termux-wifi-connectioninfo" },
-  { cmd: "termux-wifi-scaninfo", desc: "Scan nearby WiFi networks", example: "termux-wifi-scaninfo" },
-  { cmd: "termux-wifi-enable", desc: "Enable or disable WiFi", example: "termux-wifi-enable true" },
-  { cmd: "termux-clipboard-get", desc: "Read clipboard contents", example: "termux-clipboard-get" },
-  { cmd: "termux-clipboard-set", desc: "Set clipboard contents", example: 'termux-clipboard-set "hello"' },
-  { cmd: "termux-notification", desc: "Show persistent notification", example: 'termux-notification -t "Title" -c "Body"' },
-  { cmd: "termux-notification-remove", desc: "Remove notification by ID", example: "termux-notification-remove myid" },
-  { cmd: "termux-notification-list", desc: "List active notifications", example: "termux-notification-list" },
-  { cmd: "termux-dialog", desc: "Show interactive UI dialog", example: 'termux-dialog confirm -t "Sure?"' },
-  { cmd: "termux-toast", desc: "Show a brief toast message", example: 'termux-toast "Hello!"' },
-  { cmd: "termux-wake-lock", desc: "Acquire CPU wake lock (prevent sleep)", example: "termux-wake-lock" },
-  { cmd: "termux-wake-unlock", desc: "Release CPU wake lock", example: "termux-wake-unlock" },
-  { cmd: "termux-wallpaper", desc: "Set device wallpaper from file or URL", example: "termux-wallpaper -f /sdcard/photo.jpg" },
-  { cmd: "termux-download", desc: "Download file via Android DownloadManager", example: 'termux-download "https://example.com/file.zip"' },
+  {
+    cmd: "termux-battery-status",
+    desc: "Battery level, status, health, temperature",
+    example: "termux-battery-status",
+  },
+  {
+    cmd: "termux-audio-info",
+    desc: "Current audio output device and routing",
+    example: "termux-audio-info",
+  },
+  {
+    cmd: "termux-brightness",
+    desc: "Set screen brightness (0-255 or auto)",
+    example: "termux-brightness 128",
+  },
+  {
+    cmd: "termux-torch",
+    desc: "Toggle the flashlight on/off",
+    example: "termux-torch on",
+  },
+  {
+    cmd: "termux-vibrate",
+    desc: "Vibrate the device (-d ms, -f force)",
+    example: "termux-vibrate -d 500",
+  },
+  {
+    cmd: "termux-volume",
+    desc: "Get/set audio stream volumes",
+    example: "termux-volume music 8",
+  },
+  {
+    cmd: "termux-sensor",
+    desc: "Read hardware sensors (accelerometer, gyro...)",
+    example: "termux-sensor -l",
+  },
+  {
+    cmd: "termux-fingerprint",
+    desc: "Authenticate via fingerprint scanner",
+    example: "termux-fingerprint",
+  },
+  {
+    cmd: "termux-location",
+    desc: "Get GPS or network location",
+    example: "termux-location -p gps",
+  },
+  {
+    cmd: "termux-wifi-connectioninfo",
+    desc: "Current WiFi connection details",
+    example: "termux-wifi-connectioninfo",
+  },
+  {
+    cmd: "termux-wifi-scaninfo",
+    desc: "Scan nearby WiFi networks",
+    example: "termux-wifi-scaninfo",
+  },
+  {
+    cmd: "termux-wifi-enable",
+    desc: "Enable or disable WiFi",
+    example: "termux-wifi-enable true",
+  },
+  {
+    cmd: "termux-clipboard-get",
+    desc: "Read clipboard contents",
+    example: "termux-clipboard-get",
+  },
+  {
+    cmd: "termux-clipboard-set",
+    desc: "Set clipboard contents",
+    example: 'termux-clipboard-set "hello"',
+  },
+  {
+    cmd: "termux-notification",
+    desc: "Show persistent notification",
+    example: 'termux-notification -t "Title" -c "Body"',
+  },
+  {
+    cmd: "termux-notification-remove",
+    desc: "Remove notification by ID",
+    example: "termux-notification-remove myid",
+  },
+  {
+    cmd: "termux-notification-list",
+    desc: "List active notifications",
+    example: "termux-notification-list",
+  },
+  {
+    cmd: "termux-dialog",
+    desc: "Show interactive UI dialog",
+    example: 'termux-dialog confirm -t "Sure?"',
+  },
+  {
+    cmd: "termux-toast",
+    desc: "Show a brief toast message",
+    example: 'termux-toast "Hello!"',
+  },
+  {
+    cmd: "termux-wake-lock",
+    desc: "Acquire CPU wake lock (prevent sleep)",
+    example: "termux-wake-lock",
+  },
+  {
+    cmd: "termux-wake-unlock",
+    desc: "Release CPU wake lock",
+    example: "termux-wake-unlock",
+  },
+  {
+    cmd: "termux-wallpaper",
+    desc: "Set device wallpaper from file or URL",
+    example: "termux-wallpaper -f /sdcard/photo.jpg",
+  },
+  {
+    cmd: "termux-download",
+    desc: "Download file via Android DownloadManager",
+    example: 'termux-download "https://example.com/file.zip"',
+  },
 ];
 
 const commsCmds: CmdEntry[] = [
-  { cmd: "termux-sms-list", desc: "List received SMS messages", example: "termux-sms-list -l 5" },
-  { cmd: "termux-sms-send", desc: "Send an SMS message", example: 'termux-sms-send -n "+1234" "Hi!"' },
-  { cmd: "termux-contact-list", desc: "List all device contacts", example: "termux-contact-list" },
-  { cmd: "termux-call-log", desc: "Show recent call history", example: "termux-call-log -l 10" },
-  { cmd: "termux-telephony-call", desc: "Initiate a phone call", example: 'termux-telephony-call "+1234"' },
-  { cmd: "termux-telephony-cellinfo", desc: "Current cell tower info", example: "termux-telephony-cellinfo" },
-  { cmd: "termux-telephony-deviceinfo", desc: "SIM and device telephony info", example: "termux-telephony-deviceinfo" },
-  { cmd: "termux-camera-info", desc: "List cameras and capabilities", example: "termux-camera-info" },
-  { cmd: "termux-camera-photo", desc: "Take a photo and save to file", example: "termux-camera-photo /sdcard/ruuh/photo.jpg" },
-  { cmd: "termux-microphone-record", desc: "Record audio from microphone", example: "termux-microphone-record -f /sdcard/ruuh/rec.m4a -l 30" },
-  { cmd: "termux-tts-speak", desc: "Speak text aloud (text-to-speech)", example: 'termux-tts-speak "Hello"' },
-  { cmd: "termux-tts-engines", desc: "List available TTS engines", example: "termux-tts-engines" },
-  { cmd: "termux-speech-to-text", desc: "Recognize speech from microphone", example: "termux-speech-to-text" },
-  { cmd: "termux-media-player", desc: "Play/pause/stop audio files", example: "termux-media-player play /sdcard/song.mp3" },
-  { cmd: "termux-media-scan", desc: "Scan files for Android media library", example: "termux-media-scan /sdcard/ruuh/photo.jpg" },
-  { cmd: "termux-share", desc: "Share content via Android share sheet", example: "termux-share /sdcard/ruuh/photo.jpg" },
-  { cmd: "termux-storage-get", desc: "Pick a file using Android file picker", example: "termux-storage-get /sdcard/ruuh/picked.pdf" },
-  { cmd: "termux-calendar-list", desc: "List calendar events", example: "termux-calendar-list" },
+  {
+    cmd: "termux-sms-list",
+    desc: "List received SMS messages",
+    example: "termux-sms-list -l 5",
+  },
+  {
+    cmd: "termux-sms-send",
+    desc: "Send an SMS message",
+    example: 'termux-sms-send -n "+1234" "Hi!"',
+  },
+  {
+    cmd: "termux-contact-list",
+    desc: "List all device contacts",
+    example: "termux-contact-list",
+  },
+  {
+    cmd: "termux-call-log",
+    desc: "Show recent call history",
+    example: "termux-call-log -l 10",
+  },
+  {
+    cmd: "termux-telephony-call",
+    desc: "Initiate a phone call",
+    example: 'termux-telephony-call "+1234"',
+  },
+  {
+    cmd: "termux-telephony-cellinfo",
+    desc: "Current cell tower info",
+    example: "termux-telephony-cellinfo",
+  },
+  {
+    cmd: "termux-telephony-deviceinfo",
+    desc: "SIM and device telephony info",
+    example: "termux-telephony-deviceinfo",
+  },
+  {
+    cmd: "termux-camera-info",
+    desc: "List cameras and capabilities",
+    example: "termux-camera-info",
+  },
+  {
+    cmd: "termux-camera-photo",
+    desc: "Take a photo and save to file",
+    example: "termux-camera-photo /sdcard/ruuh/photo.jpg",
+  },
+  {
+    cmd: "termux-microphone-record",
+    desc: "Record audio from microphone",
+    example: "termux-microphone-record -f /sdcard/ruuh/rec.m4a -l 30",
+  },
+  {
+    cmd: "termux-tts-speak",
+    desc: "Speak text aloud (text-to-speech)",
+    example: 'termux-tts-speak "Hello"',
+  },
+  {
+    cmd: "termux-tts-engines",
+    desc: "List available TTS engines",
+    example: "termux-tts-engines",
+  },
+  {
+    cmd: "termux-speech-to-text",
+    desc: "Recognize speech from microphone",
+    example: "termux-speech-to-text",
+  },
+  {
+    cmd: "termux-media-player",
+    desc: "Play/pause/stop audio files",
+    example: "termux-media-player play /sdcard/song.mp3",
+  },
+  {
+    cmd: "termux-media-scan",
+    desc: "Scan files for Android media library",
+    example: "termux-media-scan /sdcard/ruuh/photo.jpg",
+  },
+  {
+    cmd: "termux-share",
+    desc: "Share content via Android share sheet",
+    example: "termux-share /sdcard/ruuh/photo.jpg",
+  },
+  {
+    cmd: "termux-storage-get",
+    desc: "Pick a file using Android file picker",
+    example: "termux-storage-get /sdcard/ruuh/picked.pdf",
+  },
+  {
+    cmd: "termux-calendar-list",
+    desc: "List calendar events",
+    example: "termux-calendar-list",
+  },
 ];
 
 const systemCmds: CmdEntry[] = [
-  { cmd: "termux-job-scheduler", desc: "Schedule background jobs", example: "termux-job-scheduler --pending" },
-  { cmd: "termux-infrared-transmit", desc: "Transmit infrared signal", example: "termux-infrared-transmit -f 38000 100,50,100" },
+  {
+    cmd: "termux-job-scheduler",
+    desc: "Schedule background jobs",
+    example: "termux-job-scheduler --pending",
+  },
+  {
+    cmd: "termux-infrared-transmit",
+    desc: "Transmit infrared signal",
+    example: "termux-infrared-transmit -f 38000 100,50,100",
+  },
   { cmd: "termux-usb", desc: "Access USB devices", example: "termux-usb -l" },
   { cmd: "termux-nfc", desc: "Read/write NFC tags", example: "termux-nfc" },
-  { cmd: "termux-keystore", desc: "Hardware keystore crypto operations", example: "termux-keystore list" },
-  { cmd: "termux-infrared-frequencies", desc: "List supported IR carrier frequencies", example: "termux-infrared-frequencies" },
+  {
+    cmd: "termux-keystore",
+    desc: "Hardware keystore crypto operations",
+    example: "termux-keystore list",
+  },
+  {
+    cmd: "termux-infrared-frequencies",
+    desc: "List supported IR carrier frequencies",
+    example: "termux-infrared-frequencies",
+  },
 ];
 
 const extraSkills = [
@@ -250,11 +429,36 @@ termux-toast "Scanned: $URL"
 ];
 
 const ollamaModels = [
-  { name: "qwen2.5-coder:1.5b", size: "1.0 GB", type: "Local", note: "Default, fastest on mobile" },
-  { name: "qwen2.5-coder:7b", size: "4.7 GB", type: "Local", note: "Better quality, needs 8GB+ RAM" },
-  { name: "llama3.2:3b", size: "2.0 GB", type: "Local", note: "Good balance of speed and quality" },
-  { name: "gemma2:2b", size: "1.6 GB", type: "Local", note: "Lightweight Google model" },
-  { name: "Claude / GPT / etc.", size: "Cloud", type: "Cloud", note: "Set API key in .pi/settings.json" },
+  {
+    name: "qwen2.5-coder:1.5b",
+    size: "1.0 GB",
+    type: "Local",
+    note: "Default, fastest on mobile",
+  },
+  {
+    name: "qwen2.5-coder:7b",
+    size: "4.7 GB",
+    type: "Local",
+    note: "Better quality, needs 8GB+ RAM",
+  },
+  {
+    name: "llama3.2:3b",
+    size: "2.0 GB",
+    type: "Local",
+    note: "Good balance of speed and quality",
+  },
+  {
+    name: "gemma2:2b",
+    size: "1.6 GB",
+    type: "Local",
+    note: "Lightweight Google model",
+  },
+  {
+    name: "Claude / GPT / etc.",
+    size: "Cloud",
+    type: "Cloud",
+    note: "Set API key in .pi/settings.json",
+  },
 ];
 
 const troubleshooting = [
@@ -746,7 +950,6 @@ export default function SheetPage() {
           </StaggerContainer>
         </div>
       </section>
-
     </main>
   );
 }

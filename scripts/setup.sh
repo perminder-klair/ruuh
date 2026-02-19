@@ -74,6 +74,7 @@ fi
 # Step 3: Termux API skills (optional)
 # ------------------------------------------
 echo ""
+echo "  Requires the Termux:API app: https://f-droid.org/en/packages/com.termux.api/"
 read -p "  Install Termux API skills? [Y/n] " skills_choice < /dev/tty
 if [ "$skills_choice" != "n" ] && [ "$skills_choice" != "N" ]; then
   echo "============================================"
