@@ -263,3 +263,7 @@ body::before {
 .animate-text-glow {
     animation: text-glow-pulse 4s ease-in-out infinite;
 }
+
+.bg-code-block {
+    background-color: #201c19;
+}

@@ -14,7 +14,7 @@ export function Header() {
     >
       <div className="mx-auto flex h-14 max-w-[1100px] items-center justify-between px-6">
         <Link href="/" className="font-bold tracking-tight text-foreground">
-          <span className="text-primary animate-text-glow">ruuh</span>
+          <span className="text-primary animate-text-glow">Ruuh</span>
         </Link>
         <nav className="flex items-center gap-6">
           <Link

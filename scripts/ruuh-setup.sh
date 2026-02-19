@@ -45,9 +45,18 @@ echo ""
 echo "[3/8] Setting up shared storage access..."
 echo "⚠️  You may need to grant storage permission when prompted"
 termux-setup-storage || echo "⚠️  Storage setup may need manual permission grant"
-sleep 2
 
-if [ -d "$HOME/storage/shared" ]; then
+# Wait for storage to become available (user may still be approving)
+STORAGE_READY=false
+for i in $(seq 1 15); do
+    if [ -d "$HOME/storage/shared" ]; then
+        STORAGE_READY=true
+        break
+    fi
+    sleep 2
+done
+
+if [ "$STORAGE_READY" = true ]; then
     echo "✅ Shared storage accessible at ~/storage/"
 else
     echo "⚠️  Storage not yet available. You may need to restart Termux after granting permission."
@@ -101,12 +110,12 @@ echo "============================================"
 echo ""
 echo "[1/5] Updating Ubuntu packages..."
 export DEBIAN_FRONTEND=noninteractive
-apt update && apt upgrade -y -o Dpkg::Options::="--force-confnew"
+apt update
 
 # Install essentials
 echo ""
-echo "[2/5] Installing curl and git..."
-apt install -y curl git build-essential
+echo "[2/5] Installing curl..."
+apt install -y curl
 
 # Install Node.js 22
 echo ""

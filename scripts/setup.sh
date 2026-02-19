@@ -36,11 +36,17 @@ echo "============================================"
 echo "  🚀 Ruuh Full Setup"
 echo "============================================"
 echo ""
-echo "  This will run:"
-echo "    1. Termux + Ubuntu environment setup"
-echo "    2. Ollama + model setup"
-echo "    3. Termux API skills setup"
+echo "  This will:"
+echo "    1. Update Termux & install Ubuntu (proot)"
+echo "    2. Install Node.js 22 & pi-coding-agent"
+echo "    3. Optionally install Ollama + model"
+echo "    4. Optionally install Termux API skills"
 echo ""
+read -p "  Continue? [Y/n] " confirm < /dev/tty
+if [ "$confirm" = "n" ] || [ "$confirm" = "N" ]; then
+  echo "  Aborted."
+  exit 0
+fi
 
 # ------------------------------------------
 # Step 1: Termux + Ubuntu environment
