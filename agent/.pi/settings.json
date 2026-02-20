@@ -1,1 +1,5 @@
-{}
+{
+  "defaultThinkingLevel": "minimal",
+  "hideThinkingBlock": true,
+  "quietStartup": true
+}

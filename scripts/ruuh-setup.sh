@@ -173,9 +173,20 @@ cleanup() {
 }
 trap cleanup EXIT
 
-if [ "$1" = "--ollama" ]; then
+OLLAMA=false
+PI_ARGS=()
+
+for arg in "$@"; do
+  if [ "$arg" = "--ollama" ]; then
+    OLLAMA=true
+  else
+    PI_ARGS+=("$arg")
+  fi
+done
+
+if [ "$OLLAMA" = true ]; then
   echo "🦙 Starting Ollama server..."
-  ollama serve &
+  ollama serve >/dev/null 2>&1 &
   OLLAMA_PID=$!
   for i in $(seq 1 30); do
     curl -s http://localhost:11434/api/tags >/dev/null 2>&1 && break
@@ -186,9 +197,13 @@ if [ "$1" = "--ollama" ]; then
   echo ""
 fi
 
+if [ ${#PI_ARGS[@]} -eq 0 ]; then
+  PI_ARGS=("Session starting. Greet me briefly.")
+fi
+
 echo "🤖 Starting Ruuh agent..."
 echo ""
-proot-distro login ubuntu -- bash -c 'cd /sdcard/ruuh && pi "Session starting. Greet me briefly."'
+proot-distro login ubuntu -- bash -c "cd /sdcard/ruuh && pi ${PI_ARGS[*]}"
 STARTEOF
 
 chmod +x "$PREFIX/bin/ruuh"
