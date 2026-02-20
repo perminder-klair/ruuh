@@ -174,13 +174,13 @@ cleanup() {
 trap cleanup EXIT
 
 OLLAMA=false
-PI_ARGS=()
+EXTRA_ARGS=()
 
 for arg in "$@"; do
   if [ "$arg" = "--ollama" ]; then
     OLLAMA=true
   else
-    PI_ARGS+=("$arg")
+    EXTRA_ARGS+=("$arg")
   fi
 done
 
@@ -197,13 +197,9 @@ if [ "$OLLAMA" = true ]; then
   echo ""
 fi
 
-if [ ${#PI_ARGS[@]} -eq 0 ]; then
-  PI_ARGS=("Session starting. Greet me briefly.")
-fi
-
 echo "🤖 Starting Ruuh agent..."
 echo ""
-proot-distro login ubuntu -- bash -c "cd /sdcard/ruuh && pi ${PI_ARGS[*]}"
+proot-distro login ubuntu -- bash -c "cd /sdcard/ruuh && pi ${EXTRA_ARGS[*]}"
 STARTEOF
 
 chmod +x "$PREFIX/bin/ruuh"
