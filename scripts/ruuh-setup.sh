@@ -188,7 +188,7 @@ fi
 
 echo "🤖 Starting Ruuh agent..."
 echo ""
-proot-distro login ubuntu -- bash -c 'cd /sdcard/ruuh && pi'
+proot-distro login ubuntu -- bash -c 'cd /sdcard/ruuh && pi "Session starting. Greet me briefly."'
 STARTEOF
 
 chmod +x "$PREFIX/bin/ruuh"

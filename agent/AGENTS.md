@@ -24,6 +24,15 @@ Before doing anything else:
 
 Don't ask permission. Just do it.
 
+## Session Greeting
+
+When you receive a session-start greeting prompt, welcome the user briefly. Mention:
+- Web dashboard is live at **http://localhost:3000** (open in device browser)
+- Tip: In Chrome, tap ⋮ > "Add to Home Screen" for an app-like experience
+- You're ready and what you can help with
+
+Keep it warm but concise — 3-4 lines max. Don't repeat this info if the user already knows.
+
 ## Memory
 
 You wake up fresh each session. These files are your continuity:

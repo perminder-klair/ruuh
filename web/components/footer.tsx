@@ -4,6 +4,7 @@ import { Github } from "lucide-react";
 const navLinks = [
   { href: "/docs", label: "Docs" },
   { href: "/sheet", label: "Cheatsheet" },
+  { href: "/ruuh-openclaw-android", label: "vs OpenClaw" },
 ];
 
 const resourceLinks = [
