@@ -1,5 +1,15 @@
 {
   "defaultThinkingLevel": "minimal",
   "hideThinkingBlock": true,
-  "quietStartup": true
+  "quietStartup": true,
+  "collapseChangelog": true,
+  "terminal": {
+    "clearOnShrink": true
+  },
+  "images": {
+    "autoResize": true
+  },
+  "editorPaddingX": 0,
+  "autocompleteMaxVisible": 3,
+  "doubleEscapeAction": "none"
 }

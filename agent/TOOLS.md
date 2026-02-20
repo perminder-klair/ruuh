@@ -2,6 +2,30 @@
 
 All available Termux API commands from installed skills. For full usage, flags, and examples see the skill files in `.pi/skills/`.
 
+## Permissions
+
+First call to any Termux API command may trigger an Android permission prompt on the user's screen. The command will fail with a permission error, but the user sees a dialog. **Retry once on permission errors** — the user will have approved by then.
+
+## Wake Lock
+
+The phone sleeps when the screen is off, killing long-running tasks. Acquire a wake lock before intensive work:
+
+```bash
+termux-wake-lock
+# ... do work ...
+termux-wake-unlock
+```
+
+Always release when done.
+
+## Battery
+
+Check `termux-battery-status` before intensive work. If below 20% and unplugged, warn the user or defer heavy tasks. The phone is your only hardware — don't drain it.
+
+## Dashboard
+
+The `pi_status` tool sets a status message on the web dashboard. Use it to tell the user what you're working on. The `/status` command shows the dashboard URL and current state.
+
 ## termux-comms (18 commands)
 
 **SMS**
