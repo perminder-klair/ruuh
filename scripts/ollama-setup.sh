@@ -12,7 +12,7 @@ set -e
 main() {
 
 # -- Model catalogue --
-MODEL_IDS=("minimax-m2.5:cloud" "glm-5:cloud" "qwen3.5:cloud" "qwen3-coder-next:cloud" "kimi-k2.5:cloud" "qwen3:1.7b")
+MODEL_IDS=("kimi-k2.5:cloud" "minimax-m2.5:cloud" "glm-5:cloud" "qwen3.5:cloud" "qwen3-coder-next:cloud" "qwen3:1.7b")
 MODEL_DESCS=("cloud, recommended" "cloud" "cloud" "cloud" "cloud" "local, ~1GB")
 MODEL_COUNT=6
 
