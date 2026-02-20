@@ -5,6 +5,8 @@ import {
   Smartphone,
   MessageSquare,
   Settings,
+  LayoutDashboard,
+  Blocks,
 } from "lucide-react";
 import { CopyButton } from "@/components/copy-button";
 import {
@@ -48,6 +50,18 @@ const features = [
     title: "Termux API Skills",
     description:
       "Ruuh knows how to use your Android hardware — camera, SMS, sensors, location, notifications, and more via auto-discovered Termux API skills.",
+  },
+  {
+    icon: LayoutDashboard,
+    title: "Web Dashboard",
+    description:
+      "Monitor and chat with Ruuh from any browser on your network. A real-time PWA dashboard with live status, activity logs, and a full chat interface — installable to your home screen.",
+  },
+  {
+    icon: Blocks,
+    title: "Extensible Skill System",
+    description:
+      "Extend Ruuh with skills from clawhub.ai — a growing library of community skills for weather, summarization, and more. Skills auto-discover on startup and use minimal tokens.",
   },
 ];
 

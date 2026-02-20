@@ -15,6 +15,7 @@ A one-command setup script that turns [Termux](https://termux.dev) into a fully 
 ## Prerequisites
 
 - An Android device with [Termux](https://f-droid.org/en/packages/com.termux/) installed (F-Droid version recommended)
+- [Termux:API](https://f-droid.org/en/packages/com.termux.api/) companion app (optional, for hardware access like camera, SMS, sensors)
 - Storage permission granted to Termux
 
 ## Usage

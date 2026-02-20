@@ -12,9 +12,9 @@ set -e
 main() {
 
 # -- Model catalogue --
-MODEL_IDS=("glm-5:cloud" "minimax-m2.5:cloud" "qwen3.5:cloud" "kimi-k2.5:cloud" "qwen3:1.7b")
-MODEL_DESCS=("cloud, recommended" "cloud" "cloud" "cloud" "local, ~1GB")
-MODEL_COUNT=5
+MODEL_IDS=("minimax-m2.5:cloud" "glm-5:cloud" "qwen3.5:cloud" "qwen3-coder-next:cloud" "kimi-k2.5:cloud" "qwen3:1.7b")
+MODEL_DESCS=("cloud, recommended" "cloud" "cloud" "cloud" "cloud" "local, ~1GB")
+MODEL_COUNT=6
 
 is_cloud_model() {
     case "$1" in *:cloud) return 0 ;; *) return 1 ;; esac

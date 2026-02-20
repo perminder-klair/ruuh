@@ -32,7 +32,7 @@ const prerequisites = [
   {
     icon: Smartphone,
     title: "Android Device",
-    description: "Any Android phone or tablet running Android 7+.",
+    description: "Any Android phone or tablet.",
   },
   {
     icon: Download,
@@ -488,8 +488,8 @@ export default function DocsPage() {
               . Ruuh automatically uses the latest model you pulled.
             </blockquote>
             <blockquote className="mt-4 border-l-2 border-primary/40 pl-4 text-[0.95rem] leading-relaxed text-muted-foreground">
-              Ollama supports both local and cloud models depending on your device.
-              Run a cloud model with{" "}
+              Ollama supports both local and cloud models depending on your
+              device. Run a cloud model with{" "}
               <code className="rounded bg-code-block px-1.5 py-0.5 text-[0.82rem]">
                 ollama pull qwen3:1.7b
               </code>{" "}
@@ -634,7 +634,6 @@ export default function DocsPage() {
           </StaggerContainer>
         </div>
       </section>
-
     </main>
   );
 }
