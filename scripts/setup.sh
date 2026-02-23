@@ -1,15 +1,12 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-# ============================================
 # Ruuh Full Setup Script
-# ============================================
 # Runs all setup scripts in order:
-#   1. ruuh-setup.sh           — Termux + Ubuntu environment
-#   2. ollama-setup.sh      — Ollama + model setup
-#   3. skills-setup.sh       — Termux API skills
+#   1. ruuh-setup.sh       — Termux + Ubuntu environment
+#   2. ollama-setup.sh     — Ollama + model setup
+#   3. skills-setup.sh     — Termux API skills
 #
 # Usage: bash setup.sh
-# ============================================
 
 set -e
 
@@ -32,9 +29,12 @@ run_script() {
   fi
 }
 
-echo "============================================"
-echo "  🚀 Ruuh Full Setup"
-echo "============================================"
+# Tell sub-scripts to skip their own banners
+export RUUH_ORCHESTRATED=1
+
+echo ""
+echo "  Ruuh Full Setup"
+echo "  Log: /tmp/ruuh-setup.log"
 echo ""
 echo "  This will:"
 echo "    1. Update Termux & install Ubuntu (proot)"
@@ -48,64 +48,36 @@ if [ "$confirm" = "n" ] || [ "$confirm" = "N" ]; then
   exit 0
 fi
 
-# ------------------------------------------
+echo ""
+
 # Step 1: Termux + Ubuntu environment
-# ------------------------------------------
-echo "============================================"
-echo "  [1/3] Running ruuh-setup.sh..."
-echo "============================================"
 run_script "ruuh-setup.sh"
 
-# ------------------------------------------
 # Step 2: Ollama setup (optional)
-# ------------------------------------------
 echo ""
 read -p "  Install Ollama + model? [Y/n] " ollama_choice < /dev/tty
 if [ "$ollama_choice" != "n" ] && [ "$ollama_choice" != "N" ]; then
-  echo "============================================"
-  echo "  [2/3] Running ollama-setup.sh..."
-  echo "============================================"
+  echo ""
   run_script "ollama-setup.sh"
 else
   echo "  Skipping Ollama setup."
 fi
 
-# ------------------------------------------
 # Step 3: Termux API skills (optional)
-# ------------------------------------------
 echo ""
 echo "  Requires the Termux:API app: https://f-droid.org/en/packages/com.termux.api/"
 read -p "  Install Termux API skills? [Y/n] " skills_choice < /dev/tty
 if [ "$skills_choice" != "n" ] && [ "$skills_choice" != "N" ]; then
-  echo "============================================"
-  echo "  [3/3] Running skills-setup.sh..."
-  echo "============================================"
+  echo ""
   run_script "skills-setup.sh"
 else
   echo "  Skipping skills setup."
 fi
 
-# ------------------------------------------
-# Done
-# ------------------------------------------
+# Summary
 echo ""
-echo "============================================"
-echo "  🎉 Full setup complete!"
-echo "============================================"
+echo "  Setup complete!"
+echo "  Get started:  ruuh --ollama"
+echo "  Dashboard:    http://localhost:3000"
+echo "  Full log:     /tmp/ruuh-setup.log"
 echo ""
-echo "  To get started:"
-echo ""
-echo "    ruuh --ollama"
-echo ""
-echo "  This starts Ollama and the agent in one session."
-echo "  Ollama stops automatically when you exit."
-echo ""
-echo "  Or without Ollama:  ruuh"
-echo ""
-echo "  Web dashboard: http://localhost:3000"
-echo "  Open in your device browser while Ruuh is running."
-echo ""
-echo "  Tip: In Chrome, tap ⋮ > 'Add to Home Screen'"
-echo "  for an app-like experience."
-echo ""
-echo "============================================"

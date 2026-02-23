@@ -1,13 +1,10 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-# ============================================
 # Termux API Skills Setup Script
-# ============================================
 # Run this in Termux (not inside proot)
 # Installs pi-coding-agent skill files that
 # teach the agent how to use Termux API commands.
 # Usage: bash skills-setup.sh
-# ============================================
 
 set -e
 
@@ -21,42 +18,31 @@ else
     eval "$(curl -fsSL "https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/config.sh")"
 fi
 
-echo "============================================"
-echo "  📱 Termux API Skills Setup"
-echo "============================================"
-
-# ------------------------------------------
-# Step 1: Check shared storage is accessible
-# ------------------------------------------
-echo ""
-echo "[1/4] Checking shared storage..."
-
-if [ ! -d "$RUUH_DIR" ]; then
-    echo "❌ $RUUH_DIR not found."
-    echo "   Run ruuh-setup.sh first to set up the environment."
-    exit 1
+if [ "${RUUH_ORCHESTRATED:-}" != "1" ]; then
+    echo ""
+    echo "  Termux API Skills Setup"
+    echo "  Log: $RUUH_LOG"
+    echo ""
 fi
 
-echo "✅ Shared storage accessible at $RUUH_DIR"
+# Step 1: Check shared storage
+step "[1/4]" "Checking shared storage"
+if [ ! -d "$RUUH_DIR" ]; then
+    step_fail
+    echo "  $RUUH_DIR not found. Run ruuh-setup.sh first."
+    exit 1
+fi
+step_done
 
-# ------------------------------------------
 # Step 2: Create skill directories
-# ------------------------------------------
-echo ""
-echo "[2/4] Creating skill directories..."
-
+step "[2/4]" "Creating skill directories"
 mkdir -p "$RUUH_DIR/.pi/skills/termux-device"
 mkdir -p "$RUUH_DIR/.pi/skills/termux-comms"
 mkdir -p "$RUUH_DIR/.pi/skills/termux-system"
+step_done
 
-echo "✅ Skill directories created"
-
-# ------------------------------------------
-# Step 3: Install skill files (skip if present)
-# ------------------------------------------
-echo ""
-echo "[3/4] Checking skill files..."
-
+# Step 3: Install skill files
+step "[3/4]" "Installing skill files"
 SKILLS_MISSING=0
 for skill in termux-device termux-comms termux-system; do
     if [ ! -f "$RUUH_DIR/.pi/skills/$skill/SKILL.md" ]; then
@@ -66,50 +52,27 @@ for skill in termux-device termux-comms termux-system; do
 done
 
 if [ "$SKILLS_MISSING" -eq 1 ]; then
-    echo "   Downloading skill files..."
     TMP_DIR=$(mktemp -d)
-    curl -fsSL "$REPO_TARBALL" \
-        | tar xz -C "$TMP_DIR" --strip-components=2 "ruuh-main/agent"
-    cp -a "$TMP_DIR/.pi/skills/." "$RUUH_DIR/.pi/skills/"
+    {
+        curl -fsSL "$REPO_TARBALL" \
+            | tar xz -C "$TMP_DIR" --strip-components=2 "ruuh-main/agent"
+        cp -a "$TMP_DIR/.pi/skills/." "$RUUH_DIR/.pi/skills/"
+    } >> "$RUUH_LOG" 2>&1
     rm -rf "$TMP_DIR"
-    echo "   ✅ Skill files downloaded and installed"
+    step_done
 else
-    echo "   ✅ Skill files already present (installed by ruuh-setup.sh)"
+    step_done "already present"
 fi
 
-# ------------------------------------------
 # Step 4: Verify installation
-# ------------------------------------------
-echo ""
-echo "[4/4] Verifying installation..."
-
+step "[4/4]" "Verifying installation"
 SKILL_COUNT=$(ls -d "$RUUH_DIR/.pi/skills"/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
-echo "✅ $SKILL_COUNT skill files installed"
+step_done "$SKILL_COUNT skills"
 
-# ------------------------------------------
-# Done
-# ------------------------------------------
+# Summary
 echo ""
-echo "============================================"
-echo "  🎉 Skills installed!"
-echo "============================================"
+echo "  Skills installed! They'll be auto-discovered next time you run: ruuh"
 echo ""
-echo "  Installed skills:"
-echo "    termux-device  — battery, sensors, location, UI"
-echo "    termux-comms   — SMS, camera, audio, sharing"
-echo "    termux-system  — scheduling, IR, USB, NFC, keystore"
-echo ""
-echo "  Skill files live at:"
-echo "    Termux:   ~/storage/shared/ruuh/.pi/skills/"
-echo "    Android:  Internal Storage > ruuh > .pi > skills"
-echo "    Proot:    /sdcard/ruuh/.pi/skills/"
-echo ""
-echo "  The agent will auto-discover these skills"
-echo "  next time you run: ruuh"
-echo ""
-echo "  💡 Want a live web dashboard?"
-echo "     Run: bash dashboard-setup.sh"
-echo "============================================"
 
 }
 

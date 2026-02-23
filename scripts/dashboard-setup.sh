@@ -1,13 +1,10 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-# ============================================
 # Ruuh Dashboard Extension Setup Script
-# ============================================
 # Run this in Termux (not inside proot)
 # Installs the pi-coding-agent dashboard
 # extension for live web-based monitoring.
 # Usage: bash dashboard-setup.sh
-# ============================================
 
 set -e
 
@@ -21,80 +18,46 @@ else
     eval "$(curl -fsSL "https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/config.sh")"
 fi
 
-echo "============================================"
-echo "  📊 Ruuh Dashboard Extension Setup"
-echo "============================================"
+if [ "${RUUH_ORCHESTRATED:-}" != "1" ]; then
+    echo ""
+    echo "  Dashboard Extension Setup"
+    echo "  Log: $RUUH_LOG"
+    echo ""
+fi
 
-# ------------------------------------------
-# Step 1: Check shared storage is accessible
-# ------------------------------------------
-echo ""
-echo "[1/3] Checking shared storage..."
-
+# Step 1: Check shared storage
+step "[1/3]" "Checking shared storage"
 if [ ! -d "$RUUH_DIR" ]; then
-    echo "❌ $RUUH_DIR not found."
-    echo "   Run ruuh-setup.sh first to set up the environment."
+    step_fail
+    echo "  $RUUH_DIR not found. Run ruuh-setup.sh first."
     exit 1
 fi
+step_done
 
-echo "✅ Shared storage accessible at $RUUH_DIR"
-
-# ------------------------------------------
 # Step 2: Create extensions directory
-# ------------------------------------------
-echo ""
-echo "[2/3] Creating extensions directory..."
-
+step "[2/3]" "Creating extensions directory"
 mkdir -p "$RUUH_DIR/.pi/extensions"
+step_done
 
-echo "✅ Extensions directory created"
-
-# ------------------------------------------
-# Step 3: Install dashboard extension (skip if present)
-# ------------------------------------------
-echo ""
-echo "[3/3] Checking dashboard extension..."
-
+# Step 3: Install dashboard extension
+step "[3/3]" "Installing dashboard extension"
 if [ ! -f "$RUUH_DIR/.pi/extensions/dashboard.ts" ]; then
-    echo "   Downloading dashboard extension..."
     TMP_DIR=$(mktemp -d)
-    curl -fsSL "$REPO_TARBALL" \
-        | tar xz -C "$TMP_DIR" --strip-components=2 "ruuh-main/agent"
-    cp -a "$TMP_DIR/.pi/extensions/." "$RUUH_DIR/.pi/extensions/"
+    {
+        curl -fsSL "$REPO_TARBALL" \
+            | tar xz -C "$TMP_DIR" --strip-components=2 "ruuh-main/agent"
+        cp -a "$TMP_DIR/.pi/extensions/." "$RUUH_DIR/.pi/extensions/"
+    } >> "$RUUH_LOG" 2>&1
     rm -rf "$TMP_DIR"
-    echo "   ✅ dashboard.ts downloaded and installed"
+    step_done
 else
-    echo "   ✅ dashboard.ts already present (installed by ruuh-setup.sh)"
+    step_done "already present"
 fi
 
-# ------------------------------------------
-# Done
-# ------------------------------------------
+# Summary
 echo ""
-echo "============================================"
-echo "  🎉 Dashboard extension installed!"
-echo "============================================"
+echo "  Dashboard installed! Open http://localhost:3000 while ruuh is running."
 echo ""
-echo "  The dashboard starts automatically when"
-echo "  you run: ruuh"
-echo ""
-echo "  Once running, open Chrome on your phone:"
-echo "    http://localhost:3000"
-echo ""
-echo "  Tip: In Chrome, tap ⋮ > 'Add to Home Screen'"
-echo "  for an app-like experience."
-echo ""
-echo "  Or from another device on the same WiFi,"
-echo "  use the IP shown in Ruuh's status bar."
-echo ""
-echo "  Extension file:"
-echo "    Termux:   ~/storage/shared/ruuh/.pi/extensions/"
-echo "    Android:  Internal Storage > ruuh > .pi > extensions"
-echo "    Proot:    /sdcard/ruuh/.pi/extensions/"
-echo ""
-echo "  The agent will auto-discover this extension"
-echo "  next time you run: ruuh"
-echo "============================================"
 
 }
 
