@@ -58,7 +58,7 @@ const quickStartCmds = [
 const setupScripts = [
   {
     name: "Full setup (all-in-one)",
-    desc: "Installs Termux env, Ubuntu proot, Ollama, and skills in one go.",
+    desc: "Walks you through Termux + Ubuntu environment, Ollama, and skills with optional steps.",
     cmd: "curl -fsSL https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/setup.sh | bash",
   },
   {
@@ -77,9 +77,9 @@ const setupScripts = [
     cmd: "curl -fsSL https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/skills-setup.sh | bash",
   },
   {
-    name: "Extra skills",
-    desc: "Install community skills (blog watcher, weather, etc.).",
-    cmd: "curl -fsSL https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/extra-skills-setup.sh | bash",
+    name: "Dashboard extension",
+    desc: "Install the live web dashboard for monitoring the agent.",
+    cmd: "curl -fsSL https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/dashboard-setup.sh | bash",
   },
 ];
 
@@ -96,12 +96,12 @@ const configFiles = [
   { name: "USER.md", desc: "Profile of the human, auto-updated" },
   { name: "MEMORY.md", desc: "Persistent long-term memory" },
   { name: "TOOLS.md", desc: "Available Termux API commands reference" },
+  { name: "BOOTSTRAP.md", desc: "One-time first-run conversation ritual" },
   { name: "HEARTBEAT.md", desc: "Periodic scheduled checks" },
 ];
 
 const piStructure = [
   { name: ".pi/settings.json", desc: "Model, API keys, preferences" },
-  { name: ".pi/prompts/", desc: "Reusable prompt templates" },
   { name: ".pi/extensions/", desc: "Extensions (dashboard.ts, etc.)" },
   { name: ".pi/skills/", desc: "Auto-discovered skill directories" },
 ];
@@ -374,6 +374,10 @@ const extraSkills = [
     desc: "Rewrite AI-generated text to sound more natural and human.",
   },
   {
+    name: "roohani-dance",
+    desc: "Motion-reactive freestyle game mapping phone movements to vibrations, torch flashes, and TTS quips.",
+  },
+  {
     name: "skill-creator",
     desc: "Meta-skill that helps you create new custom skills from scratch.",
   },
@@ -438,7 +442,7 @@ termux-toast "Scanned: $URL"
 
 const ollamaModels = [
   {
-    name: "glm-5:cloud",
+    name: "kimi-k2.5:cloud",
     size: "Cloud",
     type: "Cloud",
     note: "Recommended",
@@ -450,13 +454,19 @@ const ollamaModels = [
     note: "",
   },
   {
+    name: "glm-5:cloud",
+    size: "Cloud",
+    type: "Cloud",
+    note: "",
+  },
+  {
     name: "qwen3.5:cloud",
     size: "Cloud",
     type: "Cloud",
     note: "",
   },
   {
-    name: "kimi-k2.5:cloud",
+    name: "qwen3-coder-next:cloud",
     size: "Cloud",
     type: "Cloud",
     note: "",
@@ -799,7 +809,7 @@ export default function SheetPage() {
             id="skills"
             icon={Sparkles}
             title="Extra Skills"
-            subtitle="Community skills installed via the extra-skills script."
+            subtitle="Built-in skills that ship with Ruuh."
           />
           <StaggerContainer className="space-y-3">
             {extraSkills.map((skill) => (

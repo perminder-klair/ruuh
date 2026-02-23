@@ -71,10 +71,11 @@ During setup you'll choose from available models:
 
 | Model | Type |
 |-------|------|
-| `glm-5:cloud` | Cloud (recommended) |
+| `kimi-k2.5:cloud` | Cloud (recommended) |
 | `minimax-m2.5:cloud` | Cloud |
+| `glm-5:cloud` | Cloud |
 | `qwen3.5:cloud` | Cloud |
-| `kimi-k2.5:cloud` | Cloud |
+| `qwen3-coder-next:cloud` | Cloud |
 | `qwen3:1.7b` | Local (~1 GB) |
 
 Cloud models require `ollama signin` during setup (opens a browser URL for authentication). To use Ollama with Ruuh:
