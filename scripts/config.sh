@@ -7,7 +7,8 @@ UBUNTU_ROOT="$PREFIX/var/lib/proot-distro/installed-rootfs/ubuntu"
 REPO_TARBALL="https://github.com/perminder-klair/ruuh/archive/refs/heads/main.tar.gz"
 
 # -- Output helpers --
-RUUH_LOG="/tmp/ruuh-setup.log"
+RUUH_LOG="${TMPDIR:-/tmp}/ruuh-setup.log"
+: >> "$RUUH_LOG"  # ensure log file exists
 
 # Print step indicator without newline: "  [1/8] Updating packages..."
 step() {

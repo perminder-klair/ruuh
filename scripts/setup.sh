@@ -29,12 +29,19 @@ run_script() {
   fi
 }
 
+# Source shared config for RUUH_LOG path
+if [ "$USE_LOCAL" = true ] && [ -f "$SCRIPT_DIR/config.sh" ]; then
+  source "$SCRIPT_DIR/config.sh"
+else
+  eval "$(curl -fsSL "$REPO_RAW_URL/config.sh")"
+fi
+
 # Tell sub-scripts to skip their own banners
 export RUUH_ORCHESTRATED=1
 
 echo ""
 echo "  Ruuh Full Setup"
-echo "  Log: /tmp/ruuh-setup.log"
+echo "  Log: $RUUH_LOG"
 echo ""
 echo "  This will:"
 echo "    1. Update Termux & install Ubuntu (proot)"
@@ -79,5 +86,5 @@ echo ""
 echo "  Setup complete!"
 echo "  Get started:  ruuh --ollama"
 echo "  Dashboard:    http://localhost:3000"
-echo "  Full log:     /tmp/ruuh-setup.log"
+echo "  Full log:     $RUUH_LOG"
 echo ""
