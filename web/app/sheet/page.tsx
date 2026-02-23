@@ -354,6 +354,14 @@ const extraSkills = [
     desc: "Monitor RSS feeds and blogs for new posts, summarize updates automatically.",
   },
   {
+    name: "thoth",
+    desc: "Create and optimize social media content for Twitter, LinkedIn, and Instagram with AI images and brand styles.",
+  },
+  {
+    name: "agent-browser",
+    desc: "Browser automation for navigating pages, filling forms, clicking buttons, taking screenshots, and extracting data.",
+  },
+  {
     name: "summarize",
     desc: "Summarize articles, web pages, or long texts into concise bullet points.",
   },
