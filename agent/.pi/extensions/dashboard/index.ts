@@ -128,10 +128,16 @@ export default function dashboardExtension(pi: ExtensionAPI) {
 
     // Only add assistant messages to chat (user messages are added via /api/chat)
     if (role !== "user" && text.trim()) {
+      // Detect skill/prompt content (YAML frontmatter) — show brief notice instead
+      const skillMatch = text.match(/^---\s*\nname:\s*(.+)/);
+      const chatText = skillMatch
+        ? `Loaded skill: ${skillMatch[1].trim()}`
+        : text;
+
       state.chatMessages.push({
         id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
         role: "agent",
-        text: text,
+        text: chatText,
         timestamp: new Date().toISOString(),
       });
       if (state.chatMessages.length > MAX_CHAT_MESSAGES) {
