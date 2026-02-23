@@ -1,5 +1,8 @@
 import { broadcastSSE } from "./sse.js";
 
+export type CommandHandler = (args: string) => Promise<string> | string;
+export const commands = new Map<string, CommandHandler>();
+
 export interface ActivityEntry {
   timestamp: string;
   type: "session" | "agent" | "turn" | "tool" | "message";

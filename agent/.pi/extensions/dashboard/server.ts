@@ -1,6 +1,6 @@
 import http from "node:http";
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
-import { state, MAX_CHAT_MESSAGES } from "./state.js";
+import { state, MAX_CHAT_MESSAGES, commands } from "./state.js";
 import { sseClients, broadcastSSE } from "./sse.js";
 import { dashboardHTML } from "./template.js";
 
@@ -39,7 +39,7 @@ export function handleRequest(
     req.on("data", (chunk: Buffer) => {
       body += chunk.toString();
     });
-    req.on("end", () => {
+    req.on("end", async () => {
       const headers = {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
@@ -57,6 +57,58 @@ export function handleRequest(
           res.writeHead(503, headers);
           res.end(JSON.stringify({ error: "Agent not ready" }));
           return;
+        }
+
+        // Intercept slash commands
+        if (msg.startsWith("/")) {
+          const spaceIdx = msg.indexOf(" ");
+          const name = spaceIdx === -1 ? msg.slice(1) : msg.slice(1, spaceIdx);
+          const args = spaceIdx === -1 ? "" : msg.slice(spaceIdx + 1).trim();
+          const handler = commands.get(name);
+          if (handler) {
+            // Add the command as a user message in chat
+            state.chatMessages.push({
+              id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+              role: "user",
+              text: msg,
+              timestamp: new Date().toISOString(),
+            });
+            if (state.chatMessages.length > MAX_CHAT_MESSAGES) {
+              state.chatMessages.splice(0, state.chatMessages.length - MAX_CHAT_MESSAGES);
+            }
+
+            try {
+              const result = await handler(args);
+              state.chatMessages.push({
+                id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+                role: "agent",
+                text: result,
+                timestamp: new Date().toISOString(),
+              });
+              if (state.chatMessages.length > MAX_CHAT_MESSAGES) {
+                state.chatMessages.splice(0, state.chatMessages.length - MAX_CHAT_MESSAGES);
+              }
+              broadcastSSE({ type: "state", data: state });
+              res.writeHead(200, headers);
+              res.end(JSON.stringify({ ok: true, command: name }));
+            } catch (err) {
+              const errMsg = err instanceof Error ? err.message : String(err);
+              state.chatMessages.push({
+                id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+                role: "agent",
+                text: `Error running /${name}: ${errMsg}`,
+                timestamp: new Date().toISOString(),
+              });
+              if (state.chatMessages.length > MAX_CHAT_MESSAGES) {
+                state.chatMessages.splice(0, state.chatMessages.length - MAX_CHAT_MESSAGES);
+              }
+              broadcastSSE({ type: "state", data: state });
+              res.writeHead(200, headers);
+              res.end(JSON.stringify({ ok: true, command: name, error: errMsg }));
+            }
+            return;
+          }
+          // Unknown slash command — fall through to sendUserMessage
         }
 
         // Add user message to chat

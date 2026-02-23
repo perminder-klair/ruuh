@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { Type } from "@sinclair/typebox";
-import { state, MAX_CHAT_MESSAGES, pushLog } from "./state.js";
+import { state, MAX_CHAT_MESSAGES, pushLog, commands } from "./state.js";
 import { sseClients, broadcastSSE } from "./sse.js";
 import { startServer, stopServer, boundPort } from "./server.js";
 import { getLocalIP } from "./network.js";
@@ -155,24 +155,26 @@ export default function dashboardExtension(pi: ExtensionAPI) {
   });
 
   // ---- /status command ----
+  const statusHandler = async () => {
+    const ip = getLocalIP();
+    const url = boundPort ? `http://${ip}:${boundPort}` : "not running";
+    const lines = [
+      `Dashboard: ${url}`,
+      `Status:    ${state.agentStatus}`,
+      `Turns:     ${state.turnCount}`,
+    ];
+    if (state.currentToolName) {
+      lines.push(`Tool:      ${state.currentToolName}`);
+    }
+    if (state.customStatus) {
+      lines.push(`Doing:     ${state.customStatus}`);
+    }
+    return lines.join("\n");
+  };
+  commands.set("status", statusHandler);
   pi.registerCommand("status", {
     description: "Show dashboard URL and current agent status",
-    async handler(_ctx) {
-      const ip = getLocalIP();
-      const url = boundPort ? `http://${ip}:${boundPort}` : "not running";
-      const lines = [
-        `Dashboard: ${url}`,
-        `Status:    ${state.agentStatus}`,
-        `Turns:     ${state.turnCount}`,
-      ];
-      if (state.currentToolName) {
-        lines.push(`Tool:      ${state.currentToolName}`);
-      }
-      if (state.customStatus) {
-        lines.push(`Doing:     ${state.customStatus}`);
-      }
-      return lines.join("\n");
-    },
+    handler: statusHandler,
   });
 
   // ---- pi_status tool ----
