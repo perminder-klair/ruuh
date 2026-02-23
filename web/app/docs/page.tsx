@@ -128,7 +128,7 @@ export default function DocsPage() {
   return (
     <main>
       {/* Header */}
-      <section className="border-b-soft py-24 px-6 relative bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(251,170,25,0.04),transparent_70%)]">
+      <section className="border-b-soft py-16 px-6 relative bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(251,170,25,0.04),transparent_70%)]">
         <div className="mx-auto max-w-[860px]">
           <AnimatedDiv delay={0.1}>
             <h1 className="mb-4 text-[clamp(2rem,5vw,3rem)] font-extrabold leading-[1.1] tracking-tight">
@@ -145,7 +145,7 @@ export default function DocsPage() {
       </section>
 
       {/* Prerequisites */}
-      <section className="border-b-soft py-24 px-6">
+      <section className="border-b-soft py-16 px-6">
         <div className="mx-auto max-w-[860px]">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -200,7 +200,7 @@ export default function DocsPage() {
       </section>
 
       {/* Installation */}
-      <section className="border-b-soft py-24 px-6">
+      <section className="border-b-soft py-16 px-6">
         <div className="mx-auto max-w-[860px]">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -279,7 +279,7 @@ export default function DocsPage() {
       </section>
 
       {/* Termux API Skills */}
-      <section className="border-b-soft py-24 px-6">
+      <section className="border-b-soft py-16 px-6">
         <div className="mx-auto max-w-[860px]">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -384,7 +384,7 @@ export default function DocsPage() {
       </section>
 
       {/* Using Ollama */}
-      <section className="border-b-soft py-24 px-6">
+      <section className="border-b-soft py-16 px-6">
         <div className="mx-auto max-w-[860px]">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -479,7 +479,7 @@ export default function DocsPage() {
             <blockquote className="border-l-2 border-primary/40 pl-4 text-[0.95rem] leading-relaxed text-muted-foreground">
               To switch models, pull a new one and restart:{" "}
               <code className="rounded bg-code-block px-1.5 py-0.5 text-[0.82rem]">
-                ollama pull llama3
+                ollama pull qwen3:1.7b
               </code>{" "}
               then{" "}
               <code className="rounded bg-code-block px-1.5 py-0.5 text-[0.82rem]">
@@ -504,7 +504,7 @@ export default function DocsPage() {
       </section>
 
       {/* Useful Commands */}
-      <section className="border-b-soft py-24 px-6">
+      <section className="border-b-soft py-16 px-6">
         <div className="mx-auto max-w-[860px]">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -525,16 +525,12 @@ export default function DocsPage() {
                 cmd: "ruuh --ollama",
               },
               {
-                label: "Switch Ollama model",
-                cmd: "ollama pull llama3 && ruuh --ollama",
+                label: "Switch to a different model",
+                cmd: "ollama pull qwen3:1.7b && ruuh --ollama",
               },
               {
-                label: "Set default provider",
-                cmd: 'Edit ~/.pi/agent/settings.json → "defaultProvider"',
-              },
-              {
-                label: "Set default model",
-                cmd: 'Edit ~/.pi/agent/settings.json → "defaultModel"',
+                label: "Edit agent settings",
+                cmd: "nano ~/agent/.pi/settings.json",
               },
               {
                 label: "Open web dashboard",
@@ -587,7 +583,7 @@ export default function DocsPage() {
       </section>
 
       {/* Troubleshooting */}
-      <section className="border-b-soft py-24 px-6">
+      <section className="border-b-soft py-16 px-6">
         <div className="mx-auto max-w-[860px]">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">

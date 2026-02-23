@@ -31,13 +31,13 @@ const features = [
     icon: Cpu,
     title: "Run Local with Ollama",
     description:
-      "Run models like Llama 3, CodeGemma, and DeepSeek Coder directly on your device via Ollama — no API keys, no internet, no data leaving your phone.",
+      "Run models like Qwen 3, GLM-5, and Kimi K2.5 directly on your device via Ollama — no API keys, no internet, no data leaving your phone.",
   },
   {
     icon: Brain,
     title: "Persistent Memory",
     description:
-      "MEMORY.md preserves context across sessions. Ruuh remembers what you're working on and picks up where you left off.",
+      "Persistent memory preserves context across sessions. Ruuh remembers what you're working on and picks up where you left off.",
   },
   {
     icon: Smartphone,
@@ -69,7 +69,7 @@ export default function Home() {
   return (
     <main>
       {/* Hero */}
-      <section className="relative flex min-h-[90vh] items-center justify-center overflow-hidden px-6 py-20 text-center">
+      <section className="relative flex min-h-[70vh] items-center justify-center overflow-hidden px-6 py-20 text-center">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(251,170,25,0.08),transparent_70%)]" />
         <div className="pointer-events-none absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 h-[340px] w-[340px] animate-breathe rounded-full bg-[radial-gradient(circle,rgba(251,170,25,0.07),transparent_70%)] blur-3xl" />
         <div className="relative max-w-[740px]">
@@ -101,18 +101,28 @@ export default function Home() {
               </code>
               <CopyButton text={INSTALL_CMD} />
             </div>
-            <a
-              href="/docs"
-              className="mt-4 inline-block text-sm text-muted-foreground hover:text-primary transition-colors"
-            >
-              Read the docs &rarr;
-            </a>
+            <div className="mt-5 flex items-center justify-center gap-4">
+              <a
+                href="/docs"
+                className="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-background transition-colors hover:bg-primary/90"
+              >
+                Get Started
+              </a>
+              <a
+                href="https://github.com/perminder-klair/ruuh"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                View on GitHub &rarr;
+              </a>
+            </div>
           </AnimatedDiv>
         </div>
       </section>
 
       {/* What is Ruuh */}
-      <section className="border-t-soft py-24">
+      <section className="border-t-soft py-16">
         <div className="mx-auto max-w-[1100px] px-6">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -160,7 +170,7 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section className="border-t-soft py-24">
+      <section className="border-t-soft py-16">
         <div className="mx-auto max-w-[1100px] px-6">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -229,8 +239,8 @@ export default function Home() {
                   <code className="rounded bg-code-block px-2 py-0.5 font-mono text-[0.82rem] text-primary">
                     ruuh
                   </code>{" "}
-                  and you&apos;re in. Ruuh is ready with anything like messages,
-                  reminders, your phone, your life.
+                  and you&apos;re in. Ruuh is ready — messages, reminders,
+                  your phone, your life.
                 </p>
               </div>
             </StaggerItem>
@@ -239,7 +249,7 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="border-t-soft py-24">
+      <section className="border-t-soft py-16">
         <div className="mx-auto max-w-[1100px] px-6">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -272,7 +282,7 @@ export default function Home() {
       </section>
 
       {/* Termux API Skills */}
-      <section className="border-t-soft py-24">
+      <section className="border-t-soft py-16">
         <div className="mx-auto max-w-[1100px] px-6">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">

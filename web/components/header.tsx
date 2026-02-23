@@ -37,9 +37,15 @@ export function Header() {
             href="https://github.com/perminder-klair/ruuh"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-muted-foreground transition-colors hover:text-primary"
+            className="flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-primary"
           >
             <Github className="size-[18px]" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://img.shields.io/github/stars/perminder-klair/ruuh?style=flat&color=fbaa19&labelColor=1a1a1a&logo=github&logoColor=white"
+              alt="GitHub stars"
+              className="h-5"
+            />
           </a>
         </nav>
       </div>
