@@ -15,8 +15,7 @@ export function AnimatedSection({
   return (
     <motion.section
       initial={{ opacity: 0, y: 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease }}
       className={className}
     >
@@ -37,8 +36,7 @@ export function AnimatedDiv({
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease, delay }}
       className={className}
     >
@@ -57,8 +55,7 @@ export function StaggerContainer({
   return (
     <motion.div
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-100px" }}
+      animate="visible"
       variants={{
         hidden: {},
         visible: { transition: { staggerChildren: 0.08 } },

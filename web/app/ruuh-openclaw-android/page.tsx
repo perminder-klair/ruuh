@@ -74,7 +74,7 @@ const differentiators = [
     icon: Cpu,
     title: "Fully Offline with Ollama",
     description:
-      "Run local models like Llama 3, CodeGemma, and DeepSeek Coder entirely on-device via Ollama. No API keys, no internet required. OpenClaw primarily relies on cloud APIs.",
+      "Run local models like Qwen 3, GLM-5, and Kimi K2.5 entirely on-device via Ollama. No API keys, no internet required. OpenClaw primarily relies on cloud APIs.",
   },
   {
     icon: Shield,
@@ -94,7 +94,7 @@ export default function OpenClawComparisonPage() {
   return (
     <main>
       {/* Hero */}
-      <section className="relative flex min-h-[60vh] items-center justify-center overflow-hidden px-6 py-20 text-center">
+      <section className="relative flex min-h-[50vh] items-center justify-center overflow-hidden px-6 py-20 text-center">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(251,170,25,0.08),transparent_70%)]" />
         <div className="relative max-w-[740px]">
           <AnimatedDiv>
@@ -127,7 +127,7 @@ export default function OpenClawComparisonPage() {
       </section>
 
       {/* Comparison Table */}
-      <section className="border-t-soft py-24">
+      <section className="border-t-soft py-16">
         <div className="mx-auto max-w-[1100px] px-6">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -182,7 +182,7 @@ export default function OpenClawComparisonPage() {
       </section>
 
       {/* Key Differences */}
-      <section className="border-t-soft py-24">
+      <section className="border-t-soft py-16">
         <div className="mx-auto max-w-[1100px] px-6">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -192,7 +192,7 @@ export default function OpenClawComparisonPage() {
               The biggest ways Ruuh and OpenClaw diverge in approach.
             </p>
           </AnimatedDiv>
-          <StaggerContainer className="mx-auto grid max-w-[400px] grid-cols-1 gap-6 md:max-w-none md:grid-cols-2 lg:grid-cols-3">
+          <StaggerContainer className="mx-auto grid max-w-[400px] grid-cols-1 gap-6 md:max-w-none md:grid-cols-2">
             {differentiators.map((item) => (
               <HoverCard
                 key={item.title}
@@ -212,7 +212,7 @@ export default function OpenClawComparisonPage() {
       </section>
 
       {/* Why Ruuh */}
-      <section className="border-t-soft py-24">
+      <section className="border-t-soft py-16">
         <div className="mx-auto max-w-[1100px] px-6">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">
@@ -270,7 +270,7 @@ export default function OpenClawComparisonPage() {
       </section>
 
       {/* CTA */}
-      <section className="border-t-soft py-24">
+      <section className="border-t-soft py-16">
         <div className="mx-auto max-w-[1100px] px-6 text-center">
           <AnimatedDiv>
             <h2 className="mb-4 text-[1.75rem] font-bold tracking-tight">

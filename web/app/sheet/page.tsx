@@ -430,34 +430,34 @@ termux-toast "Scanned: $URL"
 
 const ollamaModels = [
   {
-    name: "qwen2.5-coder:1.5b",
-    size: "1.0 GB",
-    type: "Local",
-    note: "Default, fastest on mobile",
-  },
-  {
-    name: "qwen2.5-coder:7b",
-    size: "4.7 GB",
-    type: "Local",
-    note: "Better quality, needs 8GB+ RAM",
-  },
-  {
-    name: "llama3.2:3b",
-    size: "2.0 GB",
-    type: "Local",
-    note: "Good balance of speed and quality",
-  },
-  {
-    name: "gemma2:2b",
-    size: "1.6 GB",
-    type: "Local",
-    note: "Lightweight Google model",
-  },
-  {
-    name: "Claude / GPT / etc.",
+    name: "glm-5:cloud",
     size: "Cloud",
     type: "Cloud",
-    note: "Set API key in .pi/settings.json",
+    note: "Recommended",
+  },
+  {
+    name: "minimax-m2.5:cloud",
+    size: "Cloud",
+    type: "Cloud",
+    note: "",
+  },
+  {
+    name: "qwen3.5:cloud",
+    size: "Cloud",
+    type: "Cloud",
+    note: "",
+  },
+  {
+    name: "kimi-k2.5:cloud",
+    size: "Cloud",
+    type: "Cloud",
+    note: "",
+  },
+  {
+    name: "qwen3:1.7b",
+    size: "~1 GB",
+    type: "Local",
+    note: "",
   },
 ];
 
@@ -476,7 +476,7 @@ const troubleshooting = [
   },
   {
     q: "Ollama out of memory",
-    a: "Try a smaller model: ollama pull qwen2.5-coder:1.5b. Close other apps to free RAM.",
+    a: "Try a smaller model: ollama pull qwen3:1.7b. Close other apps to free RAM.",
   },
   {
     q: "Ubuntu proot won't start",
@@ -567,7 +567,7 @@ export default function SheetPage() {
   return (
     <main>
       {/* Header + TOC */}
-      <section className="border-b-soft relative bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(251,170,25,0.04),transparent_70%)] px-6 py-24">
+      <section className="border-b-soft relative bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(251,170,25,0.04),transparent_70%)] px-6 py-16">
         <div className="mx-auto max-w-[860px]">
           <AnimatedDiv delay={0.1}>
             <div className="mb-4 flex items-center gap-3">
@@ -602,7 +602,7 @@ export default function SheetPage() {
       </section>
 
       {/* Quick Start */}
-      <section className="border-b-soft px-6 py-24">
+      <section className="border-b-soft px-6 py-16">
         <div className="mx-auto max-w-[860px]">
           <SectionHeader
             id="quick-start"
@@ -631,7 +631,7 @@ export default function SheetPage() {
       </section>
 
       {/* Setup Scripts */}
-      <section className="border-b-soft px-6 py-24">
+      <section className="border-b-soft px-6 py-16">
         <div className="mx-auto max-w-[860px]">
           <SectionHeader
             id="setup"
@@ -661,7 +661,7 @@ export default function SheetPage() {
       </section>
 
       {/* Key Paths */}
-      <section className="border-b-soft px-6 py-24">
+      <section className="border-b-soft px-6 py-16">
         <div className="mx-auto max-w-[860px]">
           <SectionHeader
             id="paths"
@@ -746,7 +746,7 @@ export default function SheetPage() {
       </section>
 
       {/* Termux API: Device */}
-      <section className="border-b-soft px-6 py-24">
+      <section className="border-b-soft px-6 py-16">
         <div className="mx-auto max-w-[860px]">
           <SectionHeader
             id="device"
@@ -759,7 +759,7 @@ export default function SheetPage() {
       </section>
 
       {/* Termux API: Comms */}
-      <section className="border-b-soft px-6 py-24">
+      <section className="border-b-soft px-6 py-16">
         <div className="mx-auto max-w-[860px]">
           <SectionHeader
             id="comms"
@@ -772,7 +772,7 @@ export default function SheetPage() {
       </section>
 
       {/* Termux API: System */}
-      <section className="border-b-soft px-6 py-24">
+      <section className="border-b-soft px-6 py-16">
         <div className="mx-auto max-w-[860px]">
           <SectionHeader
             id="system"
@@ -785,7 +785,7 @@ export default function SheetPage() {
       </section>
 
       {/* Extra Skills */}
-      <section className="border-b-soft px-6 py-24">
+      <section className="border-b-soft px-6 py-16">
         <div className="mx-auto max-w-[860px]">
           <SectionHeader
             id="skills"
@@ -816,7 +816,7 @@ export default function SheetPage() {
       </section>
 
       {/* Common Patterns */}
-      <section className="border-b-soft px-6 py-24">
+      <section className="border-b-soft px-6 py-16">
         <div className="mx-auto max-w-[860px]">
           <SectionHeader
             id="patterns"
@@ -852,7 +852,7 @@ export default function SheetPage() {
       </section>
 
       {/* Ollama */}
-      <section className="border-b-soft px-6 py-24">
+      <section className="border-b-soft px-6 py-16">
         <div className="mx-auto max-w-[860px]">
           <SectionHeader
             id="ollama"
@@ -899,9 +899,9 @@ export default function SheetPage() {
           <StaggerContainer className="space-y-3">
             {[
               { label: "Start with Ollama", cmd: "ruuh --ollama" },
-              { label: "Pull a model", cmd: "ollama pull qwen2.5-coder:1.5b" },
+              { label: "Pull a model", cmd: "ollama pull qwen3:1.7b" },
               { label: "List installed models", cmd: "ollama list" },
-              { label: "Remove a model", cmd: "ollama rm qwen2.5-coder:1.5b" },
+              { label: "Remove a model", cmd: "ollama rm qwen3:1.7b" },
               {
                 label: "Config file",
                 cmd: "~/storage/shared/ruuh/.pi/settings.json",
@@ -926,7 +926,7 @@ export default function SheetPage() {
       </section>
 
       {/* Troubleshooting */}
-      <section className="border-b-soft px-6 py-24">
+      <section className="border-b-soft px-6 py-16">
         <div className="mx-auto max-w-[860px]">
           <SectionHeader
             id="troubleshooting"
