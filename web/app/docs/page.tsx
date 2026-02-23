@@ -155,7 +155,7 @@ export default function DocsPage() {
               Before you begin, make sure you have the following.
             </p>
           </AnimatedDiv>
-          <StaggerContainer className="grid grid-cols-1 gap-5 md:grid-cols-3">
+          <StaggerContainer className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {prerequisites.map((item) => (
               <StaggerItem key={item.title}>
                 <div className="rounded-lg border border-border bg-card p-6 h-full">
@@ -224,53 +224,46 @@ export default function DocsPage() {
             </div>
           </AnimatedDiv>
 
-          <div className="space-y-10">
+          <div className="mt-10 space-y-10">
             {setupSteps.map((step) => (
               <AnimatedSection key={step.step}>
-                <div className="flex gap-5">
-                  <div className="flex flex-col items-center">
-                    <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary/15 font-mono text-sm font-bold text-primary">
-                      {step.step}
-                    </span>
-                    {step.step < setupSteps.length && (
-                      <div className="mt-2 flex-1 w-px bg-border" />
-                    )}
-                  </div>
-                  <div className="flex-1 pb-2">
-                    <h3 className="mb-2 text-[1.1rem] font-semibold">
-                      {step.title}
-                    </h3>
-                    <p className="mb-4 text-[0.95rem] leading-relaxed text-muted-foreground">
-                      {step.description}
-                    </p>
-                    {step.terminal && (
-                      <div className="overflow-hidden rounded-lg border border-border bg-code-block shadow-terminal">
-                        <div className="flex gap-2 border-b border-border px-4 py-2.5">
-                          <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
-                          <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
-                          <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
-                        </div>
-                        <div className="p-5 font-mono text-[0.8rem] leading-[1.8] text-muted-foreground">
-                          {step.terminal.lines.map((line, i) => (
-                            <div key={i}>
-                              {line.text === "" ? (
-                                <>&nbsp;</>
-                              ) : line.prompt ? (
-                                <>
-                                  <span className="text-primary">~ $</span>{" "}
-                                  <span className="text-foreground break-all">
-                                    {line.text}
-                                  </span>
-                                </>
-                              ) : (
-                                line.text
-                              )}
-                            </div>
-                          ))}
-                        </div>
+                <div>
+                  <p className="mb-1.5 font-mono text-xs font-semibold uppercase tracking-wider text-primary">
+                    Step {step.step}
+                  </p>
+                  <h3 className="mb-2 text-[1.1rem] font-semibold">
+                    {step.title}
+                  </h3>
+                  <p className="mb-4 text-[0.95rem] leading-relaxed text-muted-foreground">
+                    {step.description}
+                  </p>
+                  {step.terminal && (
+                    <div className="overflow-hidden rounded-lg border border-border bg-code-block shadow-terminal">
+                      <div className="flex gap-2 border-b border-border px-4 py-2.5">
+                        <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
                       </div>
-                    )}
-                  </div>
+                      <div className="p-5 font-mono text-[0.8rem] leading-[1.8] text-muted-foreground">
+                        {step.terminal.lines.map((line, i) => (
+                          <div key={i}>
+                            {line.text === "" ? (
+                              <>&nbsp;</>
+                            ) : line.prompt ? (
+                              <>
+                                <span className="text-primary">~ $</span>{" "}
+                                <span className="text-foreground break-all">
+                                  {line.text}
+                                </span>
+                              </>
+                            ) : (
+                              line.text
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </AnimatedSection>
             ))}
@@ -395,83 +388,77 @@ export default function DocsPage() {
               keys, no internet, no data leaving your device.
             </p>
           </AnimatedDiv>
-          <AnimatedSection>
-            <div className="space-y-6">
-              <div className="flex gap-5">
-                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary/15 font-mono text-sm font-bold text-primary">
-                  1
-                </span>
-                <div>
-                  <h3 className="mb-2 text-[1.05rem] font-semibold">
-                    Already installed?
-                  </h3>
-                  <p className="mb-3 text-[0.92rem] leading-relaxed text-muted-foreground">
-                    If you chose &ldquo;Y&rdquo; when prompted during setup,
-                    Ollama is already installed with a model. Just run:
-                  </p>
-                  <div className="overflow-hidden rounded-lg border border-border bg-code-block shadow-terminal">
-                    <div className="flex gap-2 border-b border-border px-4 py-2.5">
-                      <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
-                      <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
-                      <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
-                    </div>
-                    <div className="p-5 font-mono text-[0.8rem] leading-[1.8] text-muted-foreground">
-                      <div>
-                        <span className="text-primary">~ $</span>{" "}
-                        <span className="text-foreground">ruuh --ollama</span>
-                      </div>
+          <AnimatedSection className="mt-10">
+            <div className="space-y-10">
+              <div>
+                <p className="mb-1.5 font-mono text-xs font-semibold uppercase tracking-wider text-primary">
+                  Step 1
+                </p>
+                <h3 className="mb-2 text-[1.05rem] font-semibold">
+                  Already installed?
+                </h3>
+                <p className="mb-3 text-[0.92rem] leading-relaxed text-muted-foreground">
+                  If you chose &ldquo;Y&rdquo; when prompted during setup,
+                  Ollama is already installed with a model. Just run:
+                </p>
+                <div className="overflow-hidden rounded-lg border border-border bg-code-block shadow-terminal">
+                  <div className="flex gap-2 border-b border-border px-4 py-2.5">
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+                  </div>
+                  <div className="p-5 font-mono text-[0.8rem] leading-[1.8] text-muted-foreground">
+                    <div>
+                      <span className="text-primary">~ $</span>{" "}
+                      <span className="text-foreground">ruuh --ollama</span>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="flex gap-5">
-                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary/15 font-mono text-sm font-bold text-primary">
-                  2
-                </span>
-                <div className="flex-1">
-                  <h3 className="mb-2 text-[1.05rem] font-semibold">
-                    Install separately
-                  </h3>
-                  <p className="mb-3 text-[0.92rem] leading-relaxed text-muted-foreground">
-                    If you skipped Ollama during setup, run the Ollama setup
-                    script manually. It installs Ollama, signs you in, and pulls
-                    a model.
-                  </p>
-                  <div className="overflow-hidden rounded-lg border border-border bg-code-block shadow-terminal">
-                    <div className="flex gap-2 border-b border-border px-4 py-2.5">
-                      <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
-                      <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
-                      <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
-                    </div>
-                    <div className="p-5 font-mono text-[0.8rem] leading-[1.8] text-muted-foreground">
-                      <div>
-                        <span className="text-primary">~ $</span>{" "}
-                        <span className="text-foreground break-all">
-                          curl -fsSL
-                          https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/ollama-setup.sh
-                          | bash
-                        </span>
-                      </div>
+              <div>
+                <p className="mb-1.5 font-mono text-xs font-semibold uppercase tracking-wider text-primary">
+                  Step 2
+                </p>
+                <h3 className="mb-2 text-[1.05rem] font-semibold">
+                  Install separately
+                </h3>
+                <p className="mb-3 text-[0.92rem] leading-relaxed text-muted-foreground">
+                  If you skipped Ollama during setup, run the Ollama setup
+                  script manually. It installs Ollama, signs you in, and pulls
+                  a model.
+                </p>
+                <div className="overflow-hidden rounded-lg border border-border bg-code-block shadow-terminal">
+                  <div className="flex gap-2 border-b border-border px-4 py-2.5">
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+                  </div>
+                  <div className="p-5 font-mono text-[0.8rem] leading-[1.8] text-muted-foreground">
+                    <div>
+                      <span className="text-primary">~ $</span>{" "}
+                      <span className="text-foreground break-all">
+                        curl -fsSL
+                        https://raw.githubusercontent.com/perminder-klair/ruuh/main/scripts/ollama-setup.sh
+                        | bash
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="flex gap-5">
-                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary/15 font-mono text-sm font-bold text-primary">
-                  3
-                </span>
-                <div className="flex-1">
-                  <h3 className="mb-2 text-[1.05rem] font-semibold">
-                    How it works
-                  </h3>
-                  <p className="text-[0.92rem] leading-relaxed text-muted-foreground">
-                    <code className="rounded bg-code-block px-1.5 py-0.5 text-[0.82rem]">
-                      ruuh --ollama
-                    </code>{" "}
-                    starts the Ollama server, launches the agent with the local
-                    model, and stops Ollama when you exit. No API keys needed.
-                  </p>
-                </div>
+              <div>
+                <p className="mb-1.5 font-mono text-xs font-semibold uppercase tracking-wider text-primary">
+                  Step 3
+                </p>
+                <h3 className="mb-2 text-[1.05rem] font-semibold">
+                  How it works
+                </h3>
+                <p className="text-[0.92rem] leading-relaxed text-muted-foreground">
+                  <code className="rounded bg-code-block px-1.5 py-0.5 text-[0.82rem]">
+                    ruuh --ollama
+                  </code>{" "}
+                  starts the Ollama server, launches the agent with the local
+                  model, and stops Ollama when you exit. No API keys needed.
+                </p>
               </div>
             </div>
           </AnimatedSection>
