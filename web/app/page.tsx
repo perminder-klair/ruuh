@@ -74,11 +74,6 @@ export default function Home() {
         <div className="pointer-events-none absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 h-[340px] w-[340px] animate-breathe rounded-full bg-[radial-gradient(circle,rgba(251,170,25,0.07),transparent_70%)] blur-3xl" />
         <div className="relative max-w-[740px]">
           <AnimatedDiv>
-            <span className="mb-6 inline-block animate-breathe rounded-full border border-primary/25 bg-primary/15 px-3.5 py-1 font-mono text-xs tracking-wide text-primary">
-              Open Source
-            </span>
-          </AnimatedDiv>
-          <AnimatedDiv delay={0.1}>
             <h1 className="mb-5 text-[clamp(2.2rem,6vw,3.5rem)] font-extrabold leading-[1.1] tracking-tight">
               <span className="text-primary">Ruuh</span> — Your Personal AI
               Agent on Android

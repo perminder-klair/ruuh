@@ -1,9 +1,74 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { Play, X } from "lucide-react";
 
-const VIDEO_URL = "https://www.youtube.com/embed/dQw4w9WgXcQ"; // TODO: replace with real demo video
+function CRTStatic({ active }: { active: boolean }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    if (!active) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let raf: number;
+    const draw = () => {
+      const w = canvas.width;
+      const h = canvas.height;
+      const imageData = ctx.createImageData(w, h);
+      const data = imageData.data;
+      for (let i = 0; i < data.length; i += 4) {
+        const v = Math.random() * 255;
+        data[i] = v;
+        data[i + 1] = v;
+        data[i + 2] = v;
+        data[i + 3] = 255;
+      }
+      ctx.putImageData(imageData, 0, 0);
+      raf = requestAnimationFrame(draw);
+    };
+    draw();
+    return () => cancelAnimationFrame(raf);
+  }, [active]);
+
+  return (
+    <div className="relative w-full h-full bg-black overflow-hidden">
+      <canvas
+        ref={canvasRef}
+        width={320}
+        height={180}
+        className="absolute inset-0 w-full h-full opacity-40"
+        style={{ imageRendering: "pixelated" }}
+      />
+      {/* Scanlines */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-30"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.4) 2px, rgba(0,0,0,0.4) 4px)",
+        }}
+      />
+      {/* Vignette */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          boxShadow: "inset 0 0 120px 40px rgba(0,0,0,0.7)",
+        }}
+      />
+      {/* Text */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+        <span className="font-mono text-xl sm:text-2xl font-bold text-white/70 tracking-widest drop-shadow-[0_0_12px_rgba(251,170,25,0.4)]">
+          NO SIGNAL
+        </span>
+        <span className="font-mono text-xs text-white/40 tracking-wide">
+          demo coming soon
+        </span>
+      </div>
+    </div>
+  );
+}
 
 export function WatchDemoButton() {
   const [open, setOpen] = useState(false);
@@ -35,7 +100,7 @@ export function WatchDemoButton() {
           onClick={close}
         >
           <div
-            className="relative w-[90vw] max-w-[800px] aspect-video rounded-xl overflow-hidden border border-border bg-code-block shadow-terminal"
+            className="relative w-[90vw] max-w-[800px] aspect-video rounded-xl overflow-hidden border border-border shadow-terminal"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -46,12 +111,7 @@ export function WatchDemoButton() {
               <X className="size-4" />
               Close
             </button>
-            <iframe
-              src={open ? VIDEO_URL : undefined}
-              className="w-full h-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
+            <CRTStatic active={open} />
           </div>
         </div>
       )}
