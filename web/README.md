@@ -1,6 +1,6 @@
 # Ruuh Web
 
-Landing page and docs site for [Ruuh](https://github.com/nicholasgriffintn/ruuh), an Android AI coding agent that runs in Termux.
+Landing page and docs site for [Ruuh](https://github.com/perminder-klair/ruuh), an Android AI coding agent that runs in Termux.
 
 ## Tech Stack
 
