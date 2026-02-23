@@ -40,9 +40,7 @@ now_epoch() { date +%s; }
 # --- Cleanup ---
 cleanup() {
   termux-torch off 2>/dev/null || true
-  termux-brightness auto 2>/dev/null || true
   termux-notification-remove roohani-dance 2>/dev/null || true
-  termux-wake-unlock 2>/dev/null || true
   termux-tts-speak "Dance complete!" 2>/dev/null || true
   termux-toast -g middle "Shakes: $SHAKE_COUNT | Snaps: $SNAP_COUNT | Quips: $QUIP_COUNT" 2>/dev/null || true
   exit 0
@@ -50,7 +48,6 @@ cleanup() {
 trap cleanup EXIT SIGINT SIGTERM
 
 # --- Setup ---
-termux-wake-lock
 
 # Detect sensor names
 SENSOR_LIST=$(termux-sensor -l 2>/dev/null || true)
@@ -70,7 +67,6 @@ fi
 
 termux-tts-speak "Roohani Dance activated. Start moving."
 termux-notification --id roohani-dance -t "Roohani Dance" -c "Move your phone!" --ongoing
-termux-brightness 128
 
 # --- Main loop ---
 while true; do
@@ -114,14 +110,14 @@ while true; do
     LAST_SHAKE_TIME=$NOW
   fi
 
-  # 2. Tilt left/right (X axis)
+  # 2. Tilt left/right (X axis) → vibrate + torch flash
   if ! $MATCHED; then
-    if awk_lt "$AX" -4; then
+    if awk_lt "$AX" -4 || awk_gt "$AX" 4; then
       MATCHED=true
-      termux-brightness 20
-    elif awk_gt "$AX" 4; then
-      MATCHED=true
-      termux-brightness 240
+      termux-vibrate -d 80
+      termux-torch on
+      sleep 0.1
+      termux-torch off
     fi
   fi
 
@@ -131,6 +127,8 @@ while true; do
     if [ "$QUIP_ELAPSED" -ge 5 ]; then
       MATCHED=true
       QUIP_COUNT=$((QUIP_COUNT + 1))
+      termux-vibrate -d 100
+      termux-torch on; sleep 0.15; termux-torch off
       IDX=$((RANDOM % ${#QUIPS[@]}))
       termux-tts-speak "${QUIPS[$IDX]}"
       LAST_QUIP_TIME=$NOW
@@ -143,6 +141,8 @@ while true; do
     if [ "$SPIN_ELAPSED" -ge 8 ]; then
       MATCHED=true
       SNAP_COUNT=$((SNAP_COUNT + 1))
+      termux-vibrate -d 200
+      termux-torch on; sleep 0.2; termux-torch off
       STAMP=$(date +%s)
       PHOTO="/sdcard/ruuh/dance-snap-${STAMP}.jpg"
       termux-camera-photo "$PHOTO"
@@ -157,6 +157,8 @@ while true; do
     FACEDOWN_ELAPSED=$((NOW - LAST_FACEDOWN_TIME))
     if [ "$FACEDOWN_ELAPSED" -ge 5 ]; then
       MATCHED=true
+      termux-vibrate -d 300
+      termux-torch on; sleep 0.1; termux-torch off; sleep 0.1; termux-torch on; sleep 0.1; termux-torch off
       termux-tts-speak "I am upside down! Help!"
       LAST_FACEDOWN_TIME=$NOW
     fi
@@ -174,11 +176,6 @@ while true; do
         LAST_CALM_TIME=$NOW
       fi
     fi
-  fi
-
-  # Reset brightness if no tilt detected this iteration
-  if ! $MATCHED; then
-    termux-brightness 128
   fi
 
   sleep 0.25
